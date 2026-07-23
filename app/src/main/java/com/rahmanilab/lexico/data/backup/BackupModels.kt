@@ -20,7 +20,7 @@ data class CardExportDto(
     val partOfSpeech: String = "",
     val phonetic: String = "",
     val pronunciationHint: String = "",
-    val persianMeaning: String = "",
+    val meaning: String = "",
     val englishDefinition: String = "",
     val examples: List<Example> = emptyList(),
     val synonyms: List<String> = emptyList(),

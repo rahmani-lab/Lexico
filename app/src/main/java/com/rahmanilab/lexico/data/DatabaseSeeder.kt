@@ -38,7 +38,7 @@ class DatabaseSeeder(
             partOfSpeech = "adjective",
             phonetic = "/rɪˈzɪliənt/",
             pronunciationHint = "ri-ZIL-ee-uhnt",
-            persianMeaning = "مقاوم، دارای توان بازیابی",
+            meaning = "مقاوم، دارای توان بازیابی",
             englishDefinition = "Able to recover quickly after difficulty or damage.",
             examples = listOf(
                 Example("Children are often more resilient than adults.", "کودکان اغلب از بزرگسالان انعطاف‌پذیرتر هستند."),
@@ -57,7 +57,7 @@ class DatabaseSeeder(
             partOfSpeech = "adjective",
             phonetic = "/məˈtɪkjələs/",
             pronunciationHint = "muh-TIK-yuh-luhs",
-            persianMeaning = "دقیق، موشکاف",
+            meaning = "دقیق، موشکاف",
             englishDefinition = "Very careful and precise about small details.",
             examples = listOf(
                 Example("She is meticulous about keeping records.", "او در نگه‌داری سوابق بسیار دقیق است.")
@@ -73,7 +73,7 @@ class DatabaseSeeder(
             word = "give up",
             partOfSpeech = "phrasal verb",
             phonetic = "/ɡɪv ʌp/",
-            persianMeaning = "تسلیم شدن، دست کشیدن",
+            meaning = "تسلیم شدن، دست کشیدن",
             englishDefinition = "To stop trying to do something.",
             examples = listOf(
                 Example("Don't give up when things get hard.", "وقتی شرایط سخت می‌شود، دست نکش.")
@@ -90,7 +90,7 @@ class DatabaseSeeder(
             word = "break the ice",
             partOfSpeech = "idiom",
             phonetic = "/breɪk ðə aɪs/",
-            persianMeaning = "یخ مجلس را شکستن، سر صحبت را باز کردن",
+            meaning = "یخ مجلس را شکستن، سر صحبت را باز کردن",
             englishDefinition = "To say or do something to relieve tension and start a conversation.",
             examples = listOf(
                 Example("He told a joke to break the ice.", "او برای باز کردن سر صحبت جوکی گفت.")
@@ -106,7 +106,7 @@ class DatabaseSeeder(
             partOfSpeech = "noun",
             phonetic = "/ɪnˈdevər/",
             pronunciationHint = "in-DEV-er",
-            persianMeaning = "تلاش، کوشش",
+            meaning = "تلاش، کوشش",
             englishDefinition = "A serious and determined attempt or effort.",
             examples = listOf(
                 Example("Space exploration is a costly endeavor.", "اکتشاف فضا تلاشی پرهزینه است.")
@@ -122,7 +122,7 @@ class DatabaseSeeder(
         word: String,
         partOfSpeech: String,
         phonetic: String,
-        persianMeaning: String,
+        meaning: String,
         englishDefinition: String,
         examples: List<Example>,
         pronunciationHint: String = "",
@@ -137,7 +137,7 @@ class DatabaseSeeder(
         partOfSpeech = partOfSpeech,
         phonetic = phonetic,
         pronunciationHint = pronunciationHint,
-        persianMeaning = persianMeaning,
+        meaning = meaning,
         englishDefinition = englishDefinition,
         examples = examples,
         synonyms = synonyms,

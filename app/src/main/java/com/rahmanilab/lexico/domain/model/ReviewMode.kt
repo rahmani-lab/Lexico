@@ -7,7 +7,7 @@ enum class ReviewMode(val label: String, val description: String) {
     /** Show the English word, recall the meaning. The default. */
     FRONT_TO_BACK("Word → Meaning", "See the word, recall the meaning"),
 
-    /** Show the Persian meaning, recall the English word (reverse practice). */
+    /** Show the meaning, recall the English word (reverse practice). */
     BACK_TO_FRONT("Meaning → Word", "See the meaning, recall the word"),
 
     /** Show the meaning and type the English word; the answer is checked automatically. */

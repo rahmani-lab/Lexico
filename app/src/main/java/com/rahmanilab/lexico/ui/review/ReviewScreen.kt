@@ -283,7 +283,7 @@ private fun MeaningPrompt(card: CardWithDetails) {
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
-            text = card.card.persianMeaning,
+            text = card.card.meaning,
             style = MaterialTheme.typography.headlineSmall,
             textAlign = TextAlign.Center
         )
@@ -312,9 +312,9 @@ private fun ClozePrompt(card: CardWithDetails) {
                 style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center
             )
-            if (card.card.persianMeaning.isNotBlank()) {
+            if (card.card.meaning.isNotBlank()) {
                 Text(
-                    text = card.card.persianMeaning,
+                    text = card.card.meaning,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center
@@ -322,7 +322,7 @@ private fun ClozePrompt(card: CardWithDetails) {
             }
         } else {
             Text(
-                text = card.card.persianMeaning,
+                text = card.card.meaning,
                 style = MaterialTheme.typography.headlineSmall,
                 textAlign = TextAlign.Center
             )
@@ -340,7 +340,7 @@ private fun DetailsSide(card: CardWithDetails) {
     val c = card.card
     Column(verticalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.fillMaxWidth()) {
         Text(
-            text = c.persianMeaning,
+            text = c.meaning,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold
         )

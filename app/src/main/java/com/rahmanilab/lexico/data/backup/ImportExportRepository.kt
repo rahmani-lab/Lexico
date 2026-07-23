@@ -128,7 +128,7 @@ private fun CardWithDetails.toExportDto(deckName: String): CardExportDto = CardE
     partOfSpeech = card.partOfSpeech,
     phonetic = card.phonetic,
     pronunciationHint = card.pronunciationHint,
-    persianMeaning = card.persianMeaning,
+    meaning = card.meaning,
     englishDefinition = card.englishDefinition,
     examples = card.examples,
     synonyms = card.synonyms,
@@ -147,7 +147,7 @@ private fun CardExportDto.toEntity(deckId: Long): CardEntity = CardEntity(
     partOfSpeech = partOfSpeech,
     phonetic = phonetic,
     pronunciationHint = pronunciationHint,
-    persianMeaning = persianMeaning,
+    meaning = meaning,
     englishDefinition = englishDefinition,
     examples = examples,
     synonyms = synonyms,
@@ -165,7 +165,7 @@ private fun CardExportDto.toEntity(deckId: Long): CardEntity = CardEntity(
 private object Csv {
 
     private val HEADER = listOf(
-        "deck", "word", "partOfSpeech", "phonetic", "pronunciationHint", "persianMeaning",
+        "deck", "word", "partOfSpeech", "phonetic", "pronunciationHint", "meaning",
         "englishDefinition", "examples", "synonyms", "antonyms", "collocations", "notes",
         "source", "tags"
     )
@@ -181,7 +181,7 @@ private object Csv {
                 c.partOfSpeech,
                 c.phonetic,
                 c.pronunciationHint,
-                c.persianMeaning,
+                c.meaning,
                 c.englishDefinition,
                 c.examples.joinToString(" | ") { "${it.text} :: ${it.translation}" },
                 c.synonyms.joinToString("; "),
@@ -203,7 +203,7 @@ private object Csv {
         fun index(name: String) = header.indexOf(name.lowercase())
 
         val di = index("deck"); val wi = index("word"); val pi = index("partOfSpeech")
-        val phi = index("phonetic"); val hi = index("pronunciationHint"); val mi = index("persianMeaning")
+        val phi = index("phonetic"); val hi = index("pronunciationHint"); val mi = index("meaning")
         val defi = index("englishDefinition"); val exi = index("examples"); val syi = index("synonyms")
         val ai = index("antonyms"); val ci = index("collocations"); val ni = index("notes")
         val si = index("source"); val ti = index("tags")
@@ -218,7 +218,7 @@ private object Csv {
                 partOfSpeech = col(pi).trim(),
                 phonetic = col(phi).trim(),
                 pronunciationHint = col(hi).trim(),
-                persianMeaning = col(mi).trim(),
+                meaning = col(mi).trim(),
                 englishDefinition = col(defi).trim(),
                 examples = parseExamples(col(exi)),
                 synonyms = splitList(col(syi)),

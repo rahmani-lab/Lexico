@@ -42,7 +42,7 @@ data class CardEntity(
     val pronunciationHint: String = "",
 
     // --- Back of the card ---
-    val persianMeaning: String,
+    val meaning: String,
     val englishDefinition: String = "",
     val examples: List<Example> = emptyList(),
     val synonyms: List<String> = emptyList(),

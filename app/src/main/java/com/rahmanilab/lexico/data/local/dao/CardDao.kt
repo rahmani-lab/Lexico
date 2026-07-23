@@ -61,7 +61,7 @@ interface CardDao {
         """
         SELECT * FROM cards
         WHERE word LIKE '%' || :query || '%'
-           OR persianMeaning LIKE '%' || :query || '%'
+           OR meaning LIKE '%' || :query || '%'
            OR englishDefinition LIKE '%' || :query || '%'
            OR notes LIKE '%' || :query || '%'
            OR source LIKE '%' || :query || '%'

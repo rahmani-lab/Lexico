@@ -27,7 +27,7 @@ data class EditCardForm(
     val partOfSpeech: String = "",
     val phonetic: String = "",
     val pronunciationHint: String = "",
-    val persianMeaning: String = "",
+    val meaning: String = "",
     val englishDefinition: String = "",
     val examples: List<Example> = emptyList(),
     val synonyms: List<String> = emptyList(),
@@ -50,7 +50,7 @@ data class EditCardUiState(
     val saved: Boolean = false
 ) {
     val canSave: Boolean
-        get() = form.word.isNotBlank() && form.persianMeaning.isNotBlank()
+        get() = form.word.isNotBlank() && form.meaning.isNotBlank()
 }
 
 class EditCardViewModel(
@@ -90,7 +90,7 @@ class EditCardViewModel(
                                 partOfSpeech = c.partOfSpeech,
                                 phonetic = c.phonetic,
                                 pronunciationHint = c.pronunciationHint,
-                                persianMeaning = c.persianMeaning,
+                                meaning = c.meaning,
                                 englishDefinition = c.englishDefinition,
                                 examples = c.examples,
                                 synonyms = c.synonyms,
@@ -137,7 +137,7 @@ class EditCardViewModel(
     fun setPartOfSpeech(v: String) = edit { it.copy(partOfSpeech = v) }
     fun setPhonetic(v: String) = edit { it.copy(phonetic = v) }
     fun setPronunciationHint(v: String) = edit { it.copy(pronunciationHint = v) }
-    fun setPersianMeaning(v: String) = edit { it.copy(persianMeaning = v) }
+    fun setMeaning(v: String) = edit { it.copy(meaning = v) }
     fun setEnglishDefinition(v: String) = edit { it.copy(englishDefinition = v) }
     fun setNotes(v: String) = edit { it.copy(notes = v) }
     fun setSource(v: String) = edit { it.copy(source = v) }
@@ -199,7 +199,7 @@ class EditCardViewModel(
                 partOfSpeech = form.partOfSpeech.trim(),
                 phonetic = form.phonetic.trim(),
                 pronunciationHint = form.pronunciationHint.trim(),
-                persianMeaning = form.persianMeaning.trim(),
+                meaning = form.meaning.trim(),
                 englishDefinition = form.englishDefinition.trim(),
                 examples = form.examples.filter { it.text.isNotBlank() },
                 synonyms = form.synonyms,

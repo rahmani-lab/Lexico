@@ -1,11 +1,12 @@
 # Lexico
 
-A professional, fully-offline **English vocabulary flashcard app for Android**, built for Persian
-speakers learning English. Lexico combines rich, language-learning–focused flashcards with a
-spaced-repetition study system, built-in text-to-speech pronunciation, and progress statistics.
+A professional, fully-offline **English vocabulary flashcard app for Android**. Lexico combines
+rich, language-learning–focused flashcards with a spaced-repetition study system, built-in
+text-to-speech pronunciation, and progress statistics.
 
-> The app interface is in **English**; flashcard content supports **Persian** meanings and
-> translations (rendered right-to-left inside their fields).
+> The app interface is in **English**. Card content — the meaning and example translations — can be
+> written in **any language**; right-to-left scripts such as Persian and Arabic are rendered
+> correctly inside their fields.
 
 ---
 
@@ -18,7 +19,7 @@ spaced-repetition study system, built-in text-to-speech pronunciation, and progr
 - Optional short pronunciation hint (e.g. `ri-ZIL-ee-uhnt`)
 
 **Back of the card**
-- Persian meaning and a simple English definition
+- Meaning (in any language) and a simple English definition
 - Image (added from the gallery via the Android Photo Picker)
 - **Multiple** example sentences, each with its own translation
 - Synonyms, antonyms, and common collocations

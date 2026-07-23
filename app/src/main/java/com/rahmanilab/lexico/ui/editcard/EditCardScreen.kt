@@ -181,9 +181,9 @@ fun EditCardScreen(
 
             SectionHeader("Meaning")
             OutlinedTextField(
-                value = form.persianMeaning,
-                onValueChange = viewModel::setPersianMeaning,
-                label = { Text("Persian meaning *") },
+                value = form.meaning,
+                onValueChange = viewModel::setMeaning,
+                label = { Text("Meaning *") },
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(
