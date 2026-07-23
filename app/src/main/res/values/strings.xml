@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Lexico</string>
+
+    <!-- Notification channel -->
+    <string name="reminder_channel_name">Study reminders</string>
+    <string name="reminder_channel_description">Daily reminders to review your due flashcards.</string>
+    <string name="reminder_title">Time to study</string>
+    <plurals name="reminder_message">
+        <item quantity="one">You have %d card ready to review.</item>
+        <item quantity="other">You have %d cards ready to review.</item>
+    </plurals>
+</resources>
