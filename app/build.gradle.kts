@@ -7,11 +7,11 @@ plugins {
 }
 
 android {
-    namespace = "com.rahmanilab.lexico"
+    namespace = "com.rahmanilab.lingodo"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.rahmanilab.lexico"
+        applicationId = "com.rahmanilab.lingodo"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

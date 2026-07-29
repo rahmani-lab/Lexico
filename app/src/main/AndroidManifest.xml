@@ -5,6 +5,9 @@
     <!-- Required to show study reminder notifications on Android 13+. -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- Auto-fill / Smart Practice make direct requests to the dictionary and the user's chosen AI provider. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".LexicoApplication"
         android:allowBackup="true"

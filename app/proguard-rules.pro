@@ -6,11 +6,11 @@
 -keepattributes *Annotation*, InnerClasses
 -dontnote kotlinx.serialization.**
 
--keepclassmembers class com.rahmanilab.lexico.**$$serializer { *; }
--keepclasseswithmembers class com.rahmanilab.lexico.** {
+-keepclassmembers class com.rahmanilab.lingodo.**$$serializer { *; }
+-keepclasseswithmembers class com.rahmanilab.lingodo.** {
     kotlinx.serialization.KSerializer serializer(...);
 }
--keep,includedescriptorclasses class com.rahmanilab.lexico.**$$serializer { *; }
+-keep,includedescriptorclasses class com.rahmanilab.lingodo.**$$serializer { *; }
 
 # Room generated code.
 -keep class androidx.room.** { *; }

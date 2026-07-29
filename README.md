@@ -1,11 +1,39 @@
-# Lexico
+# LingoDo
 
-A professional, fully-offline **English vocabulary flashcard app for Android**, built for Persian
-speakers learning English. Lexico combines rich, language-learning–focused flashcards with a
-spaced-repetition study system, built-in text-to-speech pronunciation, and progress statistics.
+A professional, fully-offline **multi-language vocabulary flashcard app for Android** (formerly
+Lexico). LingoDo combines rich, language-learning–focused flashcards with a spaced-repetition study
+system, built-in text-to-speech pronunciation, global **language-pair workspaces**, and progress
+statistics.
 
-> The app interface is in **English**; flashcard content supports **Persian** meanings and
-> translations (rendered right-to-left inside their fields).
+> The app interface is in **English**. Card content — the meaning and example translations — can be
+> written in **any language**; right-to-left scripts such as Persian and Arabic are rendered
+> correctly inside their fields. Package/app id: `com.rahmanilab.lingodo`.
+
+## LingoDo upgrade (multi-lingual)
+- **Global language-pair manager** — decks/cards belong to a source→target pair (e.g. Persian →
+  German). Switching the active pair filters everything and adapts the TTS voice to the target
+  language. Manage pairs from the Home globe button or Settings → Language pairs.
+- **Live auto-fill (✨, optional & user-triggered)** — tap the spark button next to a word to enrich
+  the card. A **3-tier engine** runs: the keyless **Free Dictionary API** (phonetics, audio, POS,
+  examples for English), then your **BYOK LLM** for the source-language meaning, translated
+  examples, collocations, and the auto-detected grammatical class + **word forms & inflections**
+  (verb tenses, comparatives, word family). It only fills **empty** fields — never overwrites your
+  text.
+- **Smart Practice (Adaptive Practice engine)** — reads your local SRS data to find *troublesome*
+  (high lapses / low ease) and *mastered* words, generates a progress note and adaptive
+  fill-in-the-blank drills via your LLM, and feeds every answer **back into the review schedule**
+  (a closed feedback loop). Everything stays on-device except the direct LLM call.
+- **Practice styles (prompt templates)** — choose how drills feel: three built-in presets
+  (📝 Sentence Building, 📖 Contextual Story, 💬 Roleplay Dialogue), or write your own AI prompt in
+  Settings. Styles only flavour the wording — the app always appends a fixed answer format, so every
+  style stays gradable and keeps feeding the SRS loop. Pick the active style right on the Smart
+  Practice screen.
+- **Word forms & inflections** — a structured, editable list on every card, shown on the review back.
+- **BYOK API keys** — bring your own Gemini/Groq/DeepSeek/OpenAI/Claude key; stored **encrypted** via
+  the Android Keystore (AES-256-GCM), used only for direct requests to the provider you pick.
+- **Help & onboarding center** — an in-app guide (workflow, language pairs, API keys, import/export,
+  TTS troubleshooting).
+- **Anki import** — import Anki "Notes in Plain Text" (.txt/TSV) alongside CSV/JSON.
 
 ---
 
@@ -18,7 +46,7 @@ spaced-repetition study system, built-in text-to-speech pronunciation, and progr
 - Optional short pronunciation hint (e.g. `ri-ZIL-ee-uhnt`)
 
 **Back of the card**
-- Persian meaning and a simple English definition
+- Meaning (in any language) and a simple English definition
 - Image (added from the gallery via the Android Photo Picker)
 - **Multiple** example sentences, each with its own translation
 - Synonyms, antonyms, and common collocations
@@ -87,25 +115,36 @@ that depends on a **data layer** (repositories over Room and DataStore), with a 
 package for framework-independent logic (the scheduler and shared models).
 
 ```
-com.rahmanilab.lexico
+com.rahmanilab.lingodo
 ├── LexicoApplication / MainActivity
 ├── di/                      # AppContainer – manual DI, owns all singletons
 ├── domain/
-│   ├── model/               # Rating, CardState, ReviewMode, Example, Statistics
-│   └── scheduler/           # Scheduler interface + Sm2Scheduler + FsrsScheduler (pure, tested)
+│   ├── model/               # Rating, CardState, ReviewMode, Example, WordForm, Language, AiProvider…
+│   ├── scheduler/           # Scheduler interface + Sm2Scheduler + FsrsScheduler (pure, tested)
+│   └── autofill/            # AutoFillEngine interface + result models
 ├── data/
-│   ├── local/               # Room: entities, DAOs, relations, converters, database
+│   ├── local/               # Room: entities (incl. language_pairs), DAOs, converters, database + migration
 │   ├── preferences/         # SettingsRepository (DataStore) + settings models
-│   ├── repository/          # Deck / Card / Review / Stats repositories
-│   ├── backup/              # ImportExportRepository (CSV/JSON) + full backup snapshot
-│   └── DatabaseSeeder.kt    # One-time sample deck on first launch
+│   ├── repository/          # Deck / Card / Review / Stats / LanguagePair / AiConfig repositories
+│   ├── security/            # SecureKeyStore (Android Keystore AES-GCM for BYOK keys)
+│   ├── net/                 # HttpJson (HttpURLConnection GET/POST)
+│   ├── autofill/            # 3-tier engine: DictionaryClient + LlmClient + AiEnricher + orchestrator
+│   ├── practice/            # PracticeRepository (adaptive drills + SRS feedback loop)
+│   ├── backup/              # ImportExportRepository (CSV / JSON / Anki) + full backup snapshot
+│   └── DatabaseSeeder.kt    # First-run default pair + sample deck
 ├── tts/                     # PronunciationManager (TextToSpeech wrapper)
 ├── work/                    # ReminderWorker + ReminderScheduler
 └── ui/
     ├── theme/ · navigation/ · components/
     ├── home/ · decks/ · editcard/ · review/ · browse/ · statistics/ · settings/
+    ├── workspace/           # Language-pair manager
+    ├── help/                # Help & onboarding center
+    ├── practice/            # Smart Practice screen
     └── LexicoApp.kt         # NavHost + bottom navigation
 ```
+
+The Room database (`lingodo.db`, schema v2) adds a `language_pairs` table plus `languagePairId` on
+decks and `wordForms` on cards, with a non-destructive `MIGRATION_1_2`.
 
 ViewModels are created from the `AppContainer` via `viewModelFactory { initializer { … } }`, so
 navigation arguments arrive through `SavedStateHandle` and no annotation-processing DI framework is
