@@ -1,0 +1,157 @@
+<resources>
+    <!-- Common actions -->
+    <string name="action_save">حفظ</string>
+    <string name="action_cancel">إلغاء</string>
+    <string name="action_delete">حذف</string>
+    <string name="action_edit">تعديل</string>
+    <string name="action_remove">إزالة</string>
+    <string name="action_more">خيارات أخرى</string>
+    <string name="action_back">رجوع</string>
+    <string name="action_done">تم</string>
+    <string name="action_set">تعيين</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_home">الرئيسية</string>
+    <string name="nav_decks">المجموعات</string>
+    <string name="nav_browse">تصفّح</string>
+    <string name="nav_stats">الإحصاءات</string>
+    <string name="nav_settings">الإعدادات</string>
+
+    <!-- Home -->
+    <string name="home_welcome_title">مرحبًا بك في LingoDo</string>
+    <string name="home_welcome_message">أضف بطاقتك الأولى لتبدأ في بناء مفرداتك.</string>
+    <string name="home_add_card">إضافة بطاقة</string>
+    <string name="home_review_ready">لديك بطاقات للمراجعة</string>
+    <string name="home_caught_up">أنجزت كل شيء!</string>
+    <string name="home_due">مستحقّة</string>
+    <string name="home_new">جديدة</string>
+    <string name="home_start_review">بدء المراجعة</string>
+    <string name="home_reviews_today">مراجعات اليوم</string>
+    <string name="home_day_streak">أيام متتالية</string>
+    <string name="home_smart_practice">تمرين ذكي</string>
+    <string name="home_language_pairs">أزواج اللغات</string>
+
+    <!-- Decks -->
+    <string name="decks_new">مجموعة جديدة</string>
+    <string name="decks_empty_title">لا توجد مجموعات بعد</string>
+    <string name="decks_empty_message">أنشئ مجموعة لتجميع الكلمات المرتبطة معًا.</string>
+    <string name="deck_edit">تعديل المجموعة</string>
+    <string name="deck_delete_title">حذف المجموعة؟</string>
+    <string name="deck_delete_message">سيتم حذف «%1$s» و%2$d بطاقة فيها نهائيًا.</string>
+    <string name="deck_name">الاسم</string>
+    <string name="deck_description">الوصف (اختياري)</string>
+    <string name="deck_count_total">%d إجمالي</string>
+    <string name="deck_count_due">%d مستحقّة</string>
+    <string name="deck_count_new">%d جديدة</string>
+    <string name="deck_learned_progress">تعلّمت %1$d من %2$d</string>
+    <string name="deck_study">دراسة</string>
+
+    <!-- Statistics -->
+    <string name="stats_title">الإحصاءات</string>
+    <string name="stats_total_reviews">إجمالي المراجعات</string>
+    <string name="stats_correct_rate">نسبة الصحّة</string>
+    <string name="stats_current_streak">السلسلة الحالية</string>
+    <string name="stats_learned">المتعلَّمة</string>
+    <string name="stats_this_week">هذا الأسبوع</string>
+    <string name="stats_mature">راسخة</string>
+    <string name="stats_best_streak">أفضل سلسلة</string>
+    <string name="stats_reviews_30_days">المراجعات (آخر 30 يومًا)</string>
+    <string name="stats_total_cards">%d بطاقة إجمالًا</string>
+
+    <!-- Review ratings -->
+    <string name="rating_again">مرة أخرى</string>
+    <string name="rating_hard">صعبة</string>
+    <string name="rating_good">جيدة</string>
+    <string name="rating_easy">سهلة</string>
+
+    <!-- Smart Practice -->
+    <string name="practice_title">تمرين ذكي</string>
+    <string name="practice_your_progress">تقدّمك</string>
+    <string name="practice_style">نمط التمرين</string>
+    <string name="practice_style_label">النمط</string>
+    <string name="practice_coach_note">ملاحظة المدرّب</string>
+    <string name="practice_generate_note">إنشاء ملاحظة تقدّم بالذكاء الاصطناعي</string>
+    <string name="practice_start">بدء التمرين الذكي</string>
+    <string name="practice_intro_hint">تُنشأ تمارين ملء الفراغات التكيّفية من كلماتك الصعبة والمُتقَنة. تُغذّى إجاباتك مباشرةً في جدول المراجعة.</string>
+    <string name="practice_question_of">السؤال %1$d من %2$d</string>
+    <string name="practice_your_answer">إجابتك</string>
+    <string name="practice_check">تحقّق</string>
+    <string name="practice_correct">صحيح!</string>
+    <string name="practice_not_quite">ليس تمامًا</string>
+    <string name="practice_answer">الإجابة: %s</string>
+    <string name="practice_finish">إنهاء</string>
+    <string name="practice_next">التالي</string>
+    <string name="practice_complete">اكتمل التمرين</string>
+    <string name="practice_score">%1$d / %2$d صحيحة</string>
+    <string name="practice_fed_back">غُذّيت إجاباتك في جدول المراجعة.</string>
+    <string name="practice_again">تمرّن مجددًا</string>
+
+    <!-- Settings -->
+    <string name="settings_workspace">مساحة العمل</string>
+    <string name="settings_help_guide">المساعدة &amp; الدليل</string>
+    <string name="settings_appearance">المظهر</string>
+    <string name="settings_theme">السمة</string>
+    <string name="settings_pronunciation">النطق</string>
+    <string name="settings_accent">اللهجة</string>
+    <string name="settings_speech_rate">سرعة النطق: %s×</string>
+    <string name="settings_voice">الصوت</string>
+    <string name="settings_voice_default">افتراضي</string>
+    <string name="settings_autoplay">تشغيل النطق تلقائيًا</string>
+    <string name="settings_test_voice">اختبار الصوت</string>
+    <string name="settings_study">الدراسة</string>
+    <string name="settings_show_phonetic">إظهار النطق الصوتي على البطاقات</string>
+    <string name="settings_new_per_day">بطاقات جديدة في اليوم: %d</string>
+    <string name="settings_session_length">مدة الجلسة</string>
+    <string name="settings_session_unlimited">غير محدودة</string>
+    <string name="settings_session_minutes">%d دقيقة</string>
+    <string name="settings_scheduling">خوارزمية الجدولة</string>
+    <string name="settings_scheduler_fsrs_desc">يُنمذج FSRS الذاكرة (الصعوبة والاستقرار واحتمال الاسترجاع) لفترات أدقّ.</string>
+    <string name="settings_scheduler_sm2_desc">‏SM-2 هي خوارزمية SuperMemo الكلاسيكية بتعديلات سهولة ثابتة.</string>
+    <string name="settings_reminders">التذكيرات</string>
+    <string name="settings_daily_reminder">تذكير دراسة يومي</string>
+    <string name="settings_time">الوقت</string>
+    <string name="settings_ai_autofill">تعبئة تلقائية بالذكاء الاصطناعي</string>
+    <string name="settings_ai_provider">المزوّد</string>
+    <string name="settings_ai_desc">أحضر مفتاحك الخاص. تُشفَّر المفاتيح على هذا الجهاز (Android Keystore) وتُستخدم فقط للطلبات المباشرة إلى المزوّد الذي تختاره. انقر على ✨ بجوار كلمة لملء الحقول الفارغة، واستخدم التمرين الذكي لتمارين الذكاء الاصطناعي. بالنسبة للإنجليزية يُستخدَم دائمًا قاموس بدون مفتاح أولًا.</string>
+    <string name="settings_ai_get_key">احصل على مفتاح لـ %s</string>
+    <string name="settings_ai_replace_key">استبدال مفتاح API</string>
+    <string name="settings_ai_api_key">مفتاح API</string>
+    <string name="settings_ai_save_key">حفظ المفتاح</string>
+    <string name="settings_ai_key_saved">تم حفظ مفتاح لـ %s.</string>
+    <string name="settings_practice_styles">أنماط التمرين الذكي</string>
+    <string name="settings_practice_styles_desc">اختر نمط التمرين النشط أو عدّله أو اكتب موجّه الذكاء الاصطناعي الخاص بك. ما زال كل نمط يُنتج تمارين قابلة للتقييم تُغذّي جدول مراجعتك.</string>
+    <string name="settings_new_custom_style">نمط مخصّص جديد</string>
+    <string name="settings_style_new">نمط تمرين جديد</string>
+    <string name="settings_style_edit">تعديل النمط</string>
+    <string name="settings_style_emoji">إيموجي</string>
+    <string name="settings_style_instructions">تعليمات موجّه الذكاء الاصطناعي</string>
+    <string name="settings_style_note">يُضيف التطبيق تلقائيًا صيغة إجابة ملء فراغات ثابتة، لتبقى تمارينك قابلة للتقييم وتُغذّي جدول المراجعة.</string>
+    <string name="settings_data">البيانات</string>
+    <string name="settings_cards">البطاقات</string>
+    <string name="settings_export_json">تصدير البطاقات (JSON)</string>
+    <string name="settings_export_csv">تصدير البطاقات (CSV)</string>
+    <string name="settings_import_cards">استيراد البطاقات (JSON أو CSV)</string>
+    <string name="settings_import_anki">استيراد من Anki (.txt)</string>
+    <string name="settings_full_backup">نسخة احتياطية كاملة</string>
+    <string name="settings_backup_all">نسخ كل شيء احتياطيًا</string>
+    <string name="settings_restore_backup">الاستعادة من نسخة احتياطية</string>
+    <string name="settings_backup_note">تتضمّن النسخ الاحتياطية كامل سجل تعلّمك. احفظها في مجلد سحابي (مثل Google Drive) للنسخ الاحتياطي السحابي.</string>
+    <string name="settings_about">حول</string>
+    <string name="settings_about_version">LingoDo %s</string>
+    <string name="settings_about_desc">تطبيق بطاقات تعليمية دون اتصال مع التكرار المتباعد.</string>
+    <string name="settings_restore_title">استعادة النسخة الاحتياطية؟</string>
+    <string name="settings_restore_message">سيؤدي هذا إلى استبدال جميع المجموعات والبطاقات وسجل التعلّم الحالية بمحتوى ملف النسخة الاحتياطية.</string>
+    <string name="settings_restore_confirm">استعادة</string>
+
+    <!-- Notification channel -->
+    <string name="reminder_channel_name">تذكيرات الدراسة</string>
+    <string name="reminder_channel_description">تذكيرات يومية لمراجعة بطاقاتك المستحقّة.</string>
+    <string name="reminder_title">حان وقت الدراسة</string>
+    <plurals name="reminder_message">
+        <item quantity="one">لديك بطاقة واحدة جاهزة للمراجعة.</item>
+        <item quantity="two">لديك بطاقتان جاهزتان للمراجعة.</item>
+        <item quantity="few">لديك %d بطاقات جاهزة للمراجعة.</item>
+        <item quantity="many">لديك %d بطاقة جاهزة للمراجعة.</item>
+        <item quantity="other">لديك %d بطاقة جاهزة للمراجعة.</item>
+    </plurals>
+</resources>

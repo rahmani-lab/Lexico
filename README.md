@@ -5,9 +5,10 @@ Lexico). LingoDo combines rich, language-learning–focused flashcards with a sp
 system, built-in text-to-speech pronunciation, global **language-pair workspaces**, and progress
 statistics.
 
-> The app interface is in **English**. Card content — the meaning and example translations — can be
-> written in **any language**; right-to-left scripts such as Persian and Arabic are rendered
-> correctly inside their fields. Package/app id: `com.rahmanilab.lingodo`.
+> The app interface is **localized into 10 languages** — English (default), Persian, German, French,
+> Spanish, Chinese, Japanese, Korean, Turkish and Arabic — with full **right-to-left** layout for
+> Persian and Arabic, and Android 13+ per-app language selection. Card content — the meaning and
+> example translations — can be written in **any language**. Package/app id: `com.rahmanilab.lingodo`.
 
 ## LingoDo upgrade (multi-lingual)
 - **Global language-pair manager** — decks/cards belong to a source→target pair (e.g. Persian →
@@ -34,6 +35,11 @@ statistics.
 - **Help & onboarding center** — an in-app guide (workflow, language pairs, API keys, import/export,
   TTS troubleshooting).
 - **Anki import** — import Anki "Notes in Plain Text" (.txt/TSV) alongside CSV/JSON.
+- **10-language interface** — the app chrome (navigation, Home, Decks, Statistics, Smart Practice and
+  Settings) is localized into English, Persian, German, French, Spanish, Chinese, Japanese, Korean,
+  Turkish and Arabic, with proper RTL for Persian/Arabic and Android 13+ per-app language selection.
+- **Modern, branded look** — a vibrant indigo-violet Material 3 palette, generous rounded corners, a
+  gradient Home hero, and a fresh adaptive launcher icon (with a monochrome themed-icon variant).
 
 ---
 

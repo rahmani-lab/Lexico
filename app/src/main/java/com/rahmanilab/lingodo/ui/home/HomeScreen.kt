@@ -37,10 +37,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.rahmanilab.lingodo.R
 import com.rahmanilab.lingodo.ui.components.EmptyState
 import com.rahmanilab.lingodo.ui.components.StatTile
 import com.rahmanilab.lingodo.ui.theme.BrandGradientEnd
@@ -64,7 +66,7 @@ fun HomeScreen(
                 title = { Text("LingoDo") },
                 actions = {
                     IconButton(onClick = onOpenWorkspace) {
-                        Icon(Icons.Filled.Language, contentDescription = "Language pairs")
+                        Icon(Icons.Filled.Language, contentDescription = stringResource(R.string.home_language_pairs))
                     }
                 }
             )
@@ -73,9 +75,9 @@ fun HomeScreen(
         if (!state.loading && !state.hasCards) {
             EmptyState(
                 icon = Icons.AutoMirrored.Filled.MenuBook,
-                title = "Welcome to LingoDo",
-                message = "Add your first card to start building your vocabulary.",
-                actionLabel = "Add a card",
+                title = stringResource(R.string.home_welcome_title),
+                message = stringResource(R.string.home_welcome_message),
+                actionLabel = stringResource(R.string.home_add_card),
                 onAction = onAddCard,
                 modifier = Modifier.padding(padding)
             )
@@ -99,13 +101,13 @@ fun HomeScreen(
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                 StatTile(
                     value = state.reviewsToday.toString(),
-                    label = "Reviews today",
+                    label = stringResource(R.string.home_reviews_today),
                     icon = Icons.Filled.Task,
                     modifier = Modifier.weight(1f)
                 )
                 StatTile(
                     value = state.streak.toString(),
-                    label = "Day streak",
+                    label = stringResource(R.string.home_day_streak),
                     icon = Icons.Filled.LocalFireDepartment,
                     modifier = Modifier.weight(1f)
                 )
@@ -116,7 +118,7 @@ fun HomeScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(Icons.Filled.AutoAwesome, contentDescription = null, modifier = Modifier.size(18.dp))
-                Text("  Smart Practice")
+                Text("  " + stringResource(R.string.home_smart_practice))
             }
 
             OutlinedButton(
@@ -124,7 +126,7 @@ fun HomeScreen(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Icon(Icons.Filled.Add, contentDescription = null, modifier = Modifier.size(18.dp))
-                Text("  Add a card")
+                Text("  " + stringResource(R.string.home_add_card))
             }
         }
     }
@@ -153,7 +155,9 @@ private fun ReviewHero(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = if (total > 0) "You have cards to review" else "You're all caught up!",
+            text = stringResource(
+                if (total > 0) R.string.home_review_ready else R.string.home_caught_up
+            ),
             style = MaterialTheme.typography.titleLarge,
             fontWeight = FontWeight.Bold,
             color = Color.White
@@ -162,8 +166,8 @@ private fun ReviewHero(
             horizontalArrangement = Arrangement.spacedBy(28.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            CountBadge(count = dueCount, label = "Due")
-            CountBadge(count = newCount, label = "New")
+            CountBadge(count = dueCount, label = stringResource(R.string.home_due))
+            CountBadge(count = newCount, label = stringResource(R.string.home_new))
         }
         Button(
             onClick = onStartReview,
@@ -177,7 +181,7 @@ private fun ReviewHero(
             modifier = Modifier.fillMaxWidth()
         ) {
             Icon(Icons.Filled.PlayArrow, contentDescription = null)
-            Text("  Start review")
+            Text("  " + stringResource(R.string.home_start_review))
         }
     }
 }

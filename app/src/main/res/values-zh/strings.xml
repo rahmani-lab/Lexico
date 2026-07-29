@@ -1,0 +1,153 @@
+<resources>
+    <!-- Common actions -->
+    <string name="action_save">保存</string>
+    <string name="action_cancel">取消</string>
+    <string name="action_delete">删除</string>
+    <string name="action_edit">编辑</string>
+    <string name="action_remove">移除</string>
+    <string name="action_more">更多选项</string>
+    <string name="action_back">返回</string>
+    <string name="action_done">完成</string>
+    <string name="action_set">设置</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_home">主页</string>
+    <string name="nav_decks">卡组</string>
+    <string name="nav_browse">浏览</string>
+    <string name="nav_stats">统计</string>
+    <string name="nav_settings">设置</string>
+
+    <!-- Home -->
+    <string name="home_welcome_title">欢迎使用 LingoDo</string>
+    <string name="home_welcome_message">添加你的第一张卡片，开始积累词汇。</string>
+    <string name="home_add_card">添加卡片</string>
+    <string name="home_review_ready">你有卡片待复习</string>
+    <string name="home_caught_up">全部复习完毕！</string>
+    <string name="home_due">待复习</string>
+    <string name="home_new">新卡</string>
+    <string name="home_start_review">开始复习</string>
+    <string name="home_reviews_today">今日复习</string>
+    <string name="home_day_streak">连续天数</string>
+    <string name="home_smart_practice">智能练习</string>
+    <string name="home_language_pairs">语言对</string>
+
+    <!-- Decks -->
+    <string name="decks_new">新建卡组</string>
+    <string name="decks_empty_title">还没有卡组</string>
+    <string name="decks_empty_message">创建一个卡组来归类相关词汇。</string>
+    <string name="deck_edit">编辑卡组</string>
+    <string name="deck_delete_title">删除卡组？</string>
+    <string name="deck_delete_message">“%1$s”及其 %2$d 张卡片将被永久删除。</string>
+    <string name="deck_name">名称</string>
+    <string name="deck_description">描述（可选）</string>
+    <string name="deck_count_total">共 %d 张</string>
+    <string name="deck_count_due">%d 待复习</string>
+    <string name="deck_count_new">%d 新卡</string>
+    <string name="deck_learned_progress">已学 %1$d / %2$d</string>
+    <string name="deck_study">学习</string>
+
+    <!-- Statistics -->
+    <string name="stats_title">统计</string>
+    <string name="stats_total_reviews">总复习次数</string>
+    <string name="stats_correct_rate">正确率</string>
+    <string name="stats_current_streak">当前连续</string>
+    <string name="stats_learned">已学</string>
+    <string name="stats_this_week">本周</string>
+    <string name="stats_mature">已巩固</string>
+    <string name="stats_best_streak">最佳连续</string>
+    <string name="stats_reviews_30_days">复习（最近 30 天）</string>
+    <string name="stats_total_cards">共 %d 张卡片</string>
+
+    <!-- Review ratings -->
+    <string name="rating_again">重来</string>
+    <string name="rating_hard">困难</string>
+    <string name="rating_good">良好</string>
+    <string name="rating_easy">简单</string>
+
+    <!-- Smart Practice -->
+    <string name="practice_title">智能练习</string>
+    <string name="practice_your_progress">你的进度</string>
+    <string name="practice_style">练习风格</string>
+    <string name="practice_style_label">风格</string>
+    <string name="practice_coach_note">教练笔记</string>
+    <string name="practice_generate_note">生成 AI 进度笔记</string>
+    <string name="practice_start">开始智能练习</string>
+    <string name="practice_intro_hint">自适应填空练习根据你的薄弱词和已掌握词生成。你的回答会直接反馈到复习计划中。</string>
+    <string name="practice_question_of">第 %1$d 题，共 %2$d 题</string>
+    <string name="practice_your_answer">你的答案</string>
+    <string name="practice_check">检查</string>
+    <string name="practice_correct">正确！</string>
+    <string name="practice_not_quite">不太对</string>
+    <string name="practice_answer">答案：%s</string>
+    <string name="practice_finish">完成</string>
+    <string name="practice_next">下一题</string>
+    <string name="practice_complete">练习完成</string>
+    <string name="practice_score">%1$d / %2$d 正确</string>
+    <string name="practice_fed_back">你的回答已反馈到复习计划中。</string>
+    <string name="practice_again">再次练习</string>
+
+    <!-- Settings -->
+    <string name="settings_workspace">工作区</string>
+    <string name="settings_help_guide">帮助 &amp; 指南</string>
+    <string name="settings_appearance">外观</string>
+    <string name="settings_theme">主题</string>
+    <string name="settings_pronunciation">发音</string>
+    <string name="settings_accent">口音</string>
+    <string name="settings_speech_rate">语速：%s×</string>
+    <string name="settings_voice">语音</string>
+    <string name="settings_voice_default">默认</string>
+    <string name="settings_autoplay">自动播放发音</string>
+    <string name="settings_test_voice">测试语音</string>
+    <string name="settings_study">学习</string>
+    <string name="settings_show_phonetic">在卡片上显示音标</string>
+    <string name="settings_new_per_day">每日新卡：%d</string>
+    <string name="settings_session_length">学习时长</string>
+    <string name="settings_session_unlimited">无限制</string>
+    <string name="settings_session_minutes">%d 分钟</string>
+    <string name="settings_scheduling">调度算法</string>
+    <string name="settings_scheduler_fsrs_desc">FSRS 对记忆（难度、稳定性和回忆概率）建模，以提供更精确的间隔。</string>
+    <string name="settings_scheduler_sm2_desc">SM-2 是经典的 SuperMemo 算法，采用固定的难易度调整。</string>
+    <string name="settings_reminders">提醒</string>
+    <string name="settings_daily_reminder">每日学习提醒</string>
+    <string name="settings_time">时间</string>
+    <string name="settings_ai_autofill">AI 自动填充</string>
+    <string name="settings_ai_provider">提供商</string>
+    <string name="settings_ai_desc">使用你自己的密钥。密钥会在本设备上加密（Android Keystore），仅用于向你所选提供商发送的直接请求。点按单词旁的 ✨ 可填充空白字段，使用智能练习进行 AI 练习。英语始终优先使用无需密钥的词典。</string>
+    <string name="settings_ai_get_key">获取 %s 的密钥</string>
+    <string name="settings_ai_replace_key">更换 API 密钥</string>
+    <string name="settings_ai_api_key">API 密钥</string>
+    <string name="settings_ai_save_key">保存密钥</string>
+    <string name="settings_ai_key_saved">已为 %s 保存密钥。</string>
+    <string name="settings_practice_styles">智能练习风格</string>
+    <string name="settings_practice_styles_desc">选择当前练习风格、进行编辑，或编写你自己的 AI 提示词。每种风格仍会生成可评分的练习并反馈到你的复习计划。</string>
+    <string name="settings_new_custom_style">新建自定义风格</string>
+    <string name="settings_style_new">新建练习风格</string>
+    <string name="settings_style_edit">编辑风格</string>
+    <string name="settings_style_emoji">表情符号</string>
+    <string name="settings_style_instructions">AI 提示词说明</string>
+    <string name="settings_style_note">应用会自动附加固定的填空作答格式，让你的练习保持可评分并反馈到复习计划。</string>
+    <string name="settings_data">数据</string>
+    <string name="settings_cards">卡片</string>
+    <string name="settings_export_json">导出卡片（JSON）</string>
+    <string name="settings_export_csv">导出卡片（CSV）</string>
+    <string name="settings_import_cards">导入卡片（JSON 或 CSV）</string>
+    <string name="settings_import_anki">从 Anki 导入（.txt）</string>
+    <string name="settings_full_backup">完整备份</string>
+    <string name="settings_backup_all">备份全部</string>
+    <string name="settings_restore_backup">从备份恢复</string>
+    <string name="settings_backup_note">备份包含你完整的学习记录。保存到云文件夹（如 Google Drive）即可实现云备份。</string>
+    <string name="settings_about">关于</string>
+    <string name="settings_about_version">LingoDo %s</string>
+    <string name="settings_about_desc">一款支持间隔重复的离线闪卡应用。</string>
+    <string name="settings_restore_title">恢复备份？</string>
+    <string name="settings_restore_message">这将用备份文件的内容替换所有当前的卡组、卡片和学习记录。</string>
+    <string name="settings_restore_confirm">恢复</string>
+
+    <!-- Notification channel -->
+    <string name="reminder_channel_name">学习提醒</string>
+    <string name="reminder_channel_description">每日提醒你复习到期的闪卡。</string>
+    <string name="reminder_title">该学习了</string>
+    <plurals name="reminder_message">
+        <item quantity="other">你有 %d 张卡片可以复习。</item>
+    </plurals>
+</resources>

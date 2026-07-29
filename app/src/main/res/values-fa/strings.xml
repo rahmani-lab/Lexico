@@ -1,0 +1,154 @@
+<resources>
+    <!-- Common actions -->
+    <string name="action_save">ذخیره</string>
+    <string name="action_cancel">انصراف</string>
+    <string name="action_delete">حذف</string>
+    <string name="action_edit">ویرایش</string>
+    <string name="action_remove">برداشتن</string>
+    <string name="action_more">گزینه‌های بیشتر</string>
+    <string name="action_back">بازگشت</string>
+    <string name="action_done">تمام</string>
+    <string name="action_set">تنظیم</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_home">خانه</string>
+    <string name="nav_decks">دسته‌ها</string>
+    <string name="nav_browse">مرور</string>
+    <string name="nav_stats">آمار</string>
+    <string name="nav_settings">تنظیمات</string>
+
+    <!-- Home -->
+    <string name="home_welcome_title">به LingoDo خوش آمدید</string>
+    <string name="home_welcome_message">برای شروع ساخت واژگان خود، اولین کارت را اضافه کنید.</string>
+    <string name="home_add_card">افزودن کارت</string>
+    <string name="home_review_ready">کارت‌هایی برای مرور دارید</string>
+    <string name="home_caught_up">همه‌چیز مرور شد!</string>
+    <string name="home_due">سررسید</string>
+    <string name="home_new">جدید</string>
+    <string name="home_start_review">شروع مرور</string>
+    <string name="home_reviews_today">مرورهای امروز</string>
+    <string name="home_day_streak">روزهای پیاپی</string>
+    <string name="home_smart_practice">تمرین هوشمند</string>
+    <string name="home_language_pairs">جفت‌زبان‌ها</string>
+
+    <!-- Decks -->
+    <string name="decks_new">دستهٔ جدید</string>
+    <string name="decks_empty_title">هنوز دسته‌ای نیست</string>
+    <string name="decks_empty_message">برای گروه‌بندی واژه‌های مرتبط، یک دسته بسازید.</string>
+    <string name="deck_edit">ویرایش دسته</string>
+    <string name="deck_delete_title">دسته حذف شود؟</string>
+    <string name="deck_delete_message">«%1$s» و %2$d کارت آن برای همیشه حذف می‌شوند.</string>
+    <string name="deck_name">نام</string>
+    <string name="deck_description">توضیح (اختیاری)</string>
+    <string name="deck_count_total">%d کل</string>
+    <string name="deck_count_due">%d سررسید</string>
+    <string name="deck_count_new">%d جدید</string>
+    <string name="deck_learned_progress">%1$d از %2$d آموخته‌شده</string>
+    <string name="deck_study">مطالعه</string>
+
+    <!-- Statistics -->
+    <string name="stats_title">آمار</string>
+    <string name="stats_total_reviews">کل مرورها</string>
+    <string name="stats_correct_rate">نرخ درستی</string>
+    <string name="stats_current_streak">زنجیرهٔ فعلی</string>
+    <string name="stats_learned">آموخته‌شده</string>
+    <string name="stats_this_week">این هفته</string>
+    <string name="stats_mature">پایدار</string>
+    <string name="stats_best_streak">بهترین زنجیره</string>
+    <string name="stats_reviews_30_days">مرورها (۳۰ روز اخیر)</string>
+    <string name="stats_total_cards">در مجموع %d کارت</string>
+
+    <!-- Review ratings -->
+    <string name="rating_again">دوباره</string>
+    <string name="rating_hard">سخت</string>
+    <string name="rating_good">خوب</string>
+    <string name="rating_easy">آسان</string>
+
+    <!-- Smart Practice -->
+    <string name="practice_title">تمرین هوشمند</string>
+    <string name="practice_your_progress">پیشرفت شما</string>
+    <string name="practice_style">سبک تمرین</string>
+    <string name="practice_style_label">سبک</string>
+    <string name="practice_coach_note">یادداشت مربی</string>
+    <string name="practice_generate_note">ساخت یادداشت پیشرفت با هوش مصنوعی</string>
+    <string name="practice_start">شروع تمرین هوشمند</string>
+    <string name="practice_intro_hint">تمرین‌های جای‌خالیِ تطبیقی از واژه‌های دشوار و مسلط‌شدهٔ شما ساخته می‌شوند. پاسخ‌های شما مستقیماً به برنامهٔ مرور بازخورد داده می‌شوند.</string>
+    <string name="practice_question_of">پرسش %1$d از %2$d</string>
+    <string name="practice_your_answer">پاسخ شما</string>
+    <string name="practice_check">بررسی</string>
+    <string name="practice_correct">درست!</string>
+    <string name="practice_not_quite">نه دقیقاً</string>
+    <string name="practice_answer">پاسخ: %s</string>
+    <string name="practice_finish">پایان</string>
+    <string name="practice_next">بعدی</string>
+    <string name="practice_complete">تمرین کامل شد</string>
+    <string name="practice_score">%1$d / %2$d درست</string>
+    <string name="practice_fed_back">پاسخ‌های شما به برنامهٔ مرور بازخورد داده شد.</string>
+    <string name="practice_again">تمرین دوباره</string>
+
+    <!-- Settings -->
+    <string name="settings_workspace">فضای کاری</string>
+    <string name="settings_help_guide">راهنما و آموزش</string>
+    <string name="settings_appearance">ظاهر</string>
+    <string name="settings_theme">پوسته</string>
+    <string name="settings_pronunciation">تلفظ</string>
+    <string name="settings_accent">لهجه</string>
+    <string name="settings_speech_rate">سرعت گفتار: %s×</string>
+    <string name="settings_voice">صدا</string>
+    <string name="settings_voice_default">پیش‌فرض</string>
+    <string name="settings_autoplay">پخش خودکار تلفظ</string>
+    <string name="settings_test_voice">آزمایش صدا</string>
+    <string name="settings_study">مطالعه</string>
+    <string name="settings_show_phonetic">نمایش آوانگاری روی کارت‌ها</string>
+    <string name="settings_new_per_day">کارت‌های جدید در روز: %d</string>
+    <string name="settings_session_length">طول جلسه</string>
+    <string name="settings_session_unlimited">نامحدود</string>
+    <string name="settings_session_minutes">%d دقیقه</string>
+    <string name="settings_scheduling">الگوریتم زمان‌بندی</string>
+    <string name="settings_scheduler_fsrs_desc">FSRS حافظه (دشواری، پایداری و احتمال یادآوری) را مدل می‌کند تا فاصله‌های دقیق‌تری بدهد.</string>
+    <string name="settings_scheduler_sm2_desc">SM-2 الگوریتم کلاسیک سوپرمِمو با تنظیم‌های ثابتِ سهولت است.</string>
+    <string name="settings_reminders">یادآورها</string>
+    <string name="settings_daily_reminder">یادآور روزانهٔ مطالعه</string>
+    <string name="settings_time">زمان</string>
+    <string name="settings_ai_autofill">تکمیل خودکار با هوش مصنوعی</string>
+    <string name="settings_ai_provider">ارائه‌دهنده</string>
+    <string name="settings_ai_desc">کلید خودتان را بیاورید. کلیدها روی همین دستگاه (Android Keystore) رمزنگاری می‌شوند و فقط برای درخواست‌های مستقیم به ارائه‌دهندهٔ انتخابی شما به کار می‌روند. برای پر کردن فیلدهای خالی روی ✨ کنار یک واژه بزنید و برای تمرین‌های هوش مصنوعی از تمرین هوشمند استفاده کنید. برای انگلیسی همیشه ابتدا یک واژه‌نامهٔ بدون‌کلید به کار می‌رود.</string>
+    <string name="settings_ai_get_key">دریافت کلید برای %s</string>
+    <string name="settings_ai_replace_key">جایگزینی کلید API</string>
+    <string name="settings_ai_api_key">کلید API</string>
+    <string name="settings_ai_save_key">ذخیرهٔ کلید</string>
+    <string name="settings_ai_key_saved">یک کلید برای %s ذخیره شده است.</string>
+    <string name="settings_practice_styles">سبک‌های تمرین هوشمند</string>
+    <string name="settings_practice_styles_desc">سبک تمرین فعال را انتخاب کنید، ویرایشش کنید یا پرامپت هوش مصنوعی خودتان را بنویسید. هر سبک همچنان تمرین‌های قابل‌ارزیابی می‌سازد که به برنامهٔ مرور شما بازخورد می‌دهند.</string>
+    <string name="settings_new_custom_style">سبک سفارشی جدید</string>
+    <string name="settings_style_new">سبک تمرین جدید</string>
+    <string name="settings_style_edit">ویرایش سبک</string>
+    <string name="settings_style_emoji">ایموجی</string>
+    <string name="settings_style_instructions">دستورهای پرامپت هوش مصنوعی</string>
+    <string name="settings_style_note">برنامه به‌طور خودکار یک قالب پاسخِ جای‌خالیِ ثابت اضافه می‌کند تا تمرین‌ها قابل‌ارزیابی بمانند و به برنامهٔ مرور بازخورد بدهند.</string>
+    <string name="settings_data">داده‌ها</string>
+    <string name="settings_cards">کارت‌ها</string>
+    <string name="settings_export_json">خروجی کارت‌ها (JSON)</string>
+    <string name="settings_export_csv">خروجی کارت‌ها (CSV)</string>
+    <string name="settings_import_cards">ورود کارت‌ها (JSON یا CSV)</string>
+    <string name="settings_import_anki">ورود از Anki (.txt)</string>
+    <string name="settings_full_backup">پشتیبان کامل</string>
+    <string name="settings_backup_all">پشتیبان‌گیری از همه‌چیز</string>
+    <string name="settings_restore_backup">بازیابی از پشتیبان</string>
+    <string name="settings_backup_note">پشتیبان‌ها شامل کل تاریخچهٔ یادگیری شما هستند. برای پشتیبان ابری، در یک پوشهٔ ابری (مثلاً Google Drive) ذخیره کنید.</string>
+    <string name="settings_about">درباره</string>
+    <string name="settings_about_version">LingoDo %s</string>
+    <string name="settings_about_desc">یک برنامهٔ فلش‌کارت آفلاین با تکرار فاصله‌دار.</string>
+    <string name="settings_restore_title">بازیابی پشتیبان؟</string>
+    <string name="settings_restore_message">این کار همهٔ دسته‌ها، کارت‌ها و تاریخچهٔ یادگیری فعلی را با محتوای فایل پشتیبان جایگزین می‌کند.</string>
+    <string name="settings_restore_confirm">بازیابی</string>
+
+    <!-- Notification channel -->
+    <string name="reminder_channel_name">یادآورهای مطالعه</string>
+    <string name="reminder_channel_description">یادآورهای روزانه برای مرور فلش‌کارت‌های سررسیدشده.</string>
+    <string name="reminder_title">زمان مطالعه است</string>
+    <plurals name="reminder_message">
+        <item quantity="one">%d کارت آمادهٔ مرور دارید.</item>
+        <item quantity="other">%d کارت آمادهٔ مرور دارید.</item>
+    </plurals>
+</resources>

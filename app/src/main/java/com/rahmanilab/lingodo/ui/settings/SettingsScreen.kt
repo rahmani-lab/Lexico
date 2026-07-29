@@ -60,6 +60,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
@@ -70,6 +71,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rahmanilab.lingodo.BuildConfig
+import com.rahmanilab.lingodo.R
 import com.rahmanilab.lingodo.data.preferences.model.SchedulerType
 import com.rahmanilab.lingodo.data.preferences.model.ThemeMode
 import com.rahmanilab.lingodo.data.preferences.model.TtsAccent
@@ -145,7 +147,7 @@ fun SettingsScreen(
     ) { uri -> if (uri != null) pendingRestore = uri }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Settings") }) },
+        topBar = { TopAppBar(title = { Text(stringResource(R.string.nav_settings)) }) },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { padding ->
         Column(
@@ -156,17 +158,17 @@ fun SettingsScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            SettingsSection("Workspace") {
+            SettingsSection(stringResource(R.string.settings_workspace)) {
                 OutlinedButton(onClick = onOpenWorkspace, modifier = Modifier.fillMaxWidth()) {
-                    Text("Language pairs")
+                    Text(stringResource(R.string.home_language_pairs))
                 }
                 OutlinedButton(onClick = onOpenHelp, modifier = Modifier.fillMaxWidth()) {
-                    Text("Help & guide")
+                    Text(stringResource(R.string.settings_help_guide))
                 }
             }
 
-            SettingsSection("Appearance") {
-                Text("Theme", style = MaterialTheme.typography.bodyMedium)
+            SettingsSection(stringResource(R.string.settings_appearance)) {
+                Text(stringResource(R.string.settings_theme), style = MaterialTheme.typography.bodyMedium)
                 SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
                     ThemeMode.entries.forEachIndexed { index, mode ->
                         SegmentedButton(
@@ -178,8 +180,8 @@ fun SettingsScreen(
                 }
             }
 
-            SettingsSection("Pronunciation") {
-                Text("Accent", style = MaterialTheme.typography.bodyMedium)
+            SettingsSection(stringResource(R.string.settings_pronunciation)) {
+                Text(stringResource(R.string.settings_accent), style = MaterialTheme.typography.bodyMedium)
                 SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
                     TtsAccent.entries.forEachIndexed { index, accent ->
                         SegmentedButton(
@@ -191,7 +193,7 @@ fun SettingsScreen(
                 }
 
                 Text(
-                    "Speech rate: ${String.format(Locale.US, "%.2f", settings.speechRate)}×",
+                    stringResource(R.string.settings_speech_rate, String.format(Locale.US, "%.2f", settings.speechRate)),
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Slider(
@@ -208,25 +210,25 @@ fun SettingsScreen(
                 )
 
                 SettingsSwitchRow(
-                    label = "Auto-play pronunciation",
+                    label = stringResource(R.string.settings_autoplay),
                     checked = settings.autoPlayPronunciation,
                     onChange = viewModel::setAutoPlay
                 )
 
                 OutlinedButton(onClick = viewModel::testVoice) {
                     Icon(Icons.Filled.VolumeUp, contentDescription = null)
-                    Text("  Test voice")
+                    Text("  " + stringResource(R.string.settings_test_voice))
                 }
             }
 
-            SettingsSection("Study") {
+            SettingsSection(stringResource(R.string.settings_study)) {
                 SettingsSwitchRow(
-                    label = "Show phonetic on cards",
+                    label = stringResource(R.string.settings_show_phonetic),
                     checked = settings.showPhonetic,
                     onChange = viewModel::setShowPhonetic
                 )
 
-                Text("New cards per day: ${settings.dailyNewLimit}", style = MaterialTheme.typography.bodyMedium)
+                Text(stringResource(R.string.settings_new_per_day, settings.dailyNewLimit), style = MaterialTheme.typography.bodyMedium)
                 Slider(
                     value = settings.dailyNewLimit.toFloat(),
                     onValueChange = { viewModel.setDailyNewLimit(it.toInt()) },
@@ -234,9 +236,11 @@ fun SettingsScreen(
                     steps = 9
                 )
 
-                Text("Session length", style = MaterialTheme.typography.bodyMedium)
+                Text(stringResource(R.string.settings_session_length), style = MaterialTheme.typography.bodyMedium)
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    listOf(0 to "Unlimited", 5 to "5 min", 10 to "10 min", 20 to "20 min").forEach { (minutes, label) ->
+                    listOf(0, 5, 10, 20).forEach { minutes ->
+                        val label = if (minutes == 0) stringResource(R.string.settings_session_unlimited)
+                        else stringResource(R.string.settings_session_minutes, minutes)
                         FilterChip(
                             selected = settings.sessionLengthMinutes == minutes,
                             onClick = { viewModel.setSessionLength(minutes) },
@@ -245,7 +249,7 @@ fun SettingsScreen(
                     }
                 }
 
-                Text("Scheduling algorithm", style = MaterialTheme.typography.bodyMedium)
+                Text(stringResource(R.string.settings_scheduling), style = MaterialTheme.typography.bodyMedium)
                 SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
                     SchedulerType.entries.forEachIndexed { index, type ->
                         SegmentedButton(
@@ -256,19 +260,18 @@ fun SettingsScreen(
                     }
                 }
                 Text(
-                    text = if (settings.schedulerType == SchedulerType.FSRS) {
-                        "FSRS models memory (difficulty, stability and recall probability) for more accurate intervals."
-                    } else {
-                        "SM-2 is the classic SuperMemo algorithm with fixed ease adjustments."
-                    },
+                    text = stringResource(
+                        if (settings.schedulerType == SchedulerType.FSRS) R.string.settings_scheduler_fsrs_desc
+                        else R.string.settings_scheduler_sm2_desc
+                    ),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
-            SettingsSection("Reminders") {
+            SettingsSection(stringResource(R.string.settings_reminders)) {
                 SettingsSwitchRow(
-                    label = "Daily study reminder",
+                    label = stringResource(R.string.settings_daily_reminder),
                     checked = settings.reminderEnabled,
                     onChange = { toggleReminder(it) }
                 )
@@ -277,7 +280,7 @@ fun SettingsScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Text("Time", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+                        Text(stringResource(R.string.settings_time), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
                         AssistChip(
                             onClick = { showTimePicker = true },
                             label = {
@@ -288,23 +291,20 @@ fun SettingsScreen(
                 }
             }
 
-            SettingsSection("AI Auto-fill") {
+            SettingsSection(stringResource(R.string.settings_ai_autofill)) {
                 Text(
-                    "Bring your own key. Keys are encrypted on this device (Android Keystore) and used " +
-                        "only for direct requests to your chosen provider. Tap ✨ next to a word to fill " +
-                        "empty fields, and use Smart Practice for AI exercises. A keyless dictionary is " +
-                        "always used first for English.",
+                    stringResource(R.string.settings_ai_desc),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 AiProviderDropdown(selected = aiProvider, onSelect = viewModel::setAiProvider)
                 TextButton(onClick = { uriHandler.openUri(aiProvider.keyPortalUrl) }) {
-                    Text("Get a key for ${aiProvider.displayName}")
+                    Text(stringResource(R.string.settings_ai_get_key, aiProvider.displayName))
                 }
                 OutlinedTextField(
                     value = apiKeyInput,
                     onValueChange = { apiKeyInput = it },
-                    label = { Text(if (hasApiKey) "Replace API key" else "API key") },
+                    label = { Text(stringResource(if (hasApiKey) R.string.settings_ai_replace_key else R.string.settings_ai_api_key)) },
                     singleLine = true,
                     visualTransformation = PasswordVisualTransformation(),
                     modifier = Modifier.fillMaxWidth()
@@ -313,24 +313,23 @@ fun SettingsScreen(
                     Button(
                         onClick = { viewModel.saveApiKey(apiKeyInput); apiKeyInput = "" },
                         enabled = apiKeyInput.isNotBlank()
-                    ) { Text("Save key") }
+                    ) { Text(stringResource(R.string.settings_ai_save_key)) }
                     if (hasApiKey) {
-                        OutlinedButton(onClick = { viewModel.clearApiKey() }) { Text("Remove") }
+                        OutlinedButton(onClick = { viewModel.clearApiKey() }) { Text(stringResource(R.string.action_remove)) }
                     }
                 }
                 if (hasApiKey) {
                     Text(
-                        "A key is saved for ${aiProvider.displayName}.",
+                        stringResource(R.string.settings_ai_key_saved, aiProvider.displayName),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.primary
                     )
                 }
             }
 
-            SettingsSection("Smart Practice Styles") {
+            SettingsSection(stringResource(R.string.settings_practice_styles)) {
                 Text(
-                    "Pick the active exercise style, edit it, or write your own AI prompt. Every style " +
-                        "still produces gradable drills that feed your review schedule.",
+                    stringResource(R.string.settings_practice_styles_desc),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -344,51 +343,51 @@ fun SettingsScreen(
                     )
                 }
                 OutlinedButton(onClick = { creatingStyle = true }, modifier = Modifier.fillMaxWidth()) {
-                    Text("New custom style")
+                    Text(stringResource(R.string.settings_new_custom_style))
                 }
             }
 
-            SettingsSection("Data") {
-                Text("Cards", style = MaterialTheme.typography.bodyMedium)
+            SettingsSection(stringResource(R.string.settings_data)) {
+                Text(stringResource(R.string.settings_cards), style = MaterialTheme.typography.bodyMedium)
                 OutlinedButton(
                     onClick = { exportCardsJson.launch("lingodo-cards.json") },
                     modifier = Modifier.fillMaxWidth()
-                ) { Text("Export cards (JSON)") }
+                ) { Text(stringResource(R.string.settings_export_json)) }
                 OutlinedButton(
                     onClick = { exportCardsCsv.launch("lingodo-cards.csv") },
                     modifier = Modifier.fillMaxWidth()
-                ) { Text("Export cards (CSV)") }
+                ) { Text(stringResource(R.string.settings_export_csv)) }
                 OutlinedButton(
                     onClick = { importCardsFile.launch(arrayOf("application/json", "text/*")) },
                     modifier = Modifier.fillMaxWidth()
-                ) { Text("Import cards (JSON or CSV)") }
+                ) { Text(stringResource(R.string.settings_import_cards)) }
                 OutlinedButton(
                     onClick = { importAnkiFile.launch(arrayOf("text/*", "application/octet-stream")) },
                     modifier = Modifier.fillMaxWidth()
-                ) { Text("Import from Anki (.txt)") }
+                ) { Text(stringResource(R.string.settings_import_anki)) }
 
                 HorizontalDivider()
 
-                Text("Full backup", style = MaterialTheme.typography.bodyMedium)
+                Text(stringResource(R.string.settings_full_backup), style = MaterialTheme.typography.bodyMedium)
                 OutlinedButton(
                     onClick = { exportBackupFile.launch("lingodo-backup.json") },
                     modifier = Modifier.fillMaxWidth()
-                ) { Text("Back up everything") }
+                ) { Text(stringResource(R.string.settings_backup_all)) }
                 OutlinedButton(
                     onClick = { restoreBackupFile.launch(arrayOf("application/json", "text/*")) },
                     modifier = Modifier.fillMaxWidth()
-                ) { Text("Restore from backup") }
+                ) { Text(stringResource(R.string.settings_restore_backup)) }
                 Text(
-                    "Backups include your full learning history. Save to a cloud folder (e.g. Google Drive) for cloud backup.",
+                    stringResource(R.string.settings_backup_note),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
-            SettingsSection("About") {
-                Text("LingoDo ${BuildConfig.VERSION_NAME}", style = MaterialTheme.typography.bodyMedium)
+            SettingsSection(stringResource(R.string.settings_about)) {
+                Text(stringResource(R.string.settings_about_version, BuildConfig.VERSION_NAME), style = MaterialTheme.typography.bodyMedium)
                 Text(
-                    "An offline English flashcard app with spaced repetition.",
+                    stringResource(R.string.settings_about_desc),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -411,16 +410,16 @@ fun SettingsScreen(
     pendingRestore?.let { uri ->
         AlertDialog(
             onDismissRequest = { pendingRestore = null },
-            title = { Text("Restore backup?") },
-            text = { Text("This replaces ALL current decks, cards and learning history with the contents of the backup file.") },
+            title = { Text(stringResource(R.string.settings_restore_title)) },
+            text = { Text(stringResource(R.string.settings_restore_message)) },
             confirmButton = {
                 TextButton(onClick = {
                     viewModel.restoreBackup(resolver, uri)
                     pendingRestore = null
-                }) { Text("Restore") }
+                }) { Text(stringResource(R.string.settings_restore_confirm)) }
             },
             dismissButton = {
-                TextButton(onClick = { pendingRestore = null }) { Text("Cancel") }
+                TextButton(onClick = { pendingRestore = null }) { Text(stringResource(R.string.action_cancel)) }
             }
         )
     }
@@ -516,11 +515,11 @@ private fun PracticeStyleRow(
             )
         }
         IconButton(onClick = onEdit) {
-            Icon(Icons.Filled.Edit, contentDescription = "Edit ${style.name}")
+            Icon(Icons.Filled.Edit, contentDescription = stringResource(R.string.action_edit))
         }
         if (!style.builtIn) {
             IconButton(onClick = onDelete) {
-                Icon(Icons.Filled.Delete, contentDescription = "Delete ${style.name}")
+                Icon(Icons.Filled.Delete, contentDescription = stringResource(R.string.action_delete))
             }
         }
     }
@@ -537,33 +536,32 @@ private fun PracticeStyleDialog(
     var instructions by remember { mutableStateOf(initial?.instructions.orEmpty()) }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(if (initial == null) "New practice style" else "Edit style") },
+        title = { Text(stringResource(if (initial == null) R.string.settings_style_new else R.string.settings_style_edit)) },
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 OutlinedTextField(
                     value = emoji,
                     onValueChange = { emoji = it.take(2) },
-                    label = { Text("Emoji") },
+                    label = { Text(stringResource(R.string.settings_style_emoji)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("Name") },
+                    label = { Text(stringResource(R.string.deck_name)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
                 OutlinedTextField(
                     value = instructions,
                     onValueChange = { instructions = it },
-                    label = { Text("AI prompt instructions") },
+                    label = { Text(stringResource(R.string.settings_style_instructions)) },
                     minLines = 3,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Text(
-                    "The app automatically appends a fixed fill-in-the-blank answer format, so your " +
-                        "drills stay gradable and feed the review schedule.",
+                    stringResource(R.string.settings_style_note),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -582,10 +580,10 @@ private fun PracticeStyleDialog(
                     )
                 },
                 enabled = name.isNotBlank() && instructions.isNotBlank()
-            ) { Text("Save") }
+            ) { Text(stringResource(R.string.action_save)) }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancel") }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) }
         }
     )
 }
@@ -602,7 +600,7 @@ private fun AiProviderDropdown(
             value = selected.displayName,
             onValueChange = {},
             readOnly = true,
-            label = { Text("Provider") },
+            label = { Text(stringResource(R.string.settings_ai_provider)) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier.menuAnchor().fillMaxWidth()
         )
@@ -629,16 +627,16 @@ private fun VoiceDropdown(
 ) {
     var expanded by remember { mutableStateOf(false) }
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Text("Voice", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+        Text(stringResource(R.string.settings_voice), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
         Box {
             AssistChip(
                 onClick = { expanded = true },
                 enabled = voices.isNotEmpty(),
-                label = { Text(selected ?: "Default", maxLines = 1) }
+                label = { Text(selected ?: stringResource(R.string.settings_voice_default), maxLines = 1) }
             )
             DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                 DropdownMenuItem(
-                    text = { Text("Default") },
+                    text = { Text(stringResource(R.string.settings_voice_default)) },
                     onClick = { onSelect(null); expanded = false }
                 )
                 voices.forEach { voice ->
@@ -668,10 +666,10 @@ private fun TimePickerDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
-            TextButton(onClick = { onConfirm(timeState.hour, timeState.minute) }) { Text("Set") }
+            TextButton(onClick = { onConfirm(timeState.hour, timeState.minute) }) { Text(stringResource(R.string.action_set)) }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Cancel") }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) }
         },
         text = {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {

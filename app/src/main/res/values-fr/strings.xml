@@ -1,0 +1,154 @@
+<resources>
+    <!-- Common actions -->
+    <string name="action_save">Enregistrer</string>
+    <string name="action_cancel">Annuler</string>
+    <string name="action_delete">Supprimer</string>
+    <string name="action_edit">Modifier</string>
+    <string name="action_remove">Retirer</string>
+    <string name="action_more">Plus d\'options</string>
+    <string name="action_back">Retour</string>
+    <string name="action_done">Terminé</string>
+    <string name="action_set">Définir</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_home">Accueil</string>
+    <string name="nav_decks">Paquets</string>
+    <string name="nav_browse">Parcourir</string>
+    <string name="nav_stats">Stats</string>
+    <string name="nav_settings">Réglages</string>
+
+    <!-- Home -->
+    <string name="home_welcome_title">Bienvenue dans LingoDo</string>
+    <string name="home_welcome_message">Ajoutez votre première carte pour commencer à enrichir votre vocabulaire.</string>
+    <string name="home_add_card">Ajouter une carte</string>
+    <string name="home_review_ready">Vous avez des cartes à réviser</string>
+    <string name="home_caught_up">Tout est à jour !</string>
+    <string name="home_due">À réviser</string>
+    <string name="home_new">Nouvelles</string>
+    <string name="home_start_review">Commencer la révision</string>
+    <string name="home_reviews_today">Révisions aujourd\'hui</string>
+    <string name="home_day_streak">Jours d\'affilée</string>
+    <string name="home_smart_practice">Pratique intelligente</string>
+    <string name="home_language_pairs">Paires de langues</string>
+
+    <!-- Decks -->
+    <string name="decks_new">Nouveau paquet</string>
+    <string name="decks_empty_title">Aucun paquet</string>
+    <string name="decks_empty_message">Créez un paquet pour regrouper des mots liés.</string>
+    <string name="deck_edit">Modifier le paquet</string>
+    <string name="deck_delete_title">Supprimer le paquet ?</string>
+    <string name="deck_delete_message">« %1$s » et ses %2$d carte(s) seront définitivement supprimés.</string>
+    <string name="deck_name">Nom</string>
+    <string name="deck_description">Description (facultatif)</string>
+    <string name="deck_count_total">%d au total</string>
+    <string name="deck_count_due">%d à réviser</string>
+    <string name="deck_count_new">%d nouvelles</string>
+    <string name="deck_learned_progress">%1$d sur %2$d apprises</string>
+    <string name="deck_study">Étudier</string>
+
+    <!-- Statistics -->
+    <string name="stats_title">Statistiques</string>
+    <string name="stats_total_reviews">Révisions totales</string>
+    <string name="stats_correct_rate">Taux de réussite</string>
+    <string name="stats_current_streak">Série actuelle</string>
+    <string name="stats_learned">Apprises</string>
+    <string name="stats_this_week">Cette semaine</string>
+    <string name="stats_mature">Consolidées</string>
+    <string name="stats_best_streak">Meilleure série</string>
+    <string name="stats_reviews_30_days">Révisions (30 derniers jours)</string>
+    <string name="stats_total_cards">%d cartes au total</string>
+
+    <!-- Review ratings -->
+    <string name="rating_again">À revoir</string>
+    <string name="rating_hard">Difficile</string>
+    <string name="rating_good">Bien</string>
+    <string name="rating_easy">Facile</string>
+
+    <!-- Smart Practice -->
+    <string name="practice_title">Pratique intelligente</string>
+    <string name="practice_your_progress">Votre progression</string>
+    <string name="practice_style">Style de pratique</string>
+    <string name="practice_style_label">Style</string>
+    <string name="practice_coach_note">Note du coach</string>
+    <string name="practice_generate_note">Générer une note de progression par IA</string>
+    <string name="practice_start">Démarrer la pratique intelligente</string>
+    <string name="practice_intro_hint">Des exercices à trous adaptatifs sont créés à partir de vos mots difficiles et maîtrisés. Vos réponses alimentent directement le planning de révision.</string>
+    <string name="practice_question_of">Question %1$d sur %2$d</string>
+    <string name="practice_your_answer">Votre réponse</string>
+    <string name="practice_check">Vérifier</string>
+    <string name="practice_correct">Correct !</string>
+    <string name="practice_not_quite">Pas tout à fait</string>
+    <string name="practice_answer">Réponse : %s</string>
+    <string name="practice_finish">Terminer</string>
+    <string name="practice_next">Suivant</string>
+    <string name="practice_complete">Pratique terminée</string>
+    <string name="practice_score">%1$d / %2$d correctes</string>
+    <string name="practice_fed_back">Vos réponses ont alimenté le planning de révision.</string>
+    <string name="practice_again">Refaire</string>
+
+    <!-- Settings -->
+    <string name="settings_workspace">Espace de travail</string>
+    <string name="settings_help_guide">Aide &amp; guide</string>
+    <string name="settings_appearance">Apparence</string>
+    <string name="settings_theme">Thème</string>
+    <string name="settings_pronunciation">Prononciation</string>
+    <string name="settings_accent">Accent</string>
+    <string name="settings_speech_rate">Vitesse de parole : %s×</string>
+    <string name="settings_voice">Voix</string>
+    <string name="settings_voice_default">Par défaut</string>
+    <string name="settings_autoplay">Lecture auto de la prononciation</string>
+    <string name="settings_test_voice">Tester la voix</string>
+    <string name="settings_study">Étude</string>
+    <string name="settings_show_phonetic">Afficher la phonétique sur les cartes</string>
+    <string name="settings_new_per_day">Nouvelles cartes par jour : %d</string>
+    <string name="settings_session_length">Durée de session</string>
+    <string name="settings_session_unlimited">Illimitée</string>
+    <string name="settings_session_minutes">%d min</string>
+    <string name="settings_scheduling">Algorithme de planification</string>
+    <string name="settings_scheduler_fsrs_desc">FSRS modélise la mémoire (difficulté, stabilité et probabilité de rappel) pour des intervalles plus précis.</string>
+    <string name="settings_scheduler_sm2_desc">SM-2 est l\'algorithme classique de SuperMemo avec des ajustements de facilité fixes.</string>
+    <string name="settings_reminders">Rappels</string>
+    <string name="settings_daily_reminder">Rappel d\'étude quotidien</string>
+    <string name="settings_time">Heure</string>
+    <string name="settings_ai_autofill">Remplissage auto par IA</string>
+    <string name="settings_ai_provider">Fournisseur</string>
+    <string name="settings_ai_desc">Utilisez votre propre clé. Les clés sont chiffrées sur cet appareil (Android Keystore) et servent uniquement aux requêtes directes vers le fournisseur choisi. Touchez ✨ à côté d\'un mot pour remplir les champs vides, et utilisez la Pratique intelligente pour les exercices IA. Pour l\'anglais, un dictionnaire sans clé est toujours utilisé d\'abord.</string>
+    <string name="settings_ai_get_key">Obtenir une clé pour %s</string>
+    <string name="settings_ai_replace_key">Remplacer la clé API</string>
+    <string name="settings_ai_api_key">Clé API</string>
+    <string name="settings_ai_save_key">Enregistrer la clé</string>
+    <string name="settings_ai_key_saved">Une clé est enregistrée pour %s.</string>
+    <string name="settings_practice_styles">Styles de pratique intelligente</string>
+    <string name="settings_practice_styles_desc">Choisissez le style d\'exercice actif, modifiez-le ou rédigez votre propre prompt IA. Chaque style produit toujours des exercices évaluables qui alimentent votre planning de révision.</string>
+    <string name="settings_new_custom_style">Nouveau style personnalisé</string>
+    <string name="settings_style_new">Nouveau style de pratique</string>
+    <string name="settings_style_edit">Modifier le style</string>
+    <string name="settings_style_emoji">Émoji</string>
+    <string name="settings_style_instructions">Instructions du prompt IA</string>
+    <string name="settings_style_note">L\'application ajoute automatiquement un format de réponse à trous fixe, afin que vos exercices restent évaluables et alimentent le planning de révision.</string>
+    <string name="settings_data">Données</string>
+    <string name="settings_cards">Cartes</string>
+    <string name="settings_export_json">Exporter les cartes (JSON)</string>
+    <string name="settings_export_csv">Exporter les cartes (CSV)</string>
+    <string name="settings_import_cards">Importer des cartes (JSON ou CSV)</string>
+    <string name="settings_import_anki">Importer depuis Anki (.txt)</string>
+    <string name="settings_full_backup">Sauvegarde complète</string>
+    <string name="settings_backup_all">Tout sauvegarder</string>
+    <string name="settings_restore_backup">Restaurer depuis une sauvegarde</string>
+    <string name="settings_backup_note">Les sauvegardes contiennent tout votre historique d\'apprentissage. Enregistrez-les dans un dossier cloud (p. ex. Google Drive) pour une sauvegarde en ligne.</string>
+    <string name="settings_about">À propos</string>
+    <string name="settings_about_version">LingoDo %s</string>
+    <string name="settings_about_desc">Une application de cartes mémoire hors ligne avec répétition espacée.</string>
+    <string name="settings_restore_title">Restaurer la sauvegarde ?</string>
+    <string name="settings_restore_message">Cela remplace TOUS les paquets, cartes et l\'historique d\'apprentissage actuels par le contenu du fichier de sauvegarde.</string>
+    <string name="settings_restore_confirm">Restaurer</string>
+
+    <!-- Notification channel -->
+    <string name="reminder_channel_name">Rappels d\'étude</string>
+    <string name="reminder_channel_description">Rappels quotidiens pour réviser vos cartes dues.</string>
+    <string name="reminder_title">C\'est l\'heure d\'étudier</string>
+    <plurals name="reminder_message">
+        <item quantity="one">Vous avez %d carte à réviser.</item>
+        <item quantity="other">Vous avez %d cartes à réviser.</item>
+    </plurals>
+</resources>

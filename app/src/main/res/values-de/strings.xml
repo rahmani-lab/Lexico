@@ -1,0 +1,154 @@
+<resources>
+    <!-- Common actions -->
+    <string name="action_save">Speichern</string>
+    <string name="action_cancel">Abbrechen</string>
+    <string name="action_delete">Löschen</string>
+    <string name="action_edit">Bearbeiten</string>
+    <string name="action_remove">Entfernen</string>
+    <string name="action_more">Weitere Optionen</string>
+    <string name="action_back">Zurück</string>
+    <string name="action_done">Fertig</string>
+    <string name="action_set">Festlegen</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_home">Start</string>
+    <string name="nav_decks">Stapel</string>
+    <string name="nav_browse">Durchsuchen</string>
+    <string name="nav_stats">Statistik</string>
+    <string name="nav_settings">Einstellungen</string>
+
+    <!-- Home -->
+    <string name="home_welcome_title">Willkommen bei LingoDo</string>
+    <string name="home_welcome_message">Füge deine erste Karte hinzu, um deinen Wortschatz aufzubauen.</string>
+    <string name="home_add_card">Karte hinzufügen</string>
+    <string name="home_review_ready">Du hast Karten zum Wiederholen</string>
+    <string name="home_caught_up">Alles erledigt!</string>
+    <string name="home_due">Fällig</string>
+    <string name="home_new">Neu</string>
+    <string name="home_start_review">Wiederholung starten</string>
+    <string name="home_reviews_today">Wiederholungen heute</string>
+    <string name="home_day_streak">Tage in Folge</string>
+    <string name="home_smart_practice">Smart-Übung</string>
+    <string name="home_language_pairs">Sprachpaare</string>
+
+    <!-- Decks -->
+    <string name="decks_new">Neuer Stapel</string>
+    <string name="decks_empty_title">Noch keine Stapel</string>
+    <string name="decks_empty_message">Erstelle einen Stapel, um verwandte Wörter zu gruppieren.</string>
+    <string name="deck_edit">Stapel bearbeiten</string>
+    <string name="deck_delete_title">Stapel löschen?</string>
+    <string name="deck_delete_message">„%1$s“ und seine %2$d Karte(n) werden dauerhaft gelöscht.</string>
+    <string name="deck_name">Name</string>
+    <string name="deck_description">Beschreibung (optional)</string>
+    <string name="deck_count_total">%d gesamt</string>
+    <string name="deck_count_due">%d fällig</string>
+    <string name="deck_count_new">%d neu</string>
+    <string name="deck_learned_progress">%1$d von %2$d gelernt</string>
+    <string name="deck_study">Lernen</string>
+
+    <!-- Statistics -->
+    <string name="stats_title">Statistik</string>
+    <string name="stats_total_reviews">Wiederholungen gesamt</string>
+    <string name="stats_correct_rate">Trefferquote</string>
+    <string name="stats_current_streak">Aktuelle Serie</string>
+    <string name="stats_learned">Gelernt</string>
+    <string name="stats_this_week">Diese Woche</string>
+    <string name="stats_mature">Gefestigt</string>
+    <string name="stats_best_streak">Beste Serie</string>
+    <string name="stats_reviews_30_days">Wiederholungen (letzte 30 Tage)</string>
+    <string name="stats_total_cards">Insgesamt %d Karten</string>
+
+    <!-- Review ratings -->
+    <string name="rating_again">Nochmal</string>
+    <string name="rating_hard">Schwer</string>
+    <string name="rating_good">Gut</string>
+    <string name="rating_easy">Leicht</string>
+
+    <!-- Smart Practice -->
+    <string name="practice_title">Smart-Übung</string>
+    <string name="practice_your_progress">Dein Fortschritt</string>
+    <string name="practice_style">Übungsstil</string>
+    <string name="practice_style_label">Stil</string>
+    <string name="practice_coach_note">Notiz des Coachs</string>
+    <string name="practice_generate_note">KI-Fortschrittsnotiz erstellen</string>
+    <string name="practice_start">Smart-Übung starten</string>
+    <string name="practice_intro_hint">Adaptive Lückentext-Übungen entstehen aus deinen schwierigen und gemeisterten Wörtern. Deine Antworten fließen direkt in den Wiederholungsplan zurück.</string>
+    <string name="practice_question_of">Frage %1$d von %2$d</string>
+    <string name="practice_your_answer">Deine Antwort</string>
+    <string name="practice_check">Prüfen</string>
+    <string name="practice_correct">Richtig!</string>
+    <string name="practice_not_quite">Nicht ganz</string>
+    <string name="practice_answer">Antwort: %s</string>
+    <string name="practice_finish">Fertig</string>
+    <string name="practice_next">Weiter</string>
+    <string name="practice_complete">Übung abgeschlossen</string>
+    <string name="practice_score">%1$d / %2$d richtig</string>
+    <string name="practice_fed_back">Deine Antworten flossen in den Wiederholungsplan zurück.</string>
+    <string name="practice_again">Nochmal üben</string>
+
+    <!-- Settings -->
+    <string name="settings_workspace">Arbeitsbereich</string>
+    <string name="settings_help_guide">Hilfe &amp; Anleitung</string>
+    <string name="settings_appearance">Darstellung</string>
+    <string name="settings_theme">Design</string>
+    <string name="settings_pronunciation">Aussprache</string>
+    <string name="settings_accent">Akzent</string>
+    <string name="settings_speech_rate">Sprechtempo: %s×</string>
+    <string name="settings_voice">Stimme</string>
+    <string name="settings_voice_default">Standard</string>
+    <string name="settings_autoplay">Aussprache automatisch abspielen</string>
+    <string name="settings_test_voice">Stimme testen</string>
+    <string name="settings_study">Lernen</string>
+    <string name="settings_show_phonetic">Lautschrift auf Karten anzeigen</string>
+    <string name="settings_new_per_day">Neue Karten pro Tag: %d</string>
+    <string name="settings_session_length">Sitzungsdauer</string>
+    <string name="settings_session_unlimited">Unbegrenzt</string>
+    <string name="settings_session_minutes">%d Min.</string>
+    <string name="settings_scheduling">Planungsalgorithmus</string>
+    <string name="settings_scheduler_fsrs_desc">FSRS modelliert das Gedächtnis (Schwierigkeit, Stabilität und Abrufwahrscheinlichkeit) für genauere Intervalle.</string>
+    <string name="settings_scheduler_sm2_desc">SM-2 ist der klassische SuperMemo-Algorithmus mit festen Anpassungen des Schwierigkeitsgrads.</string>
+    <string name="settings_reminders">Erinnerungen</string>
+    <string name="settings_daily_reminder">Tägliche Lernerinnerung</string>
+    <string name="settings_time">Uhrzeit</string>
+    <string name="settings_ai_autofill">KI-Autovervollständigung</string>
+    <string name="settings_ai_provider">Anbieter</string>
+    <string name="settings_ai_desc">Bring deinen eigenen Schlüssel mit. Schlüssel werden auf diesem Gerät (Android Keystore) verschlüsselt und nur für direkte Anfragen an den von dir gewählten Anbieter verwendet. Tippe auf ✨ neben einem Wort, um leere Felder zu füllen, und nutze die Smart-Übung für KI-Aufgaben. Für Englisch wird immer zuerst ein schlüsselloses Wörterbuch verwendet.</string>
+    <string name="settings_ai_get_key">Schlüssel für %s holen</string>
+    <string name="settings_ai_replace_key">API-Schlüssel ersetzen</string>
+    <string name="settings_ai_api_key">API-Schlüssel</string>
+    <string name="settings_ai_save_key">Schlüssel speichern</string>
+    <string name="settings_ai_key_saved">Ein Schlüssel für %s ist gespeichert.</string>
+    <string name="settings_practice_styles">Smart-Übungsstile</string>
+    <string name="settings_practice_styles_desc">Wähle den aktiven Übungsstil, bearbeite ihn oder schreibe deinen eigenen KI-Prompt. Jeder Stil erzeugt weiterhin bewertbare Übungen, die in deinen Wiederholungsplan einfließen.</string>
+    <string name="settings_new_custom_style">Neuer eigener Stil</string>
+    <string name="settings_style_new">Neuer Übungsstil</string>
+    <string name="settings_style_edit">Stil bearbeiten</string>
+    <string name="settings_style_emoji">Emoji</string>
+    <string name="settings_style_instructions">KI-Prompt-Anweisungen</string>
+    <string name="settings_style_note">Die App hängt automatisch ein festes Lückentext-Antwortformat an, damit deine Übungen bewertbar bleiben und in den Wiederholungsplan einfließen.</string>
+    <string name="settings_data">Daten</string>
+    <string name="settings_cards">Karten</string>
+    <string name="settings_export_json">Karten exportieren (JSON)</string>
+    <string name="settings_export_csv">Karten exportieren (CSV)</string>
+    <string name="settings_import_cards">Karten importieren (JSON oder CSV)</string>
+    <string name="settings_import_anki">Aus Anki importieren (.txt)</string>
+    <string name="settings_full_backup">Vollständige Sicherung</string>
+    <string name="settings_backup_all">Alles sichern</string>
+    <string name="settings_restore_backup">Aus Sicherung wiederherstellen</string>
+    <string name="settings_backup_note">Sicherungen enthalten deinen gesamten Lernverlauf. Speichere sie in einem Cloud-Ordner (z. B. Google Drive) für ein Cloud-Backup.</string>
+    <string name="settings_about">Über</string>
+    <string name="settings_about_version">LingoDo %s</string>
+    <string name="settings_about_desc">Eine Offline-Karteikarten-App mit verteilter Wiederholung.</string>
+    <string name="settings_restore_title">Sicherung wiederherstellen?</string>
+    <string name="settings_restore_message">Dies ersetzt ALLE aktuellen Stapel, Karten und den Lernverlauf durch den Inhalt der Sicherungsdatei.</string>
+    <string name="settings_restore_confirm">Wiederherstellen</string>
+
+    <!-- Notification channel -->
+    <string name="reminder_channel_name">Lernerinnerungen</string>
+    <string name="reminder_channel_description">Tägliche Erinnerungen, deine fälligen Karteikarten zu wiederholen.</string>
+    <string name="reminder_title">Zeit zu lernen</string>
+    <plurals name="reminder_message">
+        <item quantity="one">Du hast %d Karte zum Wiederholen bereit.</item>
+        <item quantity="other">Du hast %d Karten zum Wiederholen bereit.</item>
+    </plurals>
+</resources>

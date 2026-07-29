@@ -1,0 +1,154 @@
+<resources>
+    <!-- Common actions -->
+    <string name="action_save">Kaydet</string>
+    <string name="action_cancel">İptal</string>
+    <string name="action_delete">Sil</string>
+    <string name="action_edit">Düzenle</string>
+    <string name="action_remove">Kaldır</string>
+    <string name="action_more">Diğer seçenekler</string>
+    <string name="action_back">Geri</string>
+    <string name="action_done">Bitti</string>
+    <string name="action_set">Ayarla</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_home">Ana Sayfa</string>
+    <string name="nav_decks">Desteler</string>
+    <string name="nav_browse">Gözat</string>
+    <string name="nav_stats">İstatistik</string>
+    <string name="nav_settings">Ayarlar</string>
+
+    <!-- Home -->
+    <string name="home_welcome_title">LingoDo\'ya hoş geldiniz</string>
+    <string name="home_welcome_message">Kelime dağarcığınızı oluşturmaya başlamak için ilk kartınızı ekleyin.</string>
+    <string name="home_add_card">Kart ekle</string>
+    <string name="home_review_ready">Tekrar edilecek kartlarınız var</string>
+    <string name="home_caught_up">Her şey tamam!</string>
+    <string name="home_due">Zamanı gelen</string>
+    <string name="home_new">Yeni</string>
+    <string name="home_start_review">Tekrara başla</string>
+    <string name="home_reviews_today">Bugünkü tekrarlar</string>
+    <string name="home_day_streak">Gün serisi</string>
+    <string name="home_smart_practice">Akıllı Alıştırma</string>
+    <string name="home_language_pairs">Dil çiftleri</string>
+
+    <!-- Decks -->
+    <string name="decks_new">Yeni deste</string>
+    <string name="decks_empty_title">Henüz deste yok</string>
+    <string name="decks_empty_message">İlgili kelimeleri gruplamak için bir deste oluşturun.</string>
+    <string name="deck_edit">Desteyi düzenle</string>
+    <string name="deck_delete_title">Deste silinsin mi?</string>
+    <string name="deck_delete_message">“%1$s” ve içindeki %2$d kart kalıcı olarak silinecek.</string>
+    <string name="deck_name">Ad</string>
+    <string name="deck_description">Açıklama (isteğe bağlı)</string>
+    <string name="deck_count_total">%d toplam</string>
+    <string name="deck_count_due">%d zamanı gelen</string>
+    <string name="deck_count_new">%d yeni</string>
+    <string name="deck_learned_progress">%2$d karttan %1$d tanesi öğrenildi</string>
+    <string name="deck_study">Çalış</string>
+
+    <!-- Statistics -->
+    <string name="stats_title">İstatistikler</string>
+    <string name="stats_total_reviews">Toplam tekrar</string>
+    <string name="stats_correct_rate">Doğruluk oranı</string>
+    <string name="stats_current_streak">Güncel seri</string>
+    <string name="stats_learned">Öğrenilen</string>
+    <string name="stats_this_week">Bu hafta</string>
+    <string name="stats_mature">Kalıcı</string>
+    <string name="stats_best_streak">En iyi seri</string>
+    <string name="stats_reviews_30_days">Tekrarlar (son 30 gün)</string>
+    <string name="stats_total_cards">Toplam %d kart</string>
+
+    <!-- Review ratings -->
+    <string name="rating_again">Tekrar</string>
+    <string name="rating_hard">Zor</string>
+    <string name="rating_good">İyi</string>
+    <string name="rating_easy">Kolay</string>
+
+    <!-- Smart Practice -->
+    <string name="practice_title">Akıllı Alıştırma</string>
+    <string name="practice_your_progress">İlerlemeniz</string>
+    <string name="practice_style">Alıştırma stili</string>
+    <string name="practice_style_label">Stil</string>
+    <string name="practice_coach_note">Koç notu</string>
+    <string name="practice_generate_note">Yapay zekâ ilerleme notu oluştur</string>
+    <string name="practice_start">Akıllı alıştırmayı başlat</string>
+    <string name="practice_intro_hint">Uyarlanabilir boşluk doldurma alıştırmaları, zorlandığınız ve ustalaştığınız kelimelerden oluşturulur. Yanıtlarınız doğrudan tekrar programına geri beslenir.</string>
+    <string name="practice_question_of">Soru %1$d / %2$d</string>
+    <string name="practice_your_answer">Yanıtınız</string>
+    <string name="practice_check">Kontrol et</string>
+    <string name="practice_correct">Doğru!</string>
+    <string name="practice_not_quite">Tam değil</string>
+    <string name="practice_answer">Yanıt: %s</string>
+    <string name="practice_finish">Bitir</string>
+    <string name="practice_next">İleri</string>
+    <string name="practice_complete">Alıştırma tamamlandı</string>
+    <string name="practice_score">%1$d / %2$d doğru</string>
+    <string name="practice_fed_back">Yanıtlarınız tekrar programına geri beslendi.</string>
+    <string name="practice_again">Tekrar alıştır</string>
+
+    <!-- Settings -->
+    <string name="settings_workspace">Çalışma alanı</string>
+    <string name="settings_help_guide">Yardım &amp; kılavuz</string>
+    <string name="settings_appearance">Görünüm</string>
+    <string name="settings_theme">Tema</string>
+    <string name="settings_pronunciation">Telaffuz</string>
+    <string name="settings_accent">Aksan</string>
+    <string name="settings_speech_rate">Konuşma hızı: %s×</string>
+    <string name="settings_voice">Ses</string>
+    <string name="settings_voice_default">Varsayılan</string>
+    <string name="settings_autoplay">Telaffuzu otomatik oynat</string>
+    <string name="settings_test_voice">Sesi test et</string>
+    <string name="settings_study">Çalışma</string>
+    <string name="settings_show_phonetic">Kartlarda fonetik göster</string>
+    <string name="settings_new_per_day">Günlük yeni kart: %d</string>
+    <string name="settings_session_length">Oturum süresi</string>
+    <string name="settings_session_unlimited">Sınırsız</string>
+    <string name="settings_session_minutes">%d dk</string>
+    <string name="settings_scheduling">Zamanlama algoritması</string>
+    <string name="settings_scheduler_fsrs_desc">FSRS, daha doğru aralıklar için belleği (zorluk, kararlılık ve hatırlama olasılığı) modeller.</string>
+    <string name="settings_scheduler_sm2_desc">SM-2, sabit kolaylık ayarlamaları olan klasik SuperMemo algoritmasıdır.</string>
+    <string name="settings_reminders">Hatırlatıcılar</string>
+    <string name="settings_daily_reminder">Günlük çalışma hatırlatıcısı</string>
+    <string name="settings_time">Saat</string>
+    <string name="settings_ai_autofill">Yapay zekâ otomatik doldurma</string>
+    <string name="settings_ai_provider">Sağlayıcı</string>
+    <string name="settings_ai_desc">Kendi anahtarınızı getirin. Anahtarlar bu cihazda (Android Keystore) şifrelenir ve yalnızca seçtiğiniz sağlayıcıya doğrudan istekler için kullanılır. Boş alanları doldurmak için bir kelimenin yanındaki ✨ simgesine dokunun ve yapay zekâ alıştırmaları için Akıllı Alıştırma\'yı kullanın. İngilizce için her zaman önce anahtarsız bir sözlük kullanılır.</string>
+    <string name="settings_ai_get_key">%s için anahtar al</string>
+    <string name="settings_ai_replace_key">API anahtarını değiştir</string>
+    <string name="settings_ai_api_key">API anahtarı</string>
+    <string name="settings_ai_save_key">Anahtarı kaydet</string>
+    <string name="settings_ai_key_saved">%s için bir anahtar kaydedildi.</string>
+    <string name="settings_practice_styles">Akıllı Alıştırma Stilleri</string>
+    <string name="settings_practice_styles_desc">Etkin alıştırma stilini seçin, düzenleyin veya kendi yapay zekâ isteminizi yazın. Her stil, tekrar programınıza beslenen puanlanabilir alıştırmalar üretmeye devam eder.</string>
+    <string name="settings_new_custom_style">Yeni özel stil</string>
+    <string name="settings_style_new">Yeni alıştırma stili</string>
+    <string name="settings_style_edit">Stili düzenle</string>
+    <string name="settings_style_emoji">Emoji</string>
+    <string name="settings_style_instructions">Yapay zekâ istem talimatları</string>
+    <string name="settings_style_note">Uygulama otomatik olarak sabit bir boşluk doldurma yanıt biçimi ekler; böylece alıştırmalarınız puanlanabilir kalır ve tekrar programına beslenir.</string>
+    <string name="settings_data">Veriler</string>
+    <string name="settings_cards">Kartlar</string>
+    <string name="settings_export_json">Kartları dışa aktar (JSON)</string>
+    <string name="settings_export_csv">Kartları dışa aktar (CSV)</string>
+    <string name="settings_import_cards">Kart içe aktar (JSON veya CSV)</string>
+    <string name="settings_import_anki">Anki\'den içe aktar (.txt)</string>
+    <string name="settings_full_backup">Tam yedek</string>
+    <string name="settings_backup_all">Her şeyi yedekle</string>
+    <string name="settings_restore_backup">Yedekten geri yükle</string>
+    <string name="settings_backup_note">Yedekler tüm öğrenme geçmişinizi içerir. Bulut yedeği için bir bulut klasörüne (ör. Google Drive) kaydedin.</string>
+    <string name="settings_about">Hakkında</string>
+    <string name="settings_about_version">LingoDo %s</string>
+    <string name="settings_about_desc">Aralıklı tekrar özellikli çevrimdışı bir kart uygulaması.</string>
+    <string name="settings_restore_title">Yedek geri yüklensin mi?</string>
+    <string name="settings_restore_message">Bu işlem, mevcut TÜM desteleri, kartları ve öğrenme geçmişini yedek dosyasının içeriğiyle değiştirir.</string>
+    <string name="settings_restore_confirm">Geri yükle</string>
+
+    <!-- Notification channel -->
+    <string name="reminder_channel_name">Çalışma hatırlatıcıları</string>
+    <string name="reminder_channel_description">Zamanı gelen kartlarınızı tekrar etmeniz için günlük hatırlatıcılar.</string>
+    <string name="reminder_title">Çalışma zamanı</string>
+    <plurals name="reminder_message">
+        <item quantity="one">Tekrara hazır %d kartınız var.</item>
+        <item quantity="other">Tekrara hazır %d kartınız var.</item>
+    </plurals>
+</resources>

@@ -1,0 +1,154 @@
+<resources>
+    <!-- Common actions -->
+    <string name="action_save">Guardar</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_delete">Eliminar</string>
+    <string name="action_edit">Editar</string>
+    <string name="action_remove">Quitar</string>
+    <string name="action_more">Más opciones</string>
+    <string name="action_back">Atrás</string>
+    <string name="action_done">Listo</string>
+    <string name="action_set">Establecer</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_home">Inicio</string>
+    <string name="nav_decks">Mazos</string>
+    <string name="nav_browse">Explorar</string>
+    <string name="nav_stats">Progreso</string>
+    <string name="nav_settings">Ajustes</string>
+
+    <!-- Home -->
+    <string name="home_welcome_title">Bienvenido a LingoDo</string>
+    <string name="home_welcome_message">Añade tu primera tarjeta para empezar a construir tu vocabulario.</string>
+    <string name="home_add_card">Añadir tarjeta</string>
+    <string name="home_review_ready">Tienes tarjetas para repasar</string>
+    <string name="home_caught_up">¡Todo al día!</string>
+    <string name="home_due">Pendientes</string>
+    <string name="home_new">Nuevas</string>
+    <string name="home_start_review">Empezar repaso</string>
+    <string name="home_reviews_today">Repasos de hoy</string>
+    <string name="home_day_streak">Días seguidos</string>
+    <string name="home_smart_practice">Práctica inteligente</string>
+    <string name="home_language_pairs">Pares de idiomas</string>
+
+    <!-- Decks -->
+    <string name="decks_new">Nuevo mazo</string>
+    <string name="decks_empty_title">Aún no hay mazos</string>
+    <string name="decks_empty_message">Crea un mazo para agrupar palabras relacionadas.</string>
+    <string name="deck_edit">Editar mazo</string>
+    <string name="deck_delete_title">¿Eliminar mazo?</string>
+    <string name="deck_delete_message">«%1$s» y sus %2$d tarjeta(s) se eliminarán permanentemente.</string>
+    <string name="deck_name">Nombre</string>
+    <string name="deck_description">Descripción (opcional)</string>
+    <string name="deck_count_total">%d en total</string>
+    <string name="deck_count_due">%d pendientes</string>
+    <string name="deck_count_new">%d nuevas</string>
+    <string name="deck_learned_progress">%1$d de %2$d aprendidas</string>
+    <string name="deck_study">Estudiar</string>
+
+    <!-- Statistics -->
+    <string name="stats_title">Estadísticas</string>
+    <string name="stats_total_reviews">Repasos totales</string>
+    <string name="stats_correct_rate">Tasa de acierto</string>
+    <string name="stats_current_streak">Racha actual</string>
+    <string name="stats_learned">Aprendidas</string>
+    <string name="stats_this_week">Esta semana</string>
+    <string name="stats_mature">Consolidadas</string>
+    <string name="stats_best_streak">Mejor racha</string>
+    <string name="stats_reviews_30_days">Repasos (últimos 30 días)</string>
+    <string name="stats_total_cards">%d tarjetas en total</string>
+
+    <!-- Review ratings -->
+    <string name="rating_again">Otra vez</string>
+    <string name="rating_hard">Difícil</string>
+    <string name="rating_good">Bien</string>
+    <string name="rating_easy">Fácil</string>
+
+    <!-- Smart Practice -->
+    <string name="practice_title">Práctica inteligente</string>
+    <string name="practice_your_progress">Tu progreso</string>
+    <string name="practice_style">Estilo de práctica</string>
+    <string name="practice_style_label">Estilo</string>
+    <string name="practice_coach_note">Nota del entrenador</string>
+    <string name="practice_generate_note">Generar nota de progreso con IA</string>
+    <string name="practice_start">Iniciar práctica inteligente</string>
+    <string name="practice_intro_hint">Los ejercicios adaptativos de rellenar huecos se crean a partir de tus palabras difíciles y dominadas. Tus respuestas se incorporan directamente al plan de repaso.</string>
+    <string name="practice_question_of">Pregunta %1$d de %2$d</string>
+    <string name="practice_your_answer">Tu respuesta</string>
+    <string name="practice_check">Comprobar</string>
+    <string name="practice_correct">¡Correcto!</string>
+    <string name="practice_not_quite">No exactamente</string>
+    <string name="practice_answer">Respuesta: %s</string>
+    <string name="practice_finish">Finalizar</string>
+    <string name="practice_next">Siguiente</string>
+    <string name="practice_complete">Práctica completada</string>
+    <string name="practice_score">%1$d / %2$d correctas</string>
+    <string name="practice_fed_back">Tus respuestas se incorporaron al plan de repaso.</string>
+    <string name="practice_again">Practicar de nuevo</string>
+
+    <!-- Settings -->
+    <string name="settings_workspace">Espacio de trabajo</string>
+    <string name="settings_help_guide">Ayuda &amp; guía</string>
+    <string name="settings_appearance">Apariencia</string>
+    <string name="settings_theme">Tema</string>
+    <string name="settings_pronunciation">Pronunciación</string>
+    <string name="settings_accent">Acento</string>
+    <string name="settings_speech_rate">Velocidad de habla: %s×</string>
+    <string name="settings_voice">Voz</string>
+    <string name="settings_voice_default">Predeterminada</string>
+    <string name="settings_autoplay">Reproducir pronunciación automáticamente</string>
+    <string name="settings_test_voice">Probar voz</string>
+    <string name="settings_study">Estudio</string>
+    <string name="settings_show_phonetic">Mostrar fonética en las tarjetas</string>
+    <string name="settings_new_per_day">Tarjetas nuevas por día: %d</string>
+    <string name="settings_session_length">Duración de sesión</string>
+    <string name="settings_session_unlimited">Ilimitada</string>
+    <string name="settings_session_minutes">%d min</string>
+    <string name="settings_scheduling">Algoritmo de programación</string>
+    <string name="settings_scheduler_fsrs_desc">FSRS modela la memoria (dificultad, estabilidad y probabilidad de recuerdo) para intervalos más precisos.</string>
+    <string name="settings_scheduler_sm2_desc">SM-2 es el clásico algoritmo de SuperMemo con ajustes de facilidad fijos.</string>
+    <string name="settings_reminders">Recordatorios</string>
+    <string name="settings_daily_reminder">Recordatorio de estudio diario</string>
+    <string name="settings_time">Hora</string>
+    <string name="settings_ai_autofill">Autocompletado con IA</string>
+    <string name="settings_ai_provider">Proveedor</string>
+    <string name="settings_ai_desc">Usa tu propia clave. Las claves se cifran en este dispositivo (Android Keystore) y solo se usan para solicitudes directas al proveedor que elijas. Toca ✨ junto a una palabra para rellenar los campos vacíos y usa la Práctica inteligente para ejercicios con IA. Para el inglés siempre se usa primero un diccionario sin clave.</string>
+    <string name="settings_ai_get_key">Obtener una clave para %s</string>
+    <string name="settings_ai_replace_key">Reemplazar clave API</string>
+    <string name="settings_ai_api_key">Clave API</string>
+    <string name="settings_ai_save_key">Guardar clave</string>
+    <string name="settings_ai_key_saved">Hay una clave guardada para %s.</string>
+    <string name="settings_practice_styles">Estilos de práctica inteligente</string>
+    <string name="settings_practice_styles_desc">Elige el estilo de ejercicio activo, edítalo o escribe tu propio prompt de IA. Cada estilo sigue generando ejercicios evaluables que alimentan tu plan de repaso.</string>
+    <string name="settings_new_custom_style">Nuevo estilo personalizado</string>
+    <string name="settings_style_new">Nuevo estilo de práctica</string>
+    <string name="settings_style_edit">Editar estilo</string>
+    <string name="settings_style_emoji">Emoji</string>
+    <string name="settings_style_instructions">Instrucciones del prompt de IA</string>
+    <string name="settings_style_note">La app añade automáticamente un formato fijo de respuesta de rellenar huecos, para que tus ejercicios sigan siendo evaluables y alimenten el plan de repaso.</string>
+    <string name="settings_data">Datos</string>
+    <string name="settings_cards">Tarjetas</string>
+    <string name="settings_export_json">Exportar tarjetas (JSON)</string>
+    <string name="settings_export_csv">Exportar tarjetas (CSV)</string>
+    <string name="settings_import_cards">Importar tarjetas (JSON o CSV)</string>
+    <string name="settings_import_anki">Importar desde Anki (.txt)</string>
+    <string name="settings_full_backup">Copia de seguridad completa</string>
+    <string name="settings_backup_all">Hacer copia de todo</string>
+    <string name="settings_restore_backup">Restaurar desde copia</string>
+    <string name="settings_backup_note">Las copias incluyen todo tu historial de aprendizaje. Guárdalas en una carpeta en la nube (p. ej. Google Drive) para una copia en la nube.</string>
+    <string name="settings_about">Acerca de</string>
+    <string name="settings_about_version">LingoDo %s</string>
+    <string name="settings_about_desc">Una app de tarjetas didácticas sin conexión con repetición espaciada.</string>
+    <string name="settings_restore_title">¿Restaurar copia de seguridad?</string>
+    <string name="settings_restore_message">Esto reemplaza TODOS los mazos, tarjetas e historial de aprendizaje actuales con el contenido del archivo de copia.</string>
+    <string name="settings_restore_confirm">Restaurar</string>
+
+    <!-- Notification channel -->
+    <string name="reminder_channel_name">Recordatorios de estudio</string>
+    <string name="reminder_channel_description">Recordatorios diarios para repasar tus tarjetas pendientes.</string>
+    <string name="reminder_title">Hora de estudiar</string>
+    <plurals name="reminder_message">
+        <item quantity="one">Tienes %d tarjeta lista para repasar.</item>
+        <item quantity="other">Tienes %d tarjetas listas para repasar.</item>
+    </plurals>
+</resources>

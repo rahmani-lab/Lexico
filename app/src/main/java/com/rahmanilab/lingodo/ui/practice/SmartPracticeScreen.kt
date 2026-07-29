@@ -37,10 +37,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.rahmanilab.lingodo.R
 import com.rahmanilab.lingodo.domain.practice.PracticeStyle
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,10 +56,10 @@ fun SmartPracticeScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Smart Practice") },
+                title = { Text(stringResource(R.string.practice_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.action_back))
                     }
                 }
             )
@@ -119,30 +121,29 @@ private fun IntroView(
 ) {
     Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
         Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-            Text("Your progress", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+            Text(stringResource(R.string.practice_your_progress), style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
             Text(summary, style = MaterialTheme.typography.bodyMedium)
         }
     }
 
-    Text("Practice style", style = MaterialTheme.typography.labelLarge)
+    Text(stringResource(R.string.practice_style), style = MaterialTheme.typography.labelLarge)
     StyleDropdown(styles = styles, selectedId = selectedStyleId, onSelect = onSelectStyle)
     if (report.isNotBlank()) {
         ElevatedCard {
             Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                Text("Coach's note", style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
+                Text(stringResource(R.string.practice_coach_note), style = MaterialTheme.typography.titleSmall, color = MaterialTheme.colorScheme.primary)
                 Text(report, style = MaterialTheme.typography.bodyMedium)
             }
         }
     }
     OutlinedButton(onClick = onReport, enabled = !busy, modifier = Modifier.fillMaxWidth()) {
-        Text("Generate AI progress note")
+        Text(stringResource(R.string.practice_generate_note))
     }
     Button(onClick = onStart, enabled = !busy, modifier = Modifier.fillMaxWidth()) {
-        Text("Start smart practice")
+        Text(stringResource(R.string.practice_start))
     }
     Text(
-        "Adaptive fill-in-the-blank drills are built from your troublesome and mastered words. Your " +
-            "answers feed straight back into the review schedule.",
+        stringResource(R.string.practice_intro_hint),
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant
     )
@@ -162,7 +163,7 @@ private fun StyleDropdown(
             value = selected?.let { "${it.emoji} ${it.name}" }.orEmpty(),
             onValueChange = {},
             readOnly = true,
-            label = { Text("Style") },
+            label = { Text(stringResource(R.string.practice_style_label)) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier.menuAnchor().fillMaxWidth()
         )
@@ -191,7 +192,7 @@ private fun ExerciseView(
     val total = state.exercises.size
 
     Text(
-        "Question ${state.currentIndex + 1} of $total",
+        stringResource(R.string.practice_question_of, state.currentIndex + 1, total),
         style = MaterialTheme.typography.labelMedium,
         color = MaterialTheme.colorScheme.onSurfaceVariant
     )
@@ -217,12 +218,12 @@ private fun ExerciseView(
         OutlinedTextField(
             value = state.typedAnswer,
             onValueChange = onTyped,
-            label = { Text("Your answer") },
+            label = { Text(stringResource(R.string.practice_your_answer)) },
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
         Button(onClick = onCheck, enabled = state.typedAnswer.isNotBlank(), modifier = Modifier.fillMaxWidth()) {
-            Text("Check")
+            Text(stringResource(R.string.practice_check))
         }
     } else {
         val correct = state.lastCorrect == true
@@ -233,12 +234,15 @@ private fun ExerciseView(
             modifier = Modifier.fillMaxWidth()
         ) {
             Column(Modifier.padding(12.dp)) {
-                Text(if (correct) "Correct!" else "Not quite", fontWeight = FontWeight.Bold)
-                if (!correct) Text("Answer: ${exercise.answer}", style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    stringResource(if (correct) R.string.practice_correct else R.string.practice_not_quite),
+                    fontWeight = FontWeight.Bold
+                )
+                if (!correct) Text(stringResource(R.string.practice_answer, exercise.answer), style = MaterialTheme.typography.bodyMedium)
             }
         }
         Button(onClick = onNext, modifier = Modifier.fillMaxWidth()) {
-            Text(if (state.currentIndex + 1 >= total) "Finish" else "Next")
+            Text(stringResource(if (state.currentIndex + 1 >= total) R.string.practice_finish else R.string.practice_next))
         }
     }
 }
@@ -256,15 +260,15 @@ private fun FinishedView(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            Text("Practice complete", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
-            Text("$correct / $total correct", style = MaterialTheme.typography.bodyLarge)
+            Text(stringResource(R.string.practice_complete), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold)
+            Text(stringResource(R.string.practice_score, correct, total), style = MaterialTheme.typography.bodyLarge)
             Text(
-                "Your answers were fed back into the review schedule.",
+                stringResource(R.string.practice_fed_back),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            Button(onClick = onAgain, modifier = Modifier.fillMaxWidth()) { Text("Practice again") }
-            OutlinedButton(onClick = onDone, modifier = Modifier.fillMaxWidth()) { Text("Done") }
+            Button(onClick = onAgain, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.practice_again)) }
+            OutlinedButton(onClick = onDone, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.action_done)) }
         }
     }
 }

@@ -12,8 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.rahmanilab.lingodo.R
 import com.rahmanilab.lingodo.domain.model.Rating
 import com.rahmanilab.lingodo.ui.theme.RatingColors
 
@@ -31,10 +33,10 @@ fun RatingButtonsRow(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        RatingButton("Again", RatingColors.Again, intervals[Rating.AGAIN], { onRate(Rating.AGAIN) }, Modifier.weight(1f))
-        RatingButton("Hard", RatingColors.Hard, intervals[Rating.HARD], { onRate(Rating.HARD) }, Modifier.weight(1f))
-        RatingButton("Good", RatingColors.Good, intervals[Rating.GOOD], { onRate(Rating.GOOD) }, Modifier.weight(1f))
-        RatingButton("Easy", RatingColors.Easy, intervals[Rating.EASY], { onRate(Rating.EASY) }, Modifier.weight(1f))
+        RatingButton(stringResource(R.string.rating_again), RatingColors.Again, intervals[Rating.AGAIN], { onRate(Rating.AGAIN) }, Modifier.weight(1f))
+        RatingButton(stringResource(R.string.rating_hard), RatingColors.Hard, intervals[Rating.HARD], { onRate(Rating.HARD) }, Modifier.weight(1f))
+        RatingButton(stringResource(R.string.rating_good), RatingColors.Good, intervals[Rating.GOOD], { onRate(Rating.GOOD) }, Modifier.weight(1f))
+        RatingButton(stringResource(R.string.rating_easy), RatingColors.Easy, intervals[Rating.EASY], { onRate(Rating.EASY) }, Modifier.weight(1f))
     }
 }
 
