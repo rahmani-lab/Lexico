@@ -1,0 +1,153 @@
+<resources>
+    <!-- Common actions -->
+    <string name="action_save">저장</string>
+    <string name="action_cancel">취소</string>
+    <string name="action_delete">삭제</string>
+    <string name="action_edit">편집</string>
+    <string name="action_remove">제거</string>
+    <string name="action_more">옵션 더보기</string>
+    <string name="action_back">뒤로</string>
+    <string name="action_done">완료</string>
+    <string name="action_set">설정</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_home">홈</string>
+    <string name="nav_decks">덱</string>
+    <string name="nav_browse">둘러보기</string>
+    <string name="nav_stats">통계</string>
+    <string name="nav_settings">설정</string>
+
+    <!-- Home -->
+    <string name="home_welcome_title">LingoDo에 오신 것을 환영합니다</string>
+    <string name="home_welcome_message">첫 카드를 추가하여 어휘를 쌓기 시작하세요.</string>
+    <string name="home_add_card">카드 추가</string>
+    <string name="home_review_ready">복습할 카드가 있습니다</string>
+    <string name="home_caught_up">모두 완료했어요!</string>
+    <string name="home_due">예정</string>
+    <string name="home_new">신규</string>
+    <string name="home_start_review">복습 시작</string>
+    <string name="home_reviews_today">오늘의 복습</string>
+    <string name="home_day_streak">연속 일수</string>
+    <string name="home_smart_practice">스마트 연습</string>
+    <string name="home_language_pairs">언어 쌍</string>
+
+    <!-- Decks -->
+    <string name="decks_new">새 덱</string>
+    <string name="decks_empty_title">아직 덱이 없습니다</string>
+    <string name="decks_empty_message">관련 단어를 묶을 덱을 만드세요.</string>
+    <string name="deck_edit">덱 편집</string>
+    <string name="deck_delete_title">덱을 삭제할까요?</string>
+    <string name="deck_delete_message">“%1$s” 및 해당 카드 %2$d장이 영구적으로 삭제됩니다.</string>
+    <string name="deck_name">이름</string>
+    <string name="deck_description">설명(선택)</string>
+    <string name="deck_count_total">총 %d장</string>
+    <string name="deck_count_due">예정 %d</string>
+    <string name="deck_count_new">신규 %d</string>
+    <string name="deck_learned_progress">%2$d장 중 %1$d장 학습</string>
+    <string name="deck_study">학습</string>
+
+    <!-- Statistics -->
+    <string name="stats_title">통계</string>
+    <string name="stats_total_reviews">총 복습 수</string>
+    <string name="stats_correct_rate">정답률</string>
+    <string name="stats_current_streak">현재 연속</string>
+    <string name="stats_learned">학습함</string>
+    <string name="stats_this_week">이번 주</string>
+    <string name="stats_mature">정착</string>
+    <string name="stats_best_streak">최고 연속</string>
+    <string name="stats_reviews_30_days">복습(최근 30일)</string>
+    <string name="stats_total_cards">총 %d장의 카드</string>
+
+    <!-- Review ratings -->
+    <string name="rating_again">다시</string>
+    <string name="rating_hard">어려움</string>
+    <string name="rating_good">보통</string>
+    <string name="rating_easy">쉬움</string>
+
+    <!-- Smart Practice -->
+    <string name="practice_title">스마트 연습</string>
+    <string name="practice_your_progress">나의 진행 상황</string>
+    <string name="practice_style">연습 스타일</string>
+    <string name="practice_style_label">스타일</string>
+    <string name="practice_coach_note">코치의 메모</string>
+    <string name="practice_generate_note">AI 진행 메모 생성</string>
+    <string name="practice_start">스마트 연습 시작</string>
+    <string name="practice_intro_hint">적응형 빈칸 채우기 연습이 어려운 단어와 익힌 단어로 만들어집니다. 답변은 복습 일정에 바로 반영됩니다.</string>
+    <string name="practice_question_of">%2$d문제 중 %1$d번째</string>
+    <string name="practice_your_answer">나의 답</string>
+    <string name="practice_check">확인</string>
+    <string name="practice_correct">정답!</string>
+    <string name="practice_not_quite">아쉬워요</string>
+    <string name="practice_answer">정답: %s</string>
+    <string name="practice_finish">완료</string>
+    <string name="practice_next">다음</string>
+    <string name="practice_complete">연습 완료</string>
+    <string name="practice_score">%1$d / %2$d 정답</string>
+    <string name="practice_fed_back">답변이 복습 일정에 반영되었습니다.</string>
+    <string name="practice_again">다시 연습</string>
+
+    <!-- Settings -->
+    <string name="settings_workspace">작업 공간</string>
+    <string name="settings_help_guide">도움말 &amp; 가이드</string>
+    <string name="settings_appearance">화면</string>
+    <string name="settings_theme">테마</string>
+    <string name="settings_pronunciation">발음</string>
+    <string name="settings_accent">악센트</string>
+    <string name="settings_speech_rate">말하기 속도: %s×</string>
+    <string name="settings_voice">음성</string>
+    <string name="settings_voice_default">기본값</string>
+    <string name="settings_autoplay">발음 자동 재생</string>
+    <string name="settings_test_voice">음성 테스트</string>
+    <string name="settings_study">학습</string>
+    <string name="settings_show_phonetic">카드에 발음 기호 표시</string>
+    <string name="settings_new_per_day">하루 새 카드: %d</string>
+    <string name="settings_session_length">세션 길이</string>
+    <string name="settings_session_unlimited">무제한</string>
+    <string name="settings_session_minutes">%d분</string>
+    <string name="settings_scheduling">스케줄링 알고리즘</string>
+    <string name="settings_scheduler_fsrs_desc">FSRS는 기억(난이도, 안정성, 회상 확률)을 모델링하여 더 정확한 간격을 제공합니다.</string>
+    <string name="settings_scheduler_sm2_desc">SM-2는 고정된 난이도 조정을 사용하는 고전적인 SuperMemo 알고리즘입니다.</string>
+    <string name="settings_reminders">알림</string>
+    <string name="settings_daily_reminder">매일 학습 알림</string>
+    <string name="settings_time">시간</string>
+    <string name="settings_ai_autofill">AI 자동 채우기</string>
+    <string name="settings_ai_provider">제공자</string>
+    <string name="settings_ai_desc">자신의 키를 사용하세요. 키는 이 기기(Android Keystore)에서 암호화되며 선택한 제공자로의 직접 요청에만 사용됩니다. 단어 옆의 ✨를 눌러 빈 필드를 채우고, AI 연습에는 스마트 연습을 사용하세요. 영어는 항상 키 없는 사전이 먼저 사용됩니다.</string>
+    <string name="settings_ai_get_key">%s 키 받기</string>
+    <string name="settings_ai_replace_key">API 키 교체</string>
+    <string name="settings_ai_api_key">API 키</string>
+    <string name="settings_ai_save_key">키 저장</string>
+    <string name="settings_ai_key_saved">%s의 키가 저장되었습니다.</string>
+    <string name="settings_practice_styles">스마트 연습 스타일</string>
+    <string name="settings_practice_styles_desc">활성 연습 스타일을 선택하거나 편집하고, 자신만의 AI 프롬프트를 작성하세요. 모든 스타일은 채점 가능한 연습을 생성하여 복습 일정에 반영됩니다.</string>
+    <string name="settings_new_custom_style">새 사용자 스타일</string>
+    <string name="settings_style_new">새 연습 스타일</string>
+    <string name="settings_style_edit">스타일 편집</string>
+    <string name="settings_style_emoji">이모지</string>
+    <string name="settings_style_instructions">AI 프롬프트 지침</string>
+    <string name="settings_style_note">앱이 고정된 빈칸 채우기 답변 형식을 자동으로 추가하므로 연습은 채점 가능한 상태로 복습 일정에 반영됩니다.</string>
+    <string name="settings_data">데이터</string>
+    <string name="settings_cards">카드</string>
+    <string name="settings_export_json">카드 내보내기(JSON)</string>
+    <string name="settings_export_csv">카드 내보내기(CSV)</string>
+    <string name="settings_import_cards">카드 가져오기(JSON 또는 CSV)</string>
+    <string name="settings_import_anki">Anki에서 가져오기(.txt)</string>
+    <string name="settings_full_backup">전체 백업</string>
+    <string name="settings_backup_all">전체 백업하기</string>
+    <string name="settings_restore_backup">백업에서 복원</string>
+    <string name="settings_backup_note">백업에는 전체 학습 기록이 포함됩니다. 클라우드 폴더(예: Google Drive)에 저장하면 클라우드 백업이 됩니다.</string>
+    <string name="settings_about">정보</string>
+    <string name="settings_about_version">LingoDo %s</string>
+    <string name="settings_about_desc">간격 반복을 지원하는 오프라인 플래시카드 앱.</string>
+    <string name="settings_restore_title">백업을 복원할까요?</string>
+    <string name="settings_restore_message">현재의 모든 덱, 카드, 학습 기록이 백업 파일의 내용으로 대체됩니다.</string>
+    <string name="settings_restore_confirm">복원</string>
+
+    <!-- Notification channel -->
+    <string name="reminder_channel_name">학습 알림</string>
+    <string name="reminder_channel_description">예정된 플래시카드를 복습하도록 매일 알림.</string>
+    <string name="reminder_title">학습할 시간이에요</string>
+    <plurals name="reminder_message">
+        <item quantity="other">복습할 카드가 %d장 있습니다.</item>
+    </plurals>
+</resources>

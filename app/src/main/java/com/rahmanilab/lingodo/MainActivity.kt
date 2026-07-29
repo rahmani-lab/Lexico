@@ -9,8 +9,8 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.rahmanilab.lingodo.data.preferences.model.AppSettings
 import com.rahmanilab.lingodo.data.preferences.model.ThemeMode
-import com.rahmanilab.lingodo.ui.LexicoApp
-import com.rahmanilab.lingodo.ui.theme.LexicoTheme
+import com.rahmanilab.lingodo.ui.LingoDoApp
+import com.rahmanilab.lingodo.ui.theme.LingoDoTheme
 
 class MainActivity : ComponentActivity() {
 
@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val container = (application as LexicoApplication).container
+        val container = (application as LingoDoApplication).container
 
         setContent {
             val settings by container.settingsRepository.settings
@@ -30,8 +30,8 @@ class MainActivity : ComponentActivity() {
                 ThemeMode.DARK -> true
             }
 
-            LexicoTheme(darkTheme = darkTheme) {
-                LexicoApp()
+            LingoDoTheme(darkTheme = darkTheme) {
+                LingoDoApp()
             }
         }
     }

@@ -1,7 +1,7 @@
 package com.rahmanilab.lingodo.data.backup
 
 import androidx.room.withTransaction
-import com.rahmanilab.lingodo.data.local.LexicoDatabase
+import com.rahmanilab.lingodo.data.local.LingoDoDatabase
 import com.rahmanilab.lingodo.data.local.entity.CardEntity
 import com.rahmanilab.lingodo.data.local.entity.DeckEntity
 import com.rahmanilab.lingodo.data.local.entity.LanguagePairEntity
@@ -20,7 +20,7 @@ import kotlinx.serialization.json.Json
  * Drive or Dropbox, which is how LingoDo offers "cloud backup" without bundling any account SDK.
  */
 class ImportExportRepository(
-    private val db: LexicoDatabase,
+    private val db: LingoDoDatabase,
     private val deckRepository: DeckRepository,
     private val cardRepository: CardRepository,
     private val settingsRepository: com.rahmanilab.lingodo.data.preferences.SettingsRepository

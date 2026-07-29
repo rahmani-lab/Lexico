@@ -82,5 +82,5 @@ class PronunciationManager(context: Context) : TextToSpeech.OnInitListener {
         _isReady.value = false
     }
 
-    private fun utteranceId(text: String): String = "lexico_${text.hashCode()}"
+    private fun utteranceId(text: String): String = "lingodo_${text.hashCode()}"
 }

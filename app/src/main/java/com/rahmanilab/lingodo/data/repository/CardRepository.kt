@@ -1,14 +1,14 @@
 package com.rahmanilab.lingodo.data.repository
 
 import androidx.room.withTransaction
-import com.rahmanilab.lingodo.data.local.LexicoDatabase
+import com.rahmanilab.lingodo.data.local.LingoDoDatabase
 import com.rahmanilab.lingodo.data.local.entity.CardEntity
 import com.rahmanilab.lingodo.data.local.entity.CardTagCrossRef
 import com.rahmanilab.lingodo.data.local.entity.TagEntity
 import com.rahmanilab.lingodo.data.local.relation.CardWithDetails
 import kotlinx.coroutines.flow.Flow
 
-class CardRepository(private val db: LexicoDatabase) {
+class CardRepository(private val db: LingoDoDatabase) {
 
     private val cardDao get() = db.cardDao()
     private val scheduleDao get() = db.cardScheduleDao()

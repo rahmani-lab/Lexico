@@ -7,7 +7,7 @@ import com.rahmanilab.lingodo.data.autofill.DefaultAutoFillEngine
 import com.rahmanilab.lingodo.data.autofill.DictionaryClient
 import com.rahmanilab.lingodo.data.autofill.LlmClient
 import com.rahmanilab.lingodo.data.backup.ImportExportRepository
-import com.rahmanilab.lingodo.data.local.LexicoDatabase
+import com.rahmanilab.lingodo.data.local.LingoDoDatabase
 import com.rahmanilab.lingodo.data.practice.PracticeRepository
 import com.rahmanilab.lingodo.data.practice.PracticeStyleRepository
 import com.rahmanilab.lingodo.data.preferences.SettingsRepository
@@ -29,7 +29,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 
 /**
- * Manual dependency-injection container. A single instance lives on [com.rahmanilab.lingodo.LexicoApplication]
+ * Manual dependency-injection container. A single instance lives on [com.rahmanilab.lingodo.LingoDoApplication]
  * and owns every app-wide singleton. Everything is created lazily so start-up stays cheap.
  *
  * This keeps the project free of an annotation-processing DI framework while still following the
@@ -43,7 +43,7 @@ class AppContainer(context: Context) {
     /** Long-lived scope for app-level work such as one-time seeding. */
     val applicationScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
-    val database: LexicoDatabase by lazy { LexicoDatabase.build(appContext) }
+    val database: LingoDoDatabase by lazy { LingoDoDatabase.build(appContext) }
 
     val settingsRepository: SettingsRepository by lazy { SettingsRepository(appContext) }
 

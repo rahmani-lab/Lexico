@@ -1,6 +1,6 @@
 package com.rahmanilab.lingodo.data.repository
 
-import com.rahmanilab.lingodo.data.local.LexicoDatabase
+import com.rahmanilab.lingodo.data.local.LingoDoDatabase
 import com.rahmanilab.lingodo.data.local.entity.LanguagePairEntity
 import com.rahmanilab.lingodo.data.preferences.SettingsRepository
 import com.rahmanilab.lingodo.domain.model.Language
@@ -22,7 +22,7 @@ data class LanguagePair(
 }
 
 class LanguagePairRepository(
-    private val db: LexicoDatabase,
+    private val db: LingoDoDatabase,
     private val settingsRepository: SettingsRepository
 ) {
 

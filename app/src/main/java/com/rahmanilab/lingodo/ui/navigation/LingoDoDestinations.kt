@@ -1,5 +1,6 @@
 package com.rahmanilab.lingodo.ui.navigation
 
+import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Home
@@ -7,6 +8,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Style
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.rahmanilab.lingodo.R
 
 /** Central place for every navigation route and its arguments. */
 object Routes {
@@ -36,16 +38,16 @@ object Routes {
 data class TopLevelDestination(
     val routePrefix: String,
     val navRoute: String,
-    val label: String,
+    @StringRes val labelRes: Int,
     val icon: ImageVector
 )
 
 val topLevelDestinations = listOf(
-    TopLevelDestination("home", Routes.HOME, "Home", Icons.Filled.Home),
-    TopLevelDestination("decks", Routes.DECKS, "Decks", Icons.Filled.Style),
-    TopLevelDestination("browse", Routes.browse(), "Browse", Icons.Filled.Search),
-    TopLevelDestination("stats", Routes.STATS, "Stats", Icons.Filled.BarChart),
-    TopLevelDestination("settings", Routes.SETTINGS, "Settings", Icons.Filled.Settings)
+    TopLevelDestination("home", Routes.HOME, R.string.nav_home, Icons.Filled.Home),
+    TopLevelDestination("decks", Routes.DECKS, R.string.nav_decks, Icons.Filled.Style),
+    TopLevelDestination("browse", Routes.browse(), R.string.nav_browse, Icons.Filled.Search),
+    TopLevelDestination("stats", Routes.STATS, R.string.nav_stats, Icons.Filled.BarChart),
+    TopLevelDestination("settings", Routes.SETTINGS, R.string.nav_settings, Icons.Filled.Settings)
 )
 
 /** The top-level destination whose route pattern matches [route], or null for full-screen routes. */

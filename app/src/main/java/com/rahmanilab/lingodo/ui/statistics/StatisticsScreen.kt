@@ -31,10 +31,12 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.rahmanilab.lingodo.R
 import com.rahmanilab.lingodo.domain.model.DailyReviewCount
 import com.rahmanilab.lingodo.ui.components.SectionHeader
 import com.rahmanilab.lingodo.ui.components.StatTile
@@ -48,7 +50,7 @@ fun StatisticsScreen(
     val stats = state.stats
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text("Statistics") }) }
+        topBar = { TopAppBar(title = { Text(stringResource(R.string.stats_title)) }) }
     ) { padding ->
         if (state.loading) {
             androidx.compose.foundation.layout.Box(
@@ -69,20 +71,20 @@ fun StatisticsScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                StatTile(stats.totalReviews.toString(), "Total reviews", Modifier.weight(1f), Icons.Filled.Task)
-                StatTile("${stats.correctRatePercent}%", "Correct rate", Modifier.weight(1f), Icons.Filled.CheckCircle)
+                StatTile(stats.totalReviews.toString(), stringResource(R.string.stats_total_reviews), Modifier.weight(1f), Icons.Filled.Task)
+                StatTile("${stats.correctRatePercent}%", stringResource(R.string.stats_correct_rate), Modifier.weight(1f), Icons.Filled.CheckCircle)
             }
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                StatTile(stats.currentStreak.toString(), "Current streak", Modifier.weight(1f), Icons.Filled.LocalFireDepartment)
-                StatTile(stats.learnedCount.toString(), "Learned", Modifier.weight(1f), Icons.Filled.School)
+                StatTile(stats.currentStreak.toString(), stringResource(R.string.stats_current_streak), Modifier.weight(1f), Icons.Filled.LocalFireDepartment)
+                StatTile(stats.learnedCount.toString(), stringResource(R.string.stats_learned), Modifier.weight(1f), Icons.Filled.School)
             }
             Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                StatTile(stats.reviewsThisWeek.toString(), "This week", Modifier.weight(1f))
-                StatTile(stats.matureCount.toString(), "Mature", Modifier.weight(1f))
-                StatTile(stats.longestStreak.toString(), "Best streak", Modifier.weight(1f))
+                StatTile(stats.reviewsThisWeek.toString(), stringResource(R.string.stats_this_week), Modifier.weight(1f))
+                StatTile(stats.matureCount.toString(), stringResource(R.string.stats_mature), Modifier.weight(1f))
+                StatTile(stats.longestStreak.toString(), stringResource(R.string.stats_best_streak), Modifier.weight(1f))
             }
 
-            SectionHeader("Reviews (last 30 days)")
+            SectionHeader(stringResource(R.string.stats_reviews_30_days))
             Card(
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
             ) {
@@ -96,7 +98,7 @@ fun StatisticsScreen(
                 )
             }
             Text(
-                text = "${stats.totalCards} cards in total",
+                text = stringResource(R.string.stats_total_cards, stats.totalCards),
                 style = MaterialTheme.typography.labelMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

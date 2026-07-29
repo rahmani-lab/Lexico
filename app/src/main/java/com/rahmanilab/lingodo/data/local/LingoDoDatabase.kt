@@ -35,7 +35,7 @@ import com.rahmanilab.lingodo.data.local.entity.TagEntity
     exportSchema = true
 )
 @TypeConverters(Converters::class)
-abstract class LexicoDatabase : RoomDatabase() {
+abstract class LingoDoDatabase : RoomDatabase() {
 
     abstract fun deckDao(): DeckDao
     abstract fun cardDao(): CardDao
@@ -77,10 +77,10 @@ abstract class LexicoDatabase : RoomDatabase() {
             }
         }
 
-        fun build(context: Context): LexicoDatabase =
+        fun build(context: Context): LingoDoDatabase =
             Room.databaseBuilder(
                 context.applicationContext,
-                LexicoDatabase::class.java,
+                LingoDoDatabase::class.java,
                 DATABASE_NAME
             )
                 .addMigrations(MIGRATION_1_2)
