@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.rahmanilab.lingodo.data.backup.ImportExportRepository
+import com.rahmanilab.lingodo.data.practice.PracticeStyleRepository
 import com.rahmanilab.lingodo.data.preferences.SettingsRepository
 import com.rahmanilab.lingodo.data.preferences.model.AppSettings
 import com.rahmanilab.lingodo.data.preferences.model.SchedulerType
@@ -14,6 +15,7 @@ import com.rahmanilab.lingodo.data.preferences.model.ThemeMode
 import com.rahmanilab.lingodo.data.preferences.model.TtsAccent
 import com.rahmanilab.lingodo.data.repository.AiConfigRepository
 import com.rahmanilab.lingodo.domain.model.AiProvider
+import com.rahmanilab.lingodo.domain.practice.PracticeStyle
 import com.rahmanilab.lingodo.tts.PronunciationManager
 import com.rahmanilab.lingodo.ui.appContainer
 import com.rahmanilab.lingodo.work.ReminderScheduler
@@ -34,7 +36,8 @@ class SettingsViewModel(
     private val reminderScheduler: ReminderScheduler,
     private val pronunciationManager: PronunciationManager,
     private val importExportRepository: ImportExportRepository,
-    private val aiConfigRepository: AiConfigRepository
+    private val aiConfigRepository: AiConfigRepository,
+    private val practiceStyleRepository: PracticeStyleRepository
 ) : ViewModel() {
 
     private val _messages = MutableSharedFlow<String>(extraBufferCapacity = 4)
@@ -50,6 +53,16 @@ class SettingsViewModel(
     val hasApiKey: StateFlow<Boolean> = aiConfigRepository.provider
         .map { aiConfigRepository.hasKey(it) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+
+    val practiceStyles: StateFlow<List<PracticeStyle>> = practiceStyleRepository.styles
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), PracticeStyle.presets)
+
+    val activePracticeStyleId: StateFlow<String> = practiceStyleRepository.activeStyleId
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), PracticeStyle.DEFAULT_ID)
+
+    fun setActivePracticeStyle(id: String) = launch { practiceStyleRepository.setActive(id) }
+    fun savePracticeStyle(style: PracticeStyle) = launch { practiceStyleRepository.saveCustom(style) }
+    fun deletePracticeStyle(id: String) = launch { practiceStyleRepository.deleteCustom(id) }
 
     val voices: StateFlow<List<String>> = pronunciationManager.isReady
         .filter { it }
@@ -172,7 +185,8 @@ class SettingsViewModel(
                     appContainer.reminderScheduler,
                     appContainer.pronunciationManager,
                     appContainer.importExportRepository,
-                    appContainer.aiConfigRepository
+                    appContainer.aiConfigRepository,
+                    appContainer.practiceStyleRepository
                 )
             }
         }

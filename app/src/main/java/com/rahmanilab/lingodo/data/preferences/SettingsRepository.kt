@@ -64,6 +64,24 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun setAiProviderName(name: String) = edit { it[Keys.AI_PROVIDER] = name }
 
+    // --- Smart Practice styles (custom prompt templates + active selection) ---
+
+    val customPracticeStylesJson: Flow<String> =
+        context.dataStore.data.map { it[Keys.PRACTICE_STYLES] ?: "" }
+
+    suspend fun currentCustomPracticeStylesJson(): String =
+        context.dataStore.data.first()[Keys.PRACTICE_STYLES] ?: ""
+
+    suspend fun setCustomPracticeStylesJson(json: String) = edit { it[Keys.PRACTICE_STYLES] = json }
+
+    val activePracticeStyleId: Flow<String> =
+        context.dataStore.data.map { it[Keys.ACTIVE_PRACTICE_STYLE] ?: "" }
+
+    suspend fun currentActivePracticeStyleId(): String =
+        context.dataStore.data.first()[Keys.ACTIVE_PRACTICE_STYLE] ?: ""
+
+    suspend fun setActivePracticeStyleId(id: String) = edit { it[Keys.ACTIVE_PRACTICE_STYLE] = id }
+
     // --- one-time database seeding flag ---
 
     suspend fun isSeeded(): Boolean = context.dataStore.data.first()[Keys.SEEDED] ?: false
@@ -128,6 +146,8 @@ class SettingsRepository(private val context: Context) {
         val SCHEDULER = stringPreferencesKey("scheduler_type")
         val ACTIVE_PAIR = longPreferencesKey("active_pair_id")
         val AI_PROVIDER = stringPreferencesKey("ai_provider")
+        val PRACTICE_STYLES = stringPreferencesKey("practice_styles")
+        val ACTIVE_PRACTICE_STYLE = stringPreferencesKey("active_practice_style")
         val SEEDED = booleanPreferencesKey("seeded")
         val NEW_STUDIED_DAY = longPreferencesKey("new_studied_day")
         val NEW_STUDIED_COUNT = intPreferencesKey("new_studied_count")

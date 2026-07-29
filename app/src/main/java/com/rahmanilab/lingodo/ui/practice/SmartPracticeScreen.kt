@@ -15,8 +15,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -29,12 +32,16 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.rahmanilab.lingodo.domain.practice.PracticeStyle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -86,6 +93,9 @@ fun SmartPracticeScreen(
                     else -> IntroView(
                         summary = state.summary,
                         report = state.report,
+                        styles = state.styles,
+                        selectedStyleId = state.selectedStyleId,
+                        onSelectStyle = viewModel::setStyle,
                         busy = state.busy,
                         onReport = viewModel::generateReport,
                         onStart = viewModel::startExercises
@@ -100,6 +110,9 @@ fun SmartPracticeScreen(
 private fun IntroView(
     summary: String,
     report: String,
+    styles: List<PracticeStyle>,
+    selectedStyleId: String,
+    onSelectStyle: (String) -> Unit,
     busy: Boolean,
     onReport: () -> Unit,
     onStart: () -> Unit
@@ -110,6 +123,9 @@ private fun IntroView(
             Text(summary, style = MaterialTheme.typography.bodyMedium)
         }
     }
+
+    Text("Practice style", style = MaterialTheme.typography.labelLarge)
+    StyleDropdown(styles = styles, selectedId = selectedStyleId, onSelect = onSelectStyle)
     if (report.isNotBlank()) {
         ElevatedCard {
             Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -130,6 +146,38 @@ private fun IntroView(
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant
     )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun StyleDropdown(
+    styles: List<PracticeStyle>,
+    selectedId: String,
+    onSelect: (String) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val selected = styles.firstOrNull { it.id == selectedId } ?: styles.firstOrNull()
+    ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = it }) {
+        OutlinedTextField(
+            value = selected?.let { "${it.emoji} ${it.name}" }.orEmpty(),
+            onValueChange = {},
+            readOnly = true,
+            label = { Text("Style") },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            modifier = Modifier.menuAnchor().fillMaxWidth()
+        )
+        ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            styles.forEach { style ->
+                DropdownMenuItem(
+                    text = { Text("${style.emoji} ${style.name}") },
+                    onClick = {
+                        onSelect(style.id)
+                        expanded = false
+                    }
+                )
+            }
+        }
+    }
 }
 
 @Composable

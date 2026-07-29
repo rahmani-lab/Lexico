@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.VolumeUp
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
@@ -28,8 +31,11 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -55,8 +61,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.rahmanilab.lingodo.domain.model.AiProvider
+import com.rahmanilab.lingodo.domain.practice.PracticeStyle
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -79,6 +87,10 @@ fun SettingsScreen(
     val hasApiKey by viewModel.hasApiKey.collectAsStateWithLifecycle()
     val uriHandler = LocalUriHandler.current
     var apiKeyInput by remember { mutableStateOf("") }
+    val practiceStyles by viewModel.practiceStyles.collectAsStateWithLifecycle()
+    val activeStyleId by viewModel.activePracticeStyleId.collectAsStateWithLifecycle()
+    var editingStyle by remember { mutableStateOf<PracticeStyle?>(null) }
+    var creatingStyle by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     var showTimePicker by remember { mutableStateOf(false) }
@@ -314,6 +326,27 @@ fun SettingsScreen(
                 }
             }
 
+            SettingsSection("Smart Practice Styles") {
+                Text(
+                    "Pick the active exercise style, edit it, or write your own AI prompt. Every style " +
+                        "still produces gradable drills that feed your review schedule.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                practiceStyles.forEach { style ->
+                    PracticeStyleRow(
+                        style = style,
+                        selected = style.id == activeStyleId,
+                        onSelect = { viewModel.setActivePracticeStyle(style.id) },
+                        onEdit = { editingStyle = style },
+                        onDelete = { viewModel.deletePracticeStyle(style.id) }
+                    )
+                }
+                OutlinedButton(onClick = { creatingStyle = true }, modifier = Modifier.fillMaxWidth()) {
+                    Text("New custom style")
+                }
+            }
+
             SettingsSection("Data") {
                 Text("Cards", style = MaterialTheme.typography.bodyMedium)
                 OutlinedButton(
@@ -390,6 +423,28 @@ fun SettingsScreen(
             }
         )
     }
+
+    if (creatingStyle) {
+        PracticeStyleDialog(
+            initial = null,
+            onDismiss = { creatingStyle = false },
+            onSave = {
+                viewModel.savePracticeStyle(it)
+                creatingStyle = false
+            }
+        )
+    }
+
+    editingStyle?.let { style ->
+        PracticeStyleDialog(
+            initial = style,
+            onDismiss = { editingStyle = null },
+            onSave = {
+                viewModel.savePracticeStyle(it)
+                editingStyle = null
+            }
+        )
+    }
 }
 
 @Composable
@@ -428,6 +483,110 @@ private fun SettingsSwitchRow(
         Text(label, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
         Switch(checked = checked, onCheckedChange = onChange)
     }
+}
+
+@Composable
+private fun PracticeStyleRow(
+    style: PracticeStyle,
+    selected: Boolean,
+    onSelect: () -> Unit,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onSelect),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        RadioButton(selected = selected, onClick = onSelect)
+        Column(modifier = Modifier.weight(1f)) {
+            Text(
+                "${style.emoji} ${style.name}",
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Medium
+            )
+            Text(
+                style.instructions,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+        IconButton(onClick = onEdit) {
+            Icon(Icons.Filled.Edit, contentDescription = "Edit ${style.name}")
+        }
+        if (!style.builtIn) {
+            IconButton(onClick = onDelete) {
+                Icon(Icons.Filled.Delete, contentDescription = "Delete ${style.name}")
+            }
+        }
+    }
+}
+
+@Composable
+private fun PracticeStyleDialog(
+    initial: PracticeStyle?,
+    onDismiss: () -> Unit,
+    onSave: (PracticeStyle) -> Unit
+) {
+    var emoji by remember { mutableStateOf(initial?.emoji ?: "✨") }
+    var name by remember { mutableStateOf(initial?.name.orEmpty()) }
+    var instructions by remember { mutableStateOf(initial?.instructions.orEmpty()) }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(if (initial == null) "New practice style" else "Edit style") },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                OutlinedTextField(
+                    value = emoji,
+                    onValueChange = { emoji = it.take(2) },
+                    label = { Text("Emoji") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Name") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                OutlinedTextField(
+                    value = instructions,
+                    onValueChange = { instructions = it },
+                    label = { Text("AI prompt instructions") },
+                    minLines = 3,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Text(
+                    "The app automatically appends a fixed fill-in-the-blank answer format, so your " +
+                        "drills stay gradable and feed the review schedule.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onSave(
+                        PracticeStyle(
+                            id = initial?.id.orEmpty(),
+                            emoji = emoji.trim().ifBlank { "✨" },
+                            name = name.trim(),
+                            instructions = instructions.trim()
+                        )
+                    )
+                },
+                enabled = name.isNotBlank() && instructions.isNotBlank()
+            ) { Text("Save") }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) { Text("Cancel") }
+        }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

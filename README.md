@@ -23,6 +23,11 @@ statistics.
   (high lapses / low ease) and *mastered* words, generates a progress note and adaptive
   fill-in-the-blank drills via your LLM, and feeds every answer **back into the review schedule**
   (a closed feedback loop). Everything stays on-device except the direct LLM call.
+- **Practice styles (prompt templates)** — choose how drills feel: three built-in presets
+  (📝 Sentence Building, 📖 Contextual Story, 💬 Roleplay Dialogue), or write your own AI prompt in
+  Settings. Styles only flavour the wording — the app always appends a fixed answer format, so every
+  style stays gradable and keeps feeding the SRS loop. Pick the active style right on the Smart
+  Practice screen.
 - **Word forms & inflections** — a structured, editable list on every card, shown on the review back.
 - **BYOK API keys** — bring your own Gemini/Groq/DeepSeek/OpenAI/Claude key; stored **encrypted** via
   the Android Keystore (AES-256-GCM), used only for direct requests to the provider you pick.

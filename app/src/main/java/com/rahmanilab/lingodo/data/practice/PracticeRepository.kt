@@ -9,6 +9,7 @@ import com.rahmanilab.lingodo.data.repository.StatsRepository
 import com.rahmanilab.lingodo.domain.model.Rating
 import com.rahmanilab.lingodo.domain.practice.PracticeContext
 import com.rahmanilab.lingodo.domain.practice.PracticeExercise
+import com.rahmanilab.lingodo.domain.practice.PracticeStyle
 import com.rahmanilab.lingodo.util.TextUtils
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
@@ -66,8 +67,15 @@ class PracticeRepository(
         return runCatching { llm.chat(provider, provider.defaultModel, key, system, user).trim() }
     }
 
-    /** Generate adaptive fill-in-the-blank drills from the learner's own words. */
-    suspend fun generateExercises(count: Int = 5): Result<List<PracticeExercise>> {
+    /**
+     * Generate adaptive fill-in-the-blank drills from the learner's own words, following the chosen
+     * practice style. [styleInstructions] flavours the content; the JSON output schema is fixed so
+     * every style stays gradable and feeds the SRS loop.
+     */
+    suspend fun generateExercises(
+        styleInstructions: String = PracticeStyle.default().instructions,
+        count: Int = 5
+    ): Result<List<PracticeExercise>> {
         val ctx = buildContext()
         if (!ctx.hasWords) {
             return Result.failure(IllegalStateException("Study a few cards first to unlock Smart Practice."))
@@ -78,10 +86,11 @@ class PracticeRepository(
 
         val words = (ctx.troublesome + ctx.mastered).distinct().take(count)
         val system = "You are a ${ctx.targetLanguage} teacher. Respond with ONLY a minified JSON array, no markdown."
-        val user = "Create fill-in-the-blank practice in ${ctx.targetLanguage} for these words: " +
-            "${words.joinToString(", ")}. Return a JSON array; each element: " +
-            "{\"sentence\": a natural ${ctx.targetLanguage} sentence with the target word replaced by \"_____\", " +
-            "\"answer\": the missing word, \"translation\": the full sentence translated into ${ctx.sourceLanguage}}. " +
+        val user = "$styleInstructions\n\n" +
+            "Practice these ${ctx.targetLanguage} words: ${words.joinToString(", ")}. " +
+            "Return a JSON array; each element: {\"sentence\": one ${ctx.targetLanguage} sentence in the style above " +
+            "with the target word replaced by \"_____\", \"answer\": the missing word, " +
+            "\"translation\": the full sentence translated into ${ctx.sourceLanguage}}. " +
             "Exactly one element per word. JSON array only."
 
         val raw = runCatching { llm.chat(provider, provider.defaultModel, key, system, user) }
