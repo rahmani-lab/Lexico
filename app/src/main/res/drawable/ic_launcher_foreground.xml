@@ -4,24 +4,26 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Stylized flashcard -->
-    <group android:translateX="0" android:translateY="2">
-        <path
-            android:fillColor="#FFFFFF"
-            android:pathData="M36,38 L72,38 A4,4 0 0 1 76,42 L76,66 A4,4 0 0 1 72,70 L36,70 A4,4 0 0 1 32,66 L32,42 A4,4 0 0 1 36,38 Z" />
-        <!-- Text lines on the card -->
-        <path
-            android:fillColor="#4C5BD4"
-            android:pathData="M40,47 L60,47 A1.5,1.5 0 0 1 60,50 L40,50 A1.5,1.5 0 0 1 40,47 Z" />
-        <path
-            android:fillColor="#B9C0F2"
-            android:pathData="M40,55 L68,55 A1.5,1.5 0 0 1 68,58 L40,58 A1.5,1.5 0 0 1 40,55 Z" />
-        <path
-            android:fillColor="#B9C0F2"
-            android:pathData="M40,61 L54,61 A1.5,1.5 0 0 1 54,64 L40,64 A1.5,1.5 0 0 1 40,61 Z" />
-    </group>
-    <!-- Pronunciation / sound accent dot -->
+    <!-- Chat/translation speech bubble (white) -->
     <path
-        android:fillColor="#FFC24B"
-        android:pathData="M72,36 m-7,0 a7,7 0 1,0 14,0 a7,7 0 1,0 -14,0" />
+        android:fillColor="#FFFFFF"
+        android:pathData="M43,30 L65,30 A11,11 0 0 1 76,41 L76,53 A11,11 0 0 1 65,64 L43,64 A11,11 0 0 1 32,53 L32,41 A11,11 0 0 1 43,30 Z" />
+    <!-- Bubble tail -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M45,60 L41,74 L58,61 Z" />
+    <!-- Three "text lines" in brand tones -->
+    <path
+        android:fillColor="#5B44E4"
+        android:pathData="M40,39 L66,39 A2,2 0 0 1 66,43 L40,43 A2,2 0 0 1 40,39 Z" />
+    <path
+        android:fillColor="#7A3FE0"
+        android:pathData="M40,47 L62,47 A2,2 0 0 1 62,51 L40,51 A2,2 0 0 1 40,47 Z" />
+    <path
+        android:fillColor="#C3B4F7"
+        android:pathData="M40,55 L54,55 A2,2 0 0 1 54,59 L40,59 A2,2 0 0 1 40,55 Z" />
+    <!-- Accent dot (raspberry) -->
+    <path
+        android:fillColor="#FF5C7A"
+        android:pathData="M74,32 m-7,0 a7,7 0 1,0 14,0 a7,7 0 1,0 -14,0" />
 </vector>

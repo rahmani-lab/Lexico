@@ -1,5 +1,6 @@
 package com.rahmanilab.lingodo.ui
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -30,7 +31,7 @@ import com.rahmanilab.lingodo.ui.statistics.StatisticsScreen
 import com.rahmanilab.lingodo.ui.workspace.WorkspaceScreen
 
 @Composable
-fun LexicoApp() {
+fun LingoDoApp() {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = backStackEntry?.destination?.route

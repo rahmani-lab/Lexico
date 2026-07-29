@@ -59,13 +59,14 @@ private val DarkColors = darkColorScheme(
 )
 
 @Composable
-fun LexicoTheme(
+fun LingoDoTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
     MaterialTheme(
         colorScheme = if (darkTheme) DarkColors else LightColors,
-        typography = LexicoTypography,
+        typography = LingoDoTypography,
+        shapes = LingoDoShapes,
         content = content
     )
 }

@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Lexico"
+rootProject.name = "LingoDo"
 include(":app")

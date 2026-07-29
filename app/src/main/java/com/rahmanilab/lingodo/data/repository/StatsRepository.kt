@@ -1,6 +1,6 @@
 package com.rahmanilab.lingodo.data.repository
 
-import com.rahmanilab.lingodo.data.local.LexicoDatabase
+import com.rahmanilab.lingodo.data.local.LingoDoDatabase
 import com.rahmanilab.lingodo.domain.model.DailyReviewCount
 import com.rahmanilab.lingodo.domain.model.Rating
 import com.rahmanilab.lingodo.domain.model.Statistics
@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlin.math.max
 import kotlin.math.roundToInt
 
-class StatsRepository(private val db: LexicoDatabase) {
+class StatsRepository(private val db: LingoDoDatabase) {
 
     private val reviewLogDao get() = db.reviewLogDao()
     private val scheduleDao get() = db.cardScheduleDao()

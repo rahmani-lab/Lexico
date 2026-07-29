@@ -13,7 +13,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.rahmanilab.lingodo.LexicoApplication
+import com.rahmanilab.lingodo.LingoDoApplication
 import com.rahmanilab.lingodo.MainActivity
 import com.rahmanilab.lingodo.R
 
@@ -27,7 +27,7 @@ class ReminderWorker(
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
-        val container = (applicationContext as LexicoApplication).container
+        val container = (applicationContext as LingoDoApplication).container
         val settings = container.settingsRepository.current()
 
         if (settings.reminderEnabled) {

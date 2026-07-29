@@ -8,6 +8,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -350,11 +351,11 @@ fun SettingsScreen(
             SettingsSection("Data") {
                 Text("Cards", style = MaterialTheme.typography.bodyMedium)
                 OutlinedButton(
-                    onClick = { exportCardsJson.launch("lexico-cards.json") },
+                    onClick = { exportCardsJson.launch("lingodo-cards.json") },
                     modifier = Modifier.fillMaxWidth()
                 ) { Text("Export cards (JSON)") }
                 OutlinedButton(
-                    onClick = { exportCardsCsv.launch("lexico-cards.csv") },
+                    onClick = { exportCardsCsv.launch("lingodo-cards.csv") },
                     modifier = Modifier.fillMaxWidth()
                 ) { Text("Export cards (CSV)") }
                 OutlinedButton(
@@ -370,7 +371,7 @@ fun SettingsScreen(
 
                 Text("Full backup", style = MaterialTheme.typography.bodyMedium)
                 OutlinedButton(
-                    onClick = { exportBackupFile.launch("lexico-backup.json") },
+                    onClick = { exportBackupFile.launch("lingodo-backup.json") },
                     modifier = Modifier.fillMaxWidth()
                 ) { Text("Back up everything") }
                 OutlinedButton(
@@ -385,7 +386,7 @@ fun SettingsScreen(
             }
 
             SettingsSection("About") {
-                Text("Lexico ${BuildConfig.VERSION_NAME}", style = MaterialTheme.typography.bodyMedium)
+                Text("LingoDo ${BuildConfig.VERSION_NAME}", style = MaterialTheme.typography.bodyMedium)
                 Text(
                     "An offline English flashcard app with spaced repetition.",
                     style = MaterialTheme.typography.bodySmall,

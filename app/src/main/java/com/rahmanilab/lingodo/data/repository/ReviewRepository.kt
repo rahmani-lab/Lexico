@@ -1,7 +1,7 @@
 package com.rahmanilab.lingodo.data.repository
 
 import androidx.room.withTransaction
-import com.rahmanilab.lingodo.data.local.LexicoDatabase
+import com.rahmanilab.lingodo.data.local.LingoDoDatabase
 import com.rahmanilab.lingodo.data.local.entity.CardScheduleEntity
 import com.rahmanilab.lingodo.data.local.entity.ReviewLogEntity
 import com.rahmanilab.lingodo.data.local.relation.CardWithDetails
@@ -24,7 +24,7 @@ data class ReviewQueue(
 }
 
 class ReviewRepository(
-    private val db: LexicoDatabase,
+    private val db: LingoDoDatabase,
     private val sm2Scheduler: Scheduler,
     private val fsrsScheduler: Scheduler,
     private val settingsRepository: SettingsRepository

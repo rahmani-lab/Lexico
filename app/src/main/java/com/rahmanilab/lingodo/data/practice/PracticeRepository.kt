@@ -1,7 +1,7 @@
 package com.rahmanilab.lingodo.data.practice
 
 import com.rahmanilab.lingodo.data.autofill.LlmClient
-import com.rahmanilab.lingodo.data.local.LexicoDatabase
+import com.rahmanilab.lingodo.data.local.LingoDoDatabase
 import com.rahmanilab.lingodo.data.repository.AiConfigRepository
 import com.rahmanilab.lingodo.data.repository.LanguagePairRepository
 import com.rahmanilab.lingodo.data.repository.ReviewRepository
@@ -20,7 +20,7 @@ import kotlinx.serialization.json.Json
  * a closed feedback loop that keeps everything on-device except the direct LLM call.
  */
 class PracticeRepository(
-    private val db: LexicoDatabase,
+    private val db: LingoDoDatabase,
     private val statsRepository: StatsRepository,
     private val languagePairRepository: LanguagePairRepository,
     private val aiConfig: AiConfigRepository,

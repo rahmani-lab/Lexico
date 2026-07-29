@@ -4,7 +4,7 @@ import android.app.Application
 import com.rahmanilab.lingodo.di.AppContainer
 import kotlinx.coroutines.launch
 
-class LexicoApplication : Application() {
+class LingoDoApplication : Application() {
 
     lateinit var container: AppContainer
         private set

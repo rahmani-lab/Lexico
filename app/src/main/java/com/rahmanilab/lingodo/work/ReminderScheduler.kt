@@ -41,7 +41,7 @@ class ReminderScheduler(private val context: Context) {
     }
 
     companion object {
-        const val UNIQUE_WORK_NAME = "lexico_study_reminder"
+        const val UNIQUE_WORK_NAME = "lingodo_study_reminder"
         const val TAG = "study_reminder"
     }
 }
