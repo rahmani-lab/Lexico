@@ -1,12 +1,29 @@
-# Lexico
+# LingoDo
 
-A professional, fully-offline **English vocabulary flashcard app for Android**. Lexico combines
-rich, language-learning–focused flashcards with a spaced-repetition study system, built-in
-text-to-speech pronunciation, and progress statistics.
+A professional, fully-offline **multi-language vocabulary flashcard app for Android** (formerly
+Lexico). LingoDo combines rich, language-learning–focused flashcards with a spaced-repetition study
+system, built-in text-to-speech pronunciation, global **language-pair workspaces**, and progress
+statistics.
 
 > The app interface is in **English**. Card content — the meaning and example translations — can be
 > written in **any language**; right-to-left scripts such as Persian and Arabic are rendered
-> correctly inside their fields.
+> correctly inside their fields. Package/app id: `com.rahmanilab.lingodo`.
+
+## LingoDo upgrade (multi-lingual)
+- **Global language-pair manager** — decks/cards belong to a source→target pair (e.g. Persian →
+  German). Switching the active pair filters everything and adapts the TTS voice to the target
+  language. Manage pairs from the Home globe button or Settings → Language pairs.
+- **Auto-fill (✨, optional & user-triggered)** — tap the spark button next to a word to enrich the
+  card. It only fills **empty** fields (never overwrites your text) and is designed to auto-detect
+  the grammatical class and extract **word forms & inflections** (verb tenses, comparatives, word
+  family). *Base-First build: the engine, BYOK key handling and merge logic ship now; the live
+  network fetch turns on in the next update.*
+- **Word forms & inflections** — a structured, editable list on every card, shown on the review back.
+- **BYOK API keys** — bring your own Gemini/Groq/DeepSeek/OpenAI/Claude key; stored **encrypted** via
+  the Android Keystore (AES-256-GCM), used only for direct requests to the provider you pick.
+- **Help & onboarding center** — an in-app guide (workflow, language pairs, API keys, import/export,
+  TTS troubleshooting).
+- **Anki import** — import Anki "Notes in Plain Text" (.txt/TSV) alongside CSV/JSON.
 
 ---
 
@@ -88,25 +105,33 @@ that depends on a **data layer** (repositories over Room and DataStore), with a 
 package for framework-independent logic (the scheduler and shared models).
 
 ```
-com.rahmanilab.lexico
+com.rahmanilab.lingodo
 ├── LexicoApplication / MainActivity
 ├── di/                      # AppContainer – manual DI, owns all singletons
 ├── domain/
-│   ├── model/               # Rating, CardState, ReviewMode, Example, Statistics
-│   └── scheduler/           # Scheduler interface + Sm2Scheduler + FsrsScheduler (pure, tested)
+│   ├── model/               # Rating, CardState, ReviewMode, Example, WordForm, Language, AiProvider…
+│   ├── scheduler/           # Scheduler interface + Sm2Scheduler + FsrsScheduler (pure, tested)
+│   └── autofill/            # AutoFillEngine interface + result models
 ├── data/
-│   ├── local/               # Room: entities, DAOs, relations, converters, database
+│   ├── local/               # Room: entities (incl. language_pairs), DAOs, converters, database + migration
 │   ├── preferences/         # SettingsRepository (DataStore) + settings models
-│   ├── repository/          # Deck / Card / Review / Stats repositories
-│   ├── backup/              # ImportExportRepository (CSV/JSON) + full backup snapshot
-│   └── DatabaseSeeder.kt    # One-time sample deck on first launch
+│   ├── repository/          # Deck / Card / Review / Stats / LanguagePair / AiConfig repositories
+│   ├── security/            # SecureKeyStore (Android Keystore AES-GCM for BYOK keys)
+│   ├── autofill/            # DefaultAutoFillEngine (3-tier orchestrator)
+│   ├── backup/              # ImportExportRepository (CSV / JSON / Anki) + full backup snapshot
+│   └── DatabaseSeeder.kt    # First-run default pair + sample deck
 ├── tts/                     # PronunciationManager (TextToSpeech wrapper)
 ├── work/                    # ReminderWorker + ReminderScheduler
 └── ui/
     ├── theme/ · navigation/ · components/
     ├── home/ · decks/ · editcard/ · review/ · browse/ · statistics/ · settings/
+    ├── workspace/           # Language-pair manager
+    ├── help/                # Help & onboarding center
     └── LexicoApp.kt         # NavHost + bottom navigation
 ```
+
+The Room database (`lingodo.db`, schema v2) adds a `language_pairs` table plus `languagePairId` on
+decks and `wordForms` on cards, with a non-destructive `MIGRATION_1_2`.
 
 ViewModels are created from the `AppContainer` via `viewModelFactory { initializer { … } }`, so
 navigation arguments arrive through `SavedStateHandle` and no annotation-processing DI framework is

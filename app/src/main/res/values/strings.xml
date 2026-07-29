@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Lexico</string>
+    <string name="app_name">LingoDo</string>
 
     <!-- Notification channel -->
     <string name="reminder_channel_name">Study reminders</string>
