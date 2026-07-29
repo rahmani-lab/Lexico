@@ -10,6 +10,8 @@ import com.rahmanilab.lingodo.domain.model.WordForm
 data class AutoFillData(
     val phonetic: String = "",
     val partOfSpeech: String = "",
+    /** Short meaning/translation in the source (native) language. */
+    val meaning: String = "",
     val definition: String = "",
     val examples: List<Example> = emptyList(),
     val synonyms: List<String> = emptyList(),

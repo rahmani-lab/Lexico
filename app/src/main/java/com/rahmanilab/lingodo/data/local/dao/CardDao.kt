@@ -102,6 +102,45 @@ interface CardDao {
     )
     suspend fun getNewCards(deckId: Long?, limit: Int, pairId: Long?): List<CardWithDetails>
 
+    // --- Adaptive practice (troublesome / mastered words in the active pair) ---
+
+    @Transaction
+    @Query(
+        """
+        SELECT c.* FROM cards c
+        INNER JOIN card_schedule s ON s.cardId = c.id
+        INNER JOIN decks d ON d.id = c.deckId
+        WHERE d.languagePairId = :pairId
+          AND (s.lapses >= 2 OR s.easeFactor < 2.0 OR (s.stability IS NOT NULL AND s.stability < 3.0))
+        ORDER BY s.lapses DESC, s.easeFactor ASC
+        LIMIT :limit
+        """
+    )
+    suspend fun getTroublesomeCards(pairId: Long, limit: Int): List<CardWithDetails>
+
+    @Transaction
+    @Query(
+        """
+        SELECT c.* FROM cards c
+        INNER JOIN card_schedule s ON s.cardId = c.id
+        INNER JOIN decks d ON d.id = c.deckId
+        WHERE d.languagePairId = :pairId AND s.state = 'REVIEW' AND s.intervalDays >= :days
+        ORDER BY s.intervalDays DESC
+        LIMIT :limit
+        """
+    )
+    suspend fun getMasteredCards(pairId: Long, days: Int, limit: Int): List<CardWithDetails>
+
+    @Query(
+        """
+        SELECT c.id FROM cards c
+        INNER JOIN decks d ON d.id = c.deckId
+        WHERE d.languagePairId = :pairId AND c.word = :word COLLATE NOCASE
+        LIMIT 1
+        """
+    )
+    suspend fun findCardIdByWordInPair(pairId: Long, word: String): Long?
+
     // --- Duplicate detection ---
 
     @Query("SELECT COUNT(*) FROM cards WHERE word = :word COLLATE NOCASE")

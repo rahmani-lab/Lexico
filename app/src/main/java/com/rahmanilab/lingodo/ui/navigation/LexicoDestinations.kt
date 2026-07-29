@@ -21,6 +21,7 @@ object Routes {
     const val SETTINGS = "settings"
     const val WORKSPACE = "workspace"
     const val HELP = "help"
+    const val SMART_PRACTICE = "smartpractice"
     const val BROWSE = "browse?deckId={deckId}"
     const val REVIEW = "review?deckId={deckId}"
     const val EDIT_CARD = "editcard?cardId={cardId}&deckId={deckId}"

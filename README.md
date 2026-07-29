@@ -13,11 +13,16 @@ statistics.
 - **Global language-pair manager** — decks/cards belong to a source→target pair (e.g. Persian →
   German). Switching the active pair filters everything and adapts the TTS voice to the target
   language. Manage pairs from the Home globe button or Settings → Language pairs.
-- **Auto-fill (✨, optional & user-triggered)** — tap the spark button next to a word to enrich the
-  card. It only fills **empty** fields (never overwrites your text) and is designed to auto-detect
-  the grammatical class and extract **word forms & inflections** (verb tenses, comparatives, word
-  family). *Base-First build: the engine, BYOK key handling and merge logic ship now; the live
-  network fetch turns on in the next update.*
+- **Live auto-fill (✨, optional & user-triggered)** — tap the spark button next to a word to enrich
+  the card. A **3-tier engine** runs: the keyless **Free Dictionary API** (phonetics, audio, POS,
+  examples for English), then your **BYOK LLM** for the source-language meaning, translated
+  examples, collocations, and the auto-detected grammatical class + **word forms & inflections**
+  (verb tenses, comparatives, word family). It only fills **empty** fields — never overwrites your
+  text.
+- **Smart Practice (Adaptive Practice engine)** — reads your local SRS data to find *troublesome*
+  (high lapses / low ease) and *mastered* words, generates a progress note and adaptive
+  fill-in-the-blank drills via your LLM, and feeds every answer **back into the review schedule**
+  (a closed feedback loop). Everything stays on-device except the direct LLM call.
 - **Word forms & inflections** — a structured, editable list on every card, shown on the review back.
 - **BYOK API keys** — bring your own Gemini/Groq/DeepSeek/OpenAI/Claude key; stored **encrypted** via
   the Android Keystore (AES-256-GCM), used only for direct requests to the provider you pick.
@@ -117,7 +122,9 @@ com.rahmanilab.lingodo
 │   ├── preferences/         # SettingsRepository (DataStore) + settings models
 │   ├── repository/          # Deck / Card / Review / Stats / LanguagePair / AiConfig repositories
 │   ├── security/            # SecureKeyStore (Android Keystore AES-GCM for BYOK keys)
-│   ├── autofill/            # DefaultAutoFillEngine (3-tier orchestrator)
+│   ├── net/                 # HttpJson (HttpURLConnection GET/POST)
+│   ├── autofill/            # 3-tier engine: DictionaryClient + LlmClient + AiEnricher + orchestrator
+│   ├── practice/            # PracticeRepository (adaptive drills + SRS feedback loop)
 │   ├── backup/              # ImportExportRepository (CSV / JSON / Anki) + full backup snapshot
 │   └── DatabaseSeeder.kt    # First-run default pair + sample deck
 ├── tts/                     # PronunciationManager (TextToSpeech wrapper)
@@ -127,6 +134,7 @@ com.rahmanilab.lingodo
     ├── home/ · decks/ · editcard/ · review/ · browse/ · statistics/ · settings/
     ├── workspace/           # Language-pair manager
     ├── help/                # Help & onboarding center
+    ├── practice/            # Smart Practice screen
     └── LexicoApp.kt         # NavHost + bottom navigation
 ```
 

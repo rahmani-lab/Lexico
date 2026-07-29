@@ -23,6 +23,7 @@ import com.rahmanilab.lingodo.ui.home.HomeScreen
 import com.rahmanilab.lingodo.ui.navigation.Routes
 import com.rahmanilab.lingodo.ui.navigation.topLevelDestinations
 import com.rahmanilab.lingodo.ui.navigation.topLevelFor
+import com.rahmanilab.lingodo.ui.practice.SmartPracticeScreen
 import com.rahmanilab.lingodo.ui.review.ReviewScreen
 import com.rahmanilab.lingodo.ui.settings.SettingsScreen
 import com.rahmanilab.lingodo.ui.statistics.StatisticsScreen
@@ -68,7 +69,8 @@ fun LexicoApp() {
                 HomeScreen(
                     onStartReview = { navController.navigate(Routes.review()) },
                     onAddCard = { navController.navigate(Routes.editCard()) },
-                    onOpenWorkspace = { navController.navigate(Routes.WORKSPACE) }
+                    onOpenWorkspace = { navController.navigate(Routes.WORKSPACE) },
+                    onOpenPractice = { navController.navigate(Routes.SMART_PRACTICE) }
                 )
             }
 
@@ -109,6 +111,10 @@ fun LexicoApp() {
 
             composable(Routes.HELP) {
                 HelpScreen(onBack = { navController.popBackStack() })
+            }
+
+            composable(Routes.SMART_PRACTICE) {
+                SmartPracticeScreen(onBack = { navController.popBackStack() })
             }
 
             composable(

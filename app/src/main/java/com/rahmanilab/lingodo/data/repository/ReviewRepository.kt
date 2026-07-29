@@ -38,6 +38,13 @@ class ReviewRepository(
     @Volatile
     private var activeScheduler: Scheduler = fsrsScheduler
 
+    private suspend fun resolveActiveScheduler() {
+        activeScheduler = when (settingsRepository.current().schedulerType) {
+            SchedulerType.FSRS -> fsrsScheduler
+            SchedulerType.SM2 -> sm2Scheduler
+        }
+    }
+
     /**
      * Build a study queue: every due card plus up to the remaining daily allowance of new cards.
      *
@@ -52,10 +59,7 @@ class ReviewRepository(
     ): ReviewQueue {
         val now = System.currentTimeMillis()
         val settings = settingsRepository.current()
-        activeScheduler = when (settings.schedulerType) {
-            SchedulerType.FSRS -> fsrsScheduler
-            SchedulerType.SM2 -> sm2Scheduler
-        }
+        resolveActiveScheduler()
 
         // Restrict the session to the active language pair's decks.
         val pairId = settingsRepository.currentActivePairId()
@@ -90,6 +94,9 @@ class ReviewRepository(
         responseTimeMillis: Long? = null,
         now: Long = System.currentTimeMillis()
     ): CardScheduleEntity {
+        // Ensure the configured scheduler is active even when answering outside a review session
+        // (e.g. from Smart Practice).
+        resolveActiveScheduler()
         val existing = card.schedule ?: initialSchedule(card.card.id, now)
         val wasNew = CardState.fromString(existing.state) == CardState.NEW
         val currentState = existing.toSchedulingState()

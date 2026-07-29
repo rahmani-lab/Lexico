@@ -10,7 +10,7 @@ enum class AiProvider(
     val defaultBaseUrl: String,
     val keyPortalUrl: String
 ) {
-    GEMINI("Google Gemini", "gemini-1.5-flash", "https://generativelanguage.googleapis.com", "https://aistudio.google.com/app/apikey"),
+    GEMINI("Google Gemini", "gemini-1.5-flash", "https://generativelanguage.googleapis.com/v1beta/openai", "https://aistudio.google.com/app/apikey"),
     GROQ("Groq (free tier)", "llama-3.1-8b-instant", "https://api.groq.com/openai/v1", "https://console.groq.com/keys"),
     DEEPSEEK("DeepSeek", "deepseek-chat", "https://api.deepseek.com/v1", "https://platform.deepseek.com/api_keys"),
     OPENAI("OpenAI", "gpt-4o-mini", "https://api.openai.com/v1", "https://platform.openai.com/api-keys"),

@@ -2,9 +2,13 @@ package com.rahmanilab.lingodo.di
 
 import android.content.Context
 import com.rahmanilab.lingodo.data.DatabaseSeeder
+import com.rahmanilab.lingodo.data.autofill.AiEnricher
 import com.rahmanilab.lingodo.data.autofill.DefaultAutoFillEngine
+import com.rahmanilab.lingodo.data.autofill.DictionaryClient
+import com.rahmanilab.lingodo.data.autofill.LlmClient
 import com.rahmanilab.lingodo.data.backup.ImportExportRepository
 import com.rahmanilab.lingodo.data.local.LexicoDatabase
+import com.rahmanilab.lingodo.data.practice.PracticeRepository
 import com.rahmanilab.lingodo.data.preferences.SettingsRepository
 import com.rahmanilab.lingodo.data.repository.AiConfigRepository
 import com.rahmanilab.lingodo.data.repository.CardRepository
@@ -70,7 +74,21 @@ class AppContainer(context: Context) {
         AiConfigRepository(settingsRepository, secureKeyStore)
     }
 
-    val autoFillEngine: AutoFillEngine by lazy { DefaultAutoFillEngine(aiConfigRepository) }
+    val dictionaryClient: DictionaryClient by lazy { DictionaryClient() }
+
+    val llmClient: LlmClient by lazy { LlmClient() }
+
+    val aiEnricher: AiEnricher by lazy { AiEnricher(aiConfigRepository, llmClient) }
+
+    val autoFillEngine: AutoFillEngine by lazy {
+        DefaultAutoFillEngine(aiConfigRepository, dictionaryClient, aiEnricher)
+    }
+
+    val practiceRepository: PracticeRepository by lazy {
+        PracticeRepository(
+            database, statsRepository, languagePairRepository, aiConfigRepository, llmClient, reviewRepository
+        )
+    }
 
     val pronunciationManager: PronunciationManager by lazy { PronunciationManager(appContext) }
 

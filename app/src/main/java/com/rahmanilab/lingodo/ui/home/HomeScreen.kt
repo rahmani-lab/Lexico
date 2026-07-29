@@ -11,6 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.automirrored.filled.MenuBook
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.LocalFireDepartment
@@ -42,6 +43,7 @@ fun HomeScreen(
     onStartReview: () -> Unit,
     onAddCard: () -> Unit,
     onOpenWorkspace: () -> Unit,
+    onOpenPractice: () -> Unit,
     viewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
@@ -97,6 +99,14 @@ fun HomeScreen(
                     icon = Icons.Filled.LocalFireDepartment,
                     modifier = Modifier.weight(1f)
                 )
+            }
+
+            OutlinedButton(
+                onClick = onOpenPractice,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Icon(Icons.Filled.AutoAwesome, contentDescription = null, modifier = Modifier.size(18.dp))
+                Text("  Smart Practice")
             }
 
             OutlinedButton(

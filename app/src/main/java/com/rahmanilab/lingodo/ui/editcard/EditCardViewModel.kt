@@ -235,6 +235,7 @@ class EditCardViewModel(
         f.copy(
             phonetic = f.phonetic.ifBlank { data.phonetic },
             partOfSpeech = f.partOfSpeech.ifBlank { data.partOfSpeech },
+            meaning = f.meaning.ifBlank { data.meaning },
             englishDefinition = f.englishDefinition.ifBlank { data.definition },
             examples = f.examples.ifEmpty { data.examples },
             synonyms = f.synonyms.ifEmpty { data.synonyms },

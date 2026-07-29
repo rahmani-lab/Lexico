@@ -279,7 +279,8 @@ fun SettingsScreen(
                 Text(
                     "Bring your own key. Keys are encrypted on this device (Android Keystore) and used " +
                         "only for direct requests to your chosen provider. Tap ✨ next to a word to fill " +
-                        "empty fields. Live fetching arrives in an upcoming update.",
+                        "empty fields, and use Smart Practice for AI exercises. A keyless dictionary is " +
+                        "always used first for English.",
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
