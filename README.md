@@ -37,9 +37,14 @@ statistics.
 - **Anki import** — import Anki "Notes in Plain Text" (.txt/TSV) alongside CSV/JSON.
 - **10-language interface** — the app chrome (navigation, Home, Decks, Statistics, Smart Practice and
   Settings) is localized into English, Persian, German, French, Spanish, Chinese, Japanese, Korean,
-  Turkish and Arabic, with proper RTL for Persian/Arabic and Android 13+ per-app language selection.
-- **Modern, branded look** — a vibrant indigo-violet Material 3 palette, generous rounded corners, a
-  gradient Home hero, and a fresh adaptive launcher icon (with a monochrome themed-icon variant).
+  Turkish and Arabic, with proper RTL for Persian/Arabic. Switch the UI language **inside the app**
+  (Settings → Appearance) or via the Android 13+ per-app language setting.
+- **Nested decks (books → lessons)** — group a vocabulary book into its lessons: a book shows its
+  combined due count as a collapsible card, and you can study one lesson or the **whole book** at once.
+- **Language-aware pronunciation** — TTS follows each card's language automatically (French speaks
+  French, German German…); English still offers a US/UK accent choice.
+- **Modern, branded look** — a clean indigo Material 3 palette, generous rounded corners, a gradient
+  Home hero, and a fresh adaptive launcher icon (with a monochrome themed-icon variant).
 
 ---
 
@@ -60,7 +65,7 @@ statistics.
 
 ### Card management
 - Create, edit, and delete cards and decks
-- Organise with decks and free-form **tags**
+- Organise with decks and free-form **tags**; nest decks two levels deep (a **book** with **lessons**)
 - Full-text search across words, meanings, definitions, notes, and sources
 - **Duplicate detection** — warns when a word already exists in a deck
 - First-class support for **phrases and phrasal verbs**, not just single words
