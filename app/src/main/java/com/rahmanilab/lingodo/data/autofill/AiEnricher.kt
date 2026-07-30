@@ -4,13 +4,15 @@ import com.rahmanilab.lingodo.data.repository.AiConfigRepository
 import com.rahmanilab.lingodo.domain.autofill.AutoFillData
 import com.rahmanilab.lingodo.domain.model.Example
 import com.rahmanilab.lingodo.domain.model.WordForm
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 /**
- * Tiers 2–3 of the auto-fill engine: asks the user's BYOK LLM for structured card data, including
- * the auto-detected grammatical class and the word's inflections/derivatives. Returns null when no
- * key is configured or the model doesn't return usable JSON.
+ * Tiers 2–3 of the auto-fill engine: asks the user's BYOK LLM for structured card data, including a
+ * translation/definition in the native (source) language and the word's full family — verb tenses
+ * *and* the related noun / adjective / adverb derivatives. Returns null when no key is configured or
+ * the model doesn't return usable JSON.
  */
 class AiEnricher(
     private val aiConfig: AiConfigRepository,
@@ -23,29 +25,45 @@ class AiEnricher(
         val provider = aiConfig.currentProvider()
         val key = aiConfig.getKey(provider)?.takeIf { it.isNotBlank() } ?: return null
 
-        val system = "You are a precise lexicographer for a language-learning flashcard app. " +
-            "Respond with ONLY a single minified JSON object — no markdown, no code fences, no commentary."
+        val system = "You are an expert lexicographer for the language-learning app Lingodo. " +
+            "Return ONLY a raw JSON object with NO markdown formatting, NO backticks, and NO extra text."
         val raw = llm.chat(provider, provider.defaultModel, key, system, buildPrompt(word, sourceName, targetName))
         val jsonText = extractJsonObject(raw) ?: return null
         val dto = runCatching { json.decodeFromString<AiFillDto>(jsonText) }.getOrNull() ?: return null
         return dto.toData()
     }
 
+    /**
+     * The standardized prompt. [sourceName] is the native language the meaning is written in;
+     * [targetName] is the study language the word belongs to.
+     */
     private fun buildPrompt(word: String, sourceName: String, targetName: String): String = """
-        For the $targetName word or phrase: "$word".
-        Return a JSON object with exactly these keys:
-        "phonetic": IPA transcription of the $targetName word,
-        "partOfSpeech": one of noun, verb, adjective, adverb, phrase, idiom, phrasal verb, preposition,
-        "meaning": a short meaning/translation in $sourceName,
-        "definition": a simple definition in $targetName,
-        "examples": array of up to 2 objects {"text": example sentence in $targetName, "translation": its translation in $sourceName},
-        "synonyms": array of $targetName synonyms,
-        "antonyms": array of $targetName antonyms,
-        "collocations": array of common $targetName collocations,
-        "wordForms": array of {"label","form"} — FIRST detect the grammatical class, then list the relevant inflections
-        (verbs: past, past participle, 3rd person, gerund; adjectives: comparative, superlative; nouns: plural)
-        plus notable word-family derivatives.
-        Use empty strings/arrays when unknown. Output JSON only.
+        Analyze the $targetName word or phrase: "$word" and return ONLY a raw JSON object with NO
+        markdown formatting, NO backticks, and NO extra text.
+
+        Translate/Define the word into: $sourceName.
+
+        Rules for "word_forms":
+        1. If "$word" is a VERB:
+           - Include inflections: "past tense", "past participle", "gerund", "3rd person singular".
+           - CRITICAL: also include related word families/derivatives: "noun", "adjective", "adverb" (if they exist).
+        2. If "$word" is a NOUN / ADJECTIVE / ADVERB:
+           - Include related word family forms: "verb", "noun", "adjective", "adverb" (whichever apply).
+           - Include plural or comparative/superlative forms if applicable.
+
+        Return exactly this JSON structure (use empty strings/arrays when unknown):
+        {
+          "definition_meaning": "clear, concise translation or definition in $sourceName",
+          "phonetic": "IPA transcription of the $targetName word",
+          "partOfSpeech": "one of noun, verb, adjective, adverb, phrase, idiom, phrasal verb, preposition",
+          "definition": "a simple definition of the word in $targetName",
+          "examples": [{"text": "an example sentence in $targetName", "translation": "its translation in $sourceName"}],
+          "synonyms": ["synonym1", "synonym2", "synonym3"],
+          "antonyms": ["antonym1", "antonym2"],
+          "collocations": ["collocation1", "collocation2"],
+          "word_forms": [{"form": "noun", "word": "..."}, {"form": "adjective", "word": "..."}, {"form": "past tense", "word": "..."}],
+          "tags": ["part_of_speech", "cefr_level_or_topic"]
+        }
     """.trimIndent()
 
     /** Models sometimes wrap JSON in prose or ``` fences; take the outermost object. */
@@ -57,26 +75,31 @@ class AiEnricher(
 
     @Serializable
     private data class AiFillDto(
+        @SerialName("definition_meaning") val definitionMeaning: String = "",
+        // Accepted as a fallback if a model uses the older "meaning" key.
+        val meaning: String = "",
         val phonetic: String = "",
         val partOfSpeech: String = "",
-        val meaning: String = "",
         val definition: String = "",
         val examples: List<ExampleDto> = emptyList(),
         val synonyms: List<String> = emptyList(),
         val antonyms: List<String> = emptyList(),
         val collocations: List<String> = emptyList(),
-        val wordForms: List<WordFormDto> = emptyList()
+        @SerialName("word_forms") val wordForms: List<WordFormDto> = emptyList(),
+        val tags: List<String> = emptyList()
     ) {
         fun toData() = AutoFillData(
             phonetic = phonetic,
             partOfSpeech = partOfSpeech,
-            meaning = meaning,
+            meaning = definitionMeaning.ifBlank { meaning },
             definition = definition,
             examples = examples.filter { it.text.isNotBlank() }.map { Example(it.text, it.translation) },
             synonyms = synonyms.filter { it.isNotBlank() },
             antonyms = antonyms.filter { it.isNotBlank() },
             collocations = collocations.filter { it.isNotBlank() },
-            wordForms = wordForms.filter { it.form.isNotBlank() }.map { WordForm(it.label, it.form) }
+            // JSON "form" is the label (noun/past tense…) and "word" is the actual word.
+            wordForms = wordForms.filter { it.word.isNotBlank() }.map { WordForm(it.form, it.word) },
+            tags = tags.filter { it.isNotBlank() }
         )
     }
 
@@ -84,5 +107,5 @@ class AiEnricher(
     private data class ExampleDto(val text: String = "", val translation: String = "")
 
     @Serializable
-    private data class WordFormDto(val label: String = "", val form: String = "")
+    private data class WordFormDto(val form: String = "", val word: String = "")
 }

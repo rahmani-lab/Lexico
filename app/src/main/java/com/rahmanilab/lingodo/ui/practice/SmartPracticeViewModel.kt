@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.rahmanilab.lingodo.data.net.AiErrors
 import com.rahmanilab.lingodo.data.practice.PracticeRepository
 import com.rahmanilab.lingodo.data.practice.PracticeStyleRepository
 import com.rahmanilab.lingodo.domain.practice.PracticeExercise
@@ -77,7 +78,7 @@ class SmartPracticeViewModel(
             _uiState.update { it.copy(busy = true, error = null) }
             practice.generateReport()
                 .onSuccess { report -> _uiState.update { it.copy(report = report, busy = false) } }
-                .onFailure { e -> _uiState.update { it.copy(error = e.message, busy = false) } }
+                .onFailure { e -> _uiState.update { it.copy(error = AiErrors.friendlyMessage(e), busy = false) } }
         }
     }
 
@@ -101,7 +102,7 @@ class SmartPracticeViewModel(
                         )
                     }
                 }
-                .onFailure { e -> _uiState.update { it.copy(error = e.message, busy = false) } }
+                .onFailure { e -> _uiState.update { it.copy(error = AiErrors.friendlyMessage(e), busy = false) } }
         }
     }
 

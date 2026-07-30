@@ -241,7 +241,8 @@ class EditCardViewModel(
             synonyms = f.synonyms.ifEmpty { data.synonyms },
             antonyms = f.antonyms.ifEmpty { data.antonyms },
             collocations = f.collocations.ifEmpty { data.collocations },
-            wordForms = f.wordForms.ifEmpty { data.wordForms }
+            wordForms = f.wordForms.ifEmpty { data.wordForms },
+            tags = f.tags.ifEmpty { data.tags }
         )
     }
 
