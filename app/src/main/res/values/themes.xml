@@ -2,8 +2,8 @@
 <resources>
     <!-- Base application theme. The actual UI is drawn with Jetpack Compose /
          Material 3; this theme only styles the window before Compose renders. -->
-    <style name="Theme.LingoDo" parent="android:Theme.Material.Light.NoActionBar">
-        <item name="android:windowBackground">#FCF8FF</item>
+    <style name="Theme.LingoDo" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">#FFFBFE</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>

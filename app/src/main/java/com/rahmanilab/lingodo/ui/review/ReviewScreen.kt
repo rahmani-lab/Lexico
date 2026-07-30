@@ -52,7 +52,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.rahmanilab.lingodo.data.local.relation.CardWithDetails
 import com.rahmanilab.lingodo.data.preferences.model.AppSettings
-import com.rahmanilab.lingodo.data.preferences.model.TtsAccent
+import com.rahmanilab.lingodo.tts.PronunciationManager
 import com.rahmanilab.lingodo.domain.model.ReviewMode
 import com.rahmanilab.lingodo.ui.components.ChipFlowRow
 import com.rahmanilab.lingodo.ui.components.LabelValueRow
@@ -62,9 +62,6 @@ import com.rahmanilab.lingodo.ui.components.SectionHeader
 import com.rahmanilab.lingodo.ui.components.SlowPlayButton
 import com.rahmanilab.lingodo.ui.rememberAppContainer
 import com.rahmanilab.lingodo.util.TextUtils
-
-private fun accentFor(code: String): TtsAccent =
-    TtsAccent.entries.firstOrNull { it.languageTag == code } ?: TtsAccent.US
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -78,11 +75,11 @@ fun ReviewScreen(
         .collectAsStateWithLifecycle(initialValue = AppSettings())
 
     fun play(word: String, code: String, slow: Boolean = false) {
-        val accent = accentFor(code)
+        val locale = PronunciationManager.resolveTtsLocale(code, settings.ttsAccent)
         if (slow) {
-            container.pronunciationManager.speakSlow(word, accent, settings.selectedVoice, settings.speechRate)
+            container.pronunciationManager.speakSlow(word, locale, settings.selectedVoice, settings.speechRate)
         } else {
-            container.pronunciationManager.speak(word, accent, settings.selectedVoice, settings.speechRate)
+            container.pronunciationManager.speak(word, locale, settings.selectedVoice, settings.speechRate)
         }
     }
 

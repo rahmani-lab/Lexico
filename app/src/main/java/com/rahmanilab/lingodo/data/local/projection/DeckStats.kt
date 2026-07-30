@@ -10,6 +10,7 @@ data class DeckStats(
     val description: String,
     val createdAt: Long,
     val languagePairId: Long,
+    val parentId: Long?,
     val total: Int,
     val newCount: Int,
     val dueCount: Int,

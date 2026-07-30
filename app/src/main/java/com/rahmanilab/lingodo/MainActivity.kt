@@ -1,9 +1,9 @@
 package com.rahmanilab.lingodo
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -12,7 +12,7 @@ import com.rahmanilab.lingodo.data.preferences.model.ThemeMode
 import com.rahmanilab.lingodo.ui.LingoDoApp
 import com.rahmanilab.lingodo.ui.theme.LingoDoTheme
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

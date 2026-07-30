@@ -6,6 +6,7 @@ import com.rahmanilab.lingodo.data.preferences.model.TtsAccent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import java.util.Locale
 
 /**
  * Thin, app-scoped wrapper around Android's built-in [TextToSpeech] engine.
@@ -13,6 +14,10 @@ import kotlinx.coroutines.flow.asStateFlow
  * The engine is created once and kept alive for the whole process (pronunciation happens on many
  * screens), which also avoids the noticeable initialization delay you'd get by recreating it per
  * screen. Call [release] from [android.app.Application] teardown if you ever need to.
+ *
+ * Playback is locale-driven: callers resolve the correct [Locale] for the word being spoken (via
+ * [resolveTtsLocale], which maps the card/pair's target language and honours the US/UK accent only
+ * for English), so studying French speaks with a French voice, German with a German voice, etc.
  */
 class PronunciationManager(context: Context) : TextToSpeech.OnInitListener {
 
@@ -24,25 +29,25 @@ class PronunciationManager(context: Context) : TextToSpeech.OnInitListener {
 
     override fun onInit(status: Int) {
         if (status == TextToSpeech.SUCCESS) {
-            tts?.language = TtsAccent.US.toLocale()
+            tts?.language = Locale.US
             _isReady.value = true
         }
     }
 
     /**
-     * Speak [text] using the given [accent], optionally a specific [voiceName], at [rate] (1.0 =
-     * normal). Safe to call before the engine is ready — it simply no-ops.
+     * Speak [text] in [locale], optionally with a specific [voiceName], at [rate] (1.0 = normal).
+     * Safe to call before the engine is ready — it simply no-ops.
      */
     fun speak(
         text: String,
-        accent: TtsAccent = TtsAccent.US,
+        locale: Locale = Locale.US,
         voiceName: String? = null,
         rate: Float = 1.0f
     ) {
         val engine = tts ?: return
         if (!_isReady.value || text.isBlank()) return
 
-        engine.language = accent.toLocale()
+        engine.language = locale
         if (voiceName != null) {
             runCatching {
                 engine.voices?.firstOrNull { it.name == voiceName }?.let { engine.voice = it }
@@ -55,21 +60,26 @@ class PronunciationManager(context: Context) : TextToSpeech.OnInitListener {
     /** Speak at half speed, for careful listening. */
     fun speakSlow(
         text: String,
-        accent: TtsAccent = TtsAccent.US,
+        locale: Locale = Locale.US,
         voiceName: String? = null,
         baseRate: Float = 1.0f
-    ) = speak(text, accent, voiceName, baseRate * 0.5f)
+    ) = speak(text, locale, voiceName, baseRate * 0.5f)
 
-    /** Names of the installed English voices, for the Settings voice picker. */
-    fun availableEnglishVoices(): List<String> =
-        runCatching {
+    /**
+     * Installed voices for [languageTag]'s language (e.g. "en-US" → English voices), for the Settings
+     * voice picker. Falls back to an empty list when nothing local is available.
+     */
+    fun availableVoices(languageTag: String): List<String> {
+        val lang = Locale.forLanguageTag(languageTag).language
+        return runCatching {
             tts?.voices
-                ?.filter { it.locale.language == "en" && !it.isNetworkConnectionRequired }
+                ?.filter { it.locale.language == lang && !it.isNetworkConnectionRequired }
                 ?.map { it.name }
                 ?.distinct()
                 ?.sorted()
                 .orEmpty()
         }.getOrDefault(emptyList())
+    }
 
     fun stop() {
         tts?.stop()
@@ -83,4 +93,16 @@ class PronunciationManager(context: Context) : TextToSpeech.OnInitListener {
     }
 
     private fun utteranceId(text: String): String = "lingodo_${text.hashCode()}"
+
+    companion object {
+        /**
+         * The [Locale] to speak a word tagged with [languageCode] in. [languageCode] may be a bare
+         * code ("fr") or a full BCP-47 tag ("fr-FR", "en-US"). English honours the user's US/UK
+         * [accent]; every other language uses its own locale as given.
+         */
+        fun resolveTtsLocale(languageCode: String, accent: TtsAccent): Locale {
+            val locale = Locale.forLanguageTag(languageCode.ifBlank { "en-US" })
+            return if (locale.language == Locale.ENGLISH.language) accent.toLocale() else locale
+        }
+    }
 }

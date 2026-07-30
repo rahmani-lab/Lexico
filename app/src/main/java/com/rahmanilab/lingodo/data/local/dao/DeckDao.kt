@@ -43,6 +43,14 @@ interface DeckDao {
     @Query("SELECT * FROM decks")
     suspend fun getAll(): List<DeckEntity>
 
+    /** Direct children ("lessons") of a parent deck ("book"), newest first. */
+    @Query("SELECT * FROM decks WHERE parentId = :parentId ORDER BY createdAt DESC")
+    suspend fun getChildren(parentId: Long): List<DeckEntity>
+
+    /** Ids of a parent deck's direct children, for building a combined study queue. */
+    @Query("SELECT id FROM decks WHERE parentId = :parentId")
+    suspend fun childDeckIds(parentId: Long): List<Long>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(decks: List<DeckEntity>)
 
@@ -58,6 +66,7 @@ interface DeckDao {
             d.description AS description,
             d.createdAt AS createdAt,
             d.languagePairId AS languagePairId,
+            d.parentId AS parentId,
             COUNT(c.id) AS total,
             COALESCE(SUM(CASE WHEN s.state = 'NEW' THEN 1 ELSE 0 END), 0) AS newCount,
             COALESCE(SUM(CASE WHEN s.state != 'NEW' AND s.dueAt <= :now THEN 1 ELSE 0 END), 0) AS dueCount,

@@ -47,6 +47,14 @@
     <string name="deck_count_new">%d new</string>
     <string name="deck_learned_progress">%1$d of %2$d learned</string>
     <string name="deck_study">Study</string>
+    <string name="deck_study_all">Study all</string>
+    <string name="deck_add_lesson">Add lesson</string>
+    <string name="deck_new_lesson">New lesson</string>
+    <string name="deck_lessons_count">%d lessons</string>
+    <string name="deck_delete_book_title">Delete book?</string>
+    <string name="deck_delete_book_message">“%1$s” has %2$d lesson(s). Delete them and their cards too, or keep the lessons as separate decks?</string>
+    <string name="deck_delete_all">Delete everything</string>
+    <string name="deck_delete_keep">Keep lessons</string>
 
     <!-- Statistics -->
     <string name="stats_title">Statistics</string>
@@ -93,7 +101,10 @@
     <string name="settings_help_guide">Help &amp; guide</string>
     <string name="settings_appearance">Appearance</string>
     <string name="settings_theme">Theme</string>
+    <string name="settings_language">Language</string>
+    <string name="settings_language_system">System default</string>
     <string name="settings_pronunciation">Pronunciation</string>
+    <string name="settings_tts_language">Study language: %s</string>
     <string name="settings_accent">Accent</string>
     <string name="settings_speech_rate">Speech rate: %s×</string>
     <string name="settings_voice">Voice</string>

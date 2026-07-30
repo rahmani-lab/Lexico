@@ -45,6 +45,14 @@
     <string name="deck_count_new">%d جدید</string>
     <string name="deck_learned_progress">%1$d از %2$d آموخته‌شده</string>
     <string name="deck_study">مطالعه</string>
+    <string name="deck_study_all">مطالعهٔ همه</string>
+    <string name="deck_add_lesson">افزودن درس</string>
+    <string name="deck_new_lesson">درس جدید</string>
+    <string name="deck_lessons_count">%d درس</string>
+    <string name="deck_delete_book_title">کتاب حذف شود؟</string>
+    <string name="deck_delete_book_message">«%1$s» دارای %2$d درس است. آن‌ها و کارت‌هایشان هم حذف شوند، یا درس‌ها به‌صورت دسته‌های جداگانه نگه داشته شوند؟</string>
+    <string name="deck_delete_all">حذف همه</string>
+    <string name="deck_delete_keep">نگه داشتن درس‌ها</string>
 
     <!-- Statistics -->
     <string name="stats_title">آمار</string>
@@ -91,7 +99,10 @@
     <string name="settings_help_guide">راهنما و آموزش</string>
     <string name="settings_appearance">ظاهر</string>
     <string name="settings_theme">پوسته</string>
+    <string name="settings_language">زبان</string>
+    <string name="settings_language_system">پیش‌فرض سیستم</string>
     <string name="settings_pronunciation">تلفظ</string>
+    <string name="settings_tts_language">زبان مطالعه: %s</string>
     <string name="settings_accent">لهجه</string>
     <string name="settings_speech_rate">سرعت گفتار: %s×</string>
     <string name="settings_voice">صدا</string>

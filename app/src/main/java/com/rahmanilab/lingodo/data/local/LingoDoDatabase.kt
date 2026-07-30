@@ -31,7 +31,7 @@ import com.rahmanilab.lingodo.data.local.entity.TagEntity
         CardTagCrossRef::class,
         LanguagePairEntity::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = true
 )
 @TypeConverters(Converters::class)
@@ -77,13 +77,25 @@ abstract class LingoDoDatabase : RoomDatabase() {
             }
         }
 
+        /**
+         * v2 → v3: nested decks. Adds a nullable `parentId` on decks (null = top-level "book",
+         * set = a "lesson" under that book) plus its index. Non-destructive: every existing deck
+         * stays top-level.
+         */
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE `decks` ADD COLUMN `parentId` INTEGER")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_decks_parentId` ON `decks` (`parentId`)")
+            }
+        }
+
         fun build(context: Context): LingoDoDatabase =
             Room.databaseBuilder(
                 context.applicationContext,
                 LingoDoDatabase::class.java,
                 DATABASE_NAME
             )
-                .addMigrations(MIGRATION_1_2)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                 .build()
     }
 }
