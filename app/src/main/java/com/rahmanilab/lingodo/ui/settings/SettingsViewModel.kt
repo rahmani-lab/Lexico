@@ -14,7 +14,9 @@ import com.rahmanilab.lingodo.data.preferences.model.SchedulerType
 import com.rahmanilab.lingodo.data.preferences.model.ThemeMode
 import com.rahmanilab.lingodo.data.preferences.model.TtsAccent
 import com.rahmanilab.lingodo.data.repository.AiConfigRepository
+import com.rahmanilab.lingodo.data.repository.LanguagePairRepository
 import com.rahmanilab.lingodo.domain.model.AiProvider
+import com.rahmanilab.lingodo.domain.model.Language
 import com.rahmanilab.lingodo.domain.practice.PracticeStyle
 import com.rahmanilab.lingodo.tts.PronunciationManager
 import com.rahmanilab.lingodo.ui.appContainer
@@ -25,6 +27,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
@@ -37,8 +40,14 @@ class SettingsViewModel(
     private val pronunciationManager: PronunciationManager,
     private val importExportRepository: ImportExportRepository,
     private val aiConfigRepository: AiConfigRepository,
-    private val practiceStyleRepository: PracticeStyleRepository
+    private val practiceStyleRepository: PracticeStyleRepository,
+    private val languagePairRepository: LanguagePairRepository
 ) : ViewModel() {
+
+    /** The active pair's target language — drives the TTS locale, voice list and voice test. */
+    val activeTargetLanguage: StateFlow<Language> = languagePairRepository.activePairId
+        .map { languagePairRepository.activePair().target }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), Language.ENGLISH)
 
     private val _messages = MutableSharedFlow<String>(extraBufferCapacity = 4)
     val messages: SharedFlow<String> = _messages.asSharedFlow()
@@ -64,10 +73,12 @@ class SettingsViewModel(
     fun savePracticeStyle(style: PracticeStyle) = launch { practiceStyleRepository.saveCustom(style) }
     fun deletePracticeStyle(id: String) = launch { practiceStyleRepository.deleteCustom(id) }
 
-    val voices: StateFlow<List<String>> = pronunciationManager.isReady
-        .filter { it }
-        .map { pronunciationManager.availableEnglishVoices() }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+    /** Installed voices for the active target language, for the Settings voice picker. */
+    val voices: StateFlow<List<String>> =
+        combine(pronunciationManager.isReady, activeTargetLanguage) { ready, lang -> ready to lang }
+            .filter { it.first }
+            .map { pronunciationManager.availableVoices(it.second.ttsTag) }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     fun setTheme(mode: ThemeMode) = launch { settingsRepository.setThemeMode(mode) }
     fun setAccent(accent: TtsAccent) = launch { settingsRepository.setAccent(accent) }
@@ -104,10 +115,12 @@ class SettingsViewModel(
         applyReminder()
     }
 
-    /** Preview the current voice/accent/rate with a sample word. */
+    /** Preview the current voice/rate with a sample word in the active target language. */
     fun testVoice() {
         val current = settings.value
-        pronunciationManager.speak("resilient", current.ttsAccent, current.selectedVoice, current.speechRate)
+        val target = activeTargetLanguage.value
+        val locale = PronunciationManager.resolveTtsLocale(target.code, current.ttsAccent)
+        pronunciationManager.speak(target.sampleWord, locale, current.selectedVoice, current.speechRate)
     }
 
     // ------------------------------------------------------------ data import/export
@@ -186,7 +199,8 @@ class SettingsViewModel(
                     appContainer.pronunciationManager,
                     appContainer.importExportRepository,
                     appContainer.aiConfigRepository,
-                    appContainer.practiceStyleRepository
+                    appContainer.practiceStyleRepository,
+                    appContainer.languagePairRepository
                 )
             }
         }

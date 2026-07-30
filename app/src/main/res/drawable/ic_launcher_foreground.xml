@@ -14,16 +14,16 @@
         android:pathData="M45,60 L41,74 L58,61 Z" />
     <!-- Three "text lines" in brand tones -->
     <path
-        android:fillColor="#5B44E4"
+        android:fillColor="#4C5BD4"
         android:pathData="M40,39 L66,39 A2,2 0 0 1 66,43 L40,43 A2,2 0 0 1 40,39 Z" />
     <path
-        android:fillColor="#7A3FE0"
+        android:fillColor="#5C6BE0"
         android:pathData="M40,47 L62,47 A2,2 0 0 1 62,51 L40,51 A2,2 0 0 1 40,47 Z" />
     <path
-        android:fillColor="#C3B4F7"
+        android:fillColor="#B9C0F2"
         android:pathData="M40,55 L54,55 A2,2 0 0 1 54,59 L40,59 A2,2 0 0 1 40,55 Z" />
-    <!-- Accent dot (raspberry) -->
+    <!-- Accent dot (amber) -->
     <path
-        android:fillColor="#FF5C7A"
+        android:fillColor="#FFC24B"
         android:pathData="M74,32 m-7,0 a7,7 0 1,0 14,0 a7,7 0 1,0 -14,0" />
 </vector>

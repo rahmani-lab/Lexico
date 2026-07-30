@@ -61,6 +61,7 @@ import androidx.compose.runtime.LaunchedEffect
 import coil.compose.AsyncImage
 import com.rahmanilab.lingodo.data.preferences.model.AppSettings
 import com.rahmanilab.lingodo.data.preferences.model.TtsAccent
+import com.rahmanilab.lingodo.tts.PronunciationManager
 import com.rahmanilab.lingodo.ui.components.PronunciationButton
 import com.rahmanilab.lingodo.ui.components.SectionHeader
 import com.rahmanilab.lingodo.ui.components.TokenEditor
@@ -107,8 +108,8 @@ fun EditCardScreen(
     }
 
     fun playWord() {
-        val accent = TtsAccent.entries.firstOrNull { it.languageTag == form.languageCode } ?: TtsAccent.US
-        container.pronunciationManager.speak(form.word, accent, settings.selectedVoice, settings.speechRate)
+        val locale = PronunciationManager.resolveTtsLocale(form.languageCode, settings.ttsAccent)
+        container.pronunciationManager.speak(form.word, locale, settings.selectedVoice, settings.speechRate)
     }
 
     Scaffold(

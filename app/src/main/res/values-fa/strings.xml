@@ -91,7 +91,10 @@
     <string name="settings_help_guide">راهنما و آموزش</string>
     <string name="settings_appearance">ظاهر</string>
     <string name="settings_theme">پوسته</string>
+    <string name="settings_language">زبان</string>
+    <string name="settings_language_system">پیش‌فرض سیستم</string>
     <string name="settings_pronunciation">تلفظ</string>
+    <string name="settings_tts_language">زبان مطالعه: %s</string>
     <string name="settings_accent">لهجه</string>
     <string name="settings_speech_rate">سرعت گفتار: %s×</string>
     <string name="settings_voice">صدا</string>

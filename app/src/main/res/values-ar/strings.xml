@@ -91,7 +91,10 @@
     <string name="settings_help_guide">المساعدة &amp; الدليل</string>
     <string name="settings_appearance">المظهر</string>
     <string name="settings_theme">السمة</string>
+    <string name="settings_language">اللغة</string>
+    <string name="settings_language_system">إعداد النظام الافتراضي</string>
     <string name="settings_pronunciation">النطق</string>
+    <string name="settings_tts_language">لغة الدراسة: %s</string>
     <string name="settings_accent">اللهجة</string>
     <string name="settings_speech_rate">سرعة النطق: %s×</string>
     <string name="settings_voice">الصوت</string>

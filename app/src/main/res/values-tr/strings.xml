@@ -91,7 +91,10 @@
     <string name="settings_help_guide">Yardım &amp; kılavuz</string>
     <string name="settings_appearance">Görünüm</string>
     <string name="settings_theme">Tema</string>
+    <string name="settings_language">Dil</string>
+    <string name="settings_language_system">Sistem varsayılanı</string>
     <string name="settings_pronunciation">Telaffuz</string>
+    <string name="settings_tts_language">Çalışma dili: %s</string>
     <string name="settings_accent">Aksan</string>
     <string name="settings_speech_rate">Konuşma hızı: %s×</string>
     <string name="settings_voice">Ses</string>

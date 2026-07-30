@@ -91,7 +91,10 @@
     <string name="settings_help_guide">帮助 &amp; 指南</string>
     <string name="settings_appearance">外观</string>
     <string name="settings_theme">主题</string>
+    <string name="settings_language">语言</string>
+    <string name="settings_language_system">跟随系统</string>
     <string name="settings_pronunciation">发音</string>
+    <string name="settings_tts_language">学习语言：%s</string>
     <string name="settings_accent">口音</string>
     <string name="settings_speech_rate">语速：%s×</string>
     <string name="settings_voice">语音</string>

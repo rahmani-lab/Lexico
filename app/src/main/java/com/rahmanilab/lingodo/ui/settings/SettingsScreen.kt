@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -66,8 +67,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.rahmanilab.lingodo.domain.model.AiProvider
+import com.rahmanilab.lingodo.domain.model.Language
 import com.rahmanilab.lingodo.domain.practice.PracticeStyle
 import androidx.core.content.ContextCompat
+import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.rahmanilab.lingodo.BuildConfig
@@ -92,6 +95,7 @@ fun SettingsScreen(
     var apiKeyInput by remember { mutableStateOf("") }
     val practiceStyles by viewModel.practiceStyles.collectAsStateWithLifecycle()
     val activeStyleId by viewModel.activePracticeStyleId.collectAsStateWithLifecycle()
+    val targetLanguage by viewModel.activeTargetLanguage.collectAsStateWithLifecycle()
     var editingStyle by remember { mutableStateOf<PracticeStyle?>(null) }
     var creatingStyle by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -178,17 +182,26 @@ fun SettingsScreen(
                         ) { Text(mode.label) }
                     }
                 }
+                LanguageDropdown()
             }
 
             SettingsSection(stringResource(R.string.settings_pronunciation)) {
-                Text(stringResource(R.string.settings_accent), style = MaterialTheme.typography.bodyMedium)
-                SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
-                    TtsAccent.entries.forEachIndexed { index, accent ->
-                        SegmentedButton(
-                            selected = settings.ttsAccent == accent,
-                            onClick = { viewModel.setAccent(accent) },
-                            shape = SegmentedButtonDefaults.itemShape(index, TtsAccent.entries.size)
-                        ) { Text(accent.displayName) }
+                Text(
+                    stringResource(R.string.settings_tts_language, targetLanguage.displayName),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                // The US/UK accent choice only affects English playback.
+                if (targetLanguage == Language.ENGLISH) {
+                    Text(stringResource(R.string.settings_accent), style = MaterialTheme.typography.bodyMedium)
+                    SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
+                        TtsAccent.entries.forEachIndexed { index, accent ->
+                            SegmentedButton(
+                                selected = settings.ttsAccent == accent,
+                                onClick = { viewModel.setAccent(accent) },
+                                shape = SegmentedButtonDefaults.itemShape(index, TtsAccent.entries.size)
+                            ) { Text(accent.displayName) }
+                        }
                     }
                 }
 
@@ -482,6 +495,66 @@ private fun SettingsSwitchRow(
     ) {
         Text(label, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
         Switch(checked = checked, onCheckedChange = onChange)
+    }
+}
+
+private data class UiLanguage(val tag: String, val nativeName: String)
+
+/** The 10 UI languages LingoDo is translated into, shown by their native (autonym) names. */
+private val uiLanguages = listOf(
+    UiLanguage("en", "English"),
+    UiLanguage("fa", "فارسی"),
+    UiLanguage("de", "Deutsch"),
+    UiLanguage("fr", "Français"),
+    UiLanguage("es", "Español"),
+    UiLanguage("zh", "中文"),
+    UiLanguage("ja", "日本語"),
+    UiLanguage("ko", "한국어"),
+    UiLanguage("tr", "Türkçe"),
+    UiLanguage("ar", "العربية")
+)
+
+/**
+ * In-app UI language switcher. Applies the choice immediately via AppCompat per-app locales (which
+ * recreates the activity and, on Android 13+, registers with the system per-app language setting);
+ * "System default" clears the override.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun LanguageDropdown() {
+    var expanded by remember { mutableStateOf(false) }
+    val locales = AppCompatDelegate.getApplicationLocales()
+    val currentTag = if (locales.size() == 0) null else locales.get(0)?.language
+    val currentLabel = uiLanguages.firstOrNull { it.tag == currentTag }?.nativeName
+        ?: stringResource(R.string.settings_language_system)
+
+    ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = it }) {
+        OutlinedTextField(
+            value = currentLabel,
+            onValueChange = {},
+            readOnly = true,
+            label = { Text(stringResource(R.string.settings_language)) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            modifier = Modifier.menuAnchor().fillMaxWidth()
+        )
+        ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.settings_language_system)) },
+                onClick = {
+                    AppCompatDelegate.setApplicationLocales(LocaleListCompat.getEmptyLocaleList())
+                    expanded = false
+                }
+            )
+            uiLanguages.forEach { lang ->
+                DropdownMenuItem(
+                    text = { Text(lang.nativeName) },
+                    onClick = {
+                        AppCompatDelegate.setApplicationLocales(LocaleListCompat.forLanguageTags(lang.tag))
+                        expanded = false
+                    }
+                )
+            }
+        }
     }
 }
 

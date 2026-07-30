@@ -91,7 +91,10 @@
     <string name="settings_help_guide">Aide &amp; guide</string>
     <string name="settings_appearance">Apparence</string>
     <string name="settings_theme">Thème</string>
+    <string name="settings_language">Langue</string>
+    <string name="settings_language_system">Par défaut du système</string>
     <string name="settings_pronunciation">Prononciation</string>
+    <string name="settings_tts_language">Langue d\'étude : %s</string>
     <string name="settings_accent">Accent</string>
     <string name="settings_speech_rate">Vitesse de parole : %s×</string>
     <string name="settings_voice">Voix</string>

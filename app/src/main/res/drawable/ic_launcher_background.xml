@@ -14,9 +14,9 @@
                 android:startY="6"
                 android:endX="102"
                 android:endY="102"
-                android:startColor="#6A4BF0"
-                android:centerColor="#7A3FE0"
-                android:endColor="#A636D6" />
+                android:startColor="#4C5BD4"
+                android:centerColor="#5C6BE0"
+                android:endColor="#6E62E6" />
         </aapt:attr>
     </path>
     <!-- Soft highlight sweep for depth -->

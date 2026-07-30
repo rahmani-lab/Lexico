@@ -91,7 +91,10 @@
     <string name="settings_help_guide">ヘルプ &amp; ガイド</string>
     <string name="settings_appearance">外観</string>
     <string name="settings_theme">テーマ</string>
+    <string name="settings_language">言語</string>
+    <string name="settings_language_system">システムのデフォルト</string>
     <string name="settings_pronunciation">発音</string>
+    <string name="settings_tts_language">学習言語：%s</string>
     <string name="settings_accent">アクセント</string>
     <string name="settings_speech_rate">話す速度：%s×</string>
     <string name="settings_voice">音声</string>

@@ -91,7 +91,10 @@
     <string name="settings_help_guide">도움말 &amp; 가이드</string>
     <string name="settings_appearance">화면</string>
     <string name="settings_theme">테마</string>
+    <string name="settings_language">언어</string>
+    <string name="settings_language_system">시스템 기본값</string>
     <string name="settings_pronunciation">발음</string>
+    <string name="settings_tts_language">학습 언어: %s</string>
     <string name="settings_accent">악센트</string>
     <string name="settings_speech_rate">말하기 속도: %s×</string>
     <string name="settings_voice">음성</string>
