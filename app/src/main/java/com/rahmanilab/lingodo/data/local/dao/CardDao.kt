@@ -102,6 +102,38 @@ interface CardDao {
     )
     suspend fun getNewCards(deckId: Long?, limit: Int, pairId: Long?): List<CardWithDetails>
 
+    /** Due cards across a set of decks (a parent deck plus its lessons). */
+    @Transaction
+    @Query(
+        """
+        SELECT c.* FROM cards c
+        INNER JOIN card_schedule s ON s.cardId = c.id
+        INNER JOIN decks d ON d.id = c.deckId
+        WHERE c.deckId IN (:deckIds)
+          AND (:pairId IS NULL OR d.languagePairId = :pairId)
+          AND s.state != 'NEW'
+          AND s.dueAt <= :now
+        ORDER BY s.dueAt ASC
+        """
+    )
+    suspend fun getDueCardsIn(now: Long, deckIds: List<Long>, pairId: Long?): List<CardWithDetails>
+
+    /** Brand-new cards across a set of decks (a parent deck plus its lessons), oldest first. */
+    @Transaction
+    @Query(
+        """
+        SELECT c.* FROM cards c
+        INNER JOIN card_schedule s ON s.cardId = c.id
+        INNER JOIN decks d ON d.id = c.deckId
+        WHERE c.deckId IN (:deckIds)
+          AND (:pairId IS NULL OR d.languagePairId = :pairId)
+          AND s.state = 'NEW'
+        ORDER BY c.createdAt ASC
+        LIMIT :limit
+        """
+    )
+    suspend fun getNewCardsIn(deckIds: List<Long>, limit: Int, pairId: Long?): List<CardWithDetails>
+
     // --- Adaptive practice (troublesome / mastered words in the active pair) ---
 
     @Transaction

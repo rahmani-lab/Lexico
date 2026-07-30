@@ -33,6 +33,7 @@ class ReviewRepository(
     private val cardDao get() = db.cardDao()
     private val scheduleDao get() = db.cardScheduleDao()
     private val reviewLogDao get() = db.reviewLogDao()
+    private val deckDao get() = db.deckDao()
 
     /** The scheduler chosen in Settings, resolved when a session's queue is built. */
     @Volatile
@@ -61,9 +62,12 @@ class ReviewRepository(
         val settings = settingsRepository.current()
         resolveActiveScheduler()
 
-        // Restrict the session to the active language pair's decks.
+        // Restrict the session to the active language pair's decks. A parent deck ("book") expands
+        // to itself plus all of its lessons, so "Study all" reviews the whole book in one session.
         val pairId = settingsRepository.currentActivePairId()
-        val due = cardDao.getDueCards(now, deckId, pairId)
+        val deckIds = deckId?.let { listOf(it) + deckDao.childDeckIds(it) }
+        val due = if (deckIds == null) cardDao.getDueCards(now, null, pairId)
+        else cardDao.getDueCardsIn(now, deckIds, pairId)
 
         val newCards = if (includeNew) {
             val limit = if (respectDailyLimit) {
@@ -72,7 +76,12 @@ class ReviewRepository(
             } else {
                 Int.MAX_VALUE
             }
-            if (limit > 0) cardDao.getNewCards(deckId, limit, pairId) else emptyList()
+            if (limit > 0) {
+                if (deckIds == null) cardDao.getNewCards(null, limit, pairId)
+                else cardDao.getNewCardsIn(deckIds, limit, pairId)
+            } else {
+                emptyList()
+            }
         } else {
             emptyList()
         }

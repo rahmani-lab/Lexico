@@ -3,6 +3,7 @@ package com.rahmanilab.lingodo.ui.decks
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,21 +14,27 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.LibraryAdd
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Style
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -55,11 +62,14 @@ fun DecksScreen(
     onOpenDeck: (Long) -> Unit,
     viewModel: DecksViewModel = viewModel(factory = DecksViewModel.Factory)
 ) {
-    val decks by viewModel.decks.collectAsStateWithLifecycle()
+    val groups by viewModel.groups.collectAsStateWithLifecycle()
 
     var editing by remember { mutableStateOf<DeckStats?>(null) }
     var creating by remember { mutableStateOf(false) }
+    var addingLessonTo by remember { mutableStateOf<DeckStats?>(null) }
     var deleting by remember { mutableStateOf<DeckStats?>(null) }
+    var deletingBook by remember { mutableStateOf<DeckGroup?>(null) }
+    var expandedIds by remember { mutableStateOf(setOf<Long>()) }
 
     Scaffold(
         topBar = { TopAppBar(title = { Text(stringResource(R.string.nav_decks)) }) },
@@ -69,7 +79,7 @@ fun DecksScreen(
             }
         }
     ) { padding ->
-        if (decks.isEmpty()) {
+        if (groups.isEmpty()) {
             EmptyState(
                 icon = Icons.Filled.Style,
                 title = stringResource(R.string.decks_empty_title),
@@ -83,17 +93,41 @@ fun DecksScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding),
-                contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
+                contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(decks, key = { it.id }) { deck ->
-                    DeckCard(
-                        deck = deck,
-                        onOpen = { onOpenDeck(deck.id) },
-                        onStudy = { onStudyDeck(deck.id) },
-                        onEdit = { editing = deck },
-                        onDelete = { deleting = deck }
-                    )
+                items(groups, key = { it.parent.id }) { group ->
+                    if (group.hasChildren) {
+                        BookCard(
+                            group = group,
+                            expanded = group.parent.id in expandedIds,
+                            onToggleExpand = {
+                                expandedIds = if (group.parent.id in expandedIds) {
+                                    expandedIds - group.parent.id
+                                } else {
+                                    expandedIds + group.parent.id
+                                }
+                            },
+                            onOpenBook = { onOpenDeck(group.parent.id) },
+                            onStudyAll = { onStudyDeck(group.parent.id) },
+                            onEditBook = { editing = group.parent },
+                            onDeleteBook = { deletingBook = group },
+                            onAddLesson = { addingLessonTo = group.parent },
+                            onStudyLesson = onStudyDeck,
+                            onOpenLesson = onOpenDeck,
+                            onEditLesson = { editing = it },
+                            onDeleteLesson = { deleting = it }
+                        )
+                    } else {
+                        DeckCard(
+                            deck = group.parent,
+                            onOpen = { onOpenDeck(group.parent.id) },
+                            onStudy = { onStudyDeck(group.parent.id) },
+                            onEdit = { editing = group.parent },
+                            onDelete = { deleting = group.parent },
+                            onAddLesson = { addingLessonTo = group.parent }
+                        )
+                    }
                 }
             }
         }
@@ -109,6 +143,19 @@ fun DecksScreen(
                 creating = false
             },
             onDismiss = { creating = false }
+        )
+    }
+
+    addingLessonTo?.let { book ->
+        DeckDialog(
+            title = stringResource(R.string.deck_new_lesson),
+            initialName = "",
+            initialDescription = "",
+            onConfirm = { name, description ->
+                viewModel.createDeck(name, description, parentId = book.id)
+                addingLessonTo = null
+            },
+            onDismiss = { addingLessonTo = null }
         )
     }
 
@@ -141,15 +188,39 @@ fun DecksScreen(
             }
         )
     }
+
+    deletingBook?.let { group ->
+        AlertDialog(
+            onDismissRequest = { deletingBook = null },
+            title = { Text(stringResource(R.string.deck_delete_book_title)) },
+            text = {
+                Text(stringResource(R.string.deck_delete_book_message, group.parent.name, group.children.size))
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    viewModel.deleteBookAndLessons(group.parent.id)
+                    deletingBook = null
+                }) { Text(stringResource(R.string.deck_delete_all)) }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    viewModel.deleteBookKeepLessons(group.parent.id)
+                    deletingBook = null
+                }) { Text(stringResource(R.string.deck_delete_keep)) }
+            }
+        )
+    }
 }
 
+/** A plain, childless deck (also used for a book's lessons when studied on their own). */
 @Composable
 private fun DeckCard(
     deck: DeckStats,
     onOpen: () -> Unit,
     onStudy: () -> Unit,
     onEdit: () -> Unit,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
+    onAddLesson: (() -> Unit)? = null
 ) {
     Card(modifier = Modifier.fillMaxWidth().clickable(onClick = onOpen)) {
         Column(
@@ -173,7 +244,7 @@ private fun DeckCard(
                         )
                     }
                 }
-                DeckOverflowMenu(onEdit = onEdit, onDelete = onDelete)
+                DeckOverflowMenu(onEdit = onEdit, onDelete = onDelete, onAddLesson = onAddLesson)
             }
 
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -201,10 +272,127 @@ private fun DeckCard(
     }
 }
 
+/** A "book": a top-level deck with lessons, collapsible, with combined counts and a Study all CTA. */
 @Composable
-private fun DeckOverflowMenu(onEdit: () -> Unit, onDelete: () -> Unit) {
+private fun BookCard(
+    group: DeckGroup,
+    expanded: Boolean,
+    onToggleExpand: () -> Unit,
+    onOpenBook: () -> Unit,
+    onStudyAll: () -> Unit,
+    onEditBook: () -> Unit,
+    onDeleteBook: () -> Unit,
+    onAddLesson: () -> Unit,
+    onStudyLesson: (Long) -> Unit,
+    onOpenLesson: (Long) -> Unit,
+    onEditLesson: (DeckStats) -> Unit,
+    onDeleteLesson: (DeckStats) -> Unit
+) {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                IconButton(onClick = onToggleExpand) {
+                    Icon(
+                        imageVector = if (expanded) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+                        contentDescription = null
+                    )
+                }
+                Column(modifier = Modifier.weight(1f).clickable(onClick = onOpenBook)) {
+                    Text(
+                        text = group.parent.name,
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = stringResource(R.string.deck_lessons_count, group.children.size),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+                DeckOverflowMenu(onEdit = onEditBook, onDelete = onDeleteBook, onAddLesson = onAddLesson)
+            }
+
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Pill(stringResource(R.string.deck_count_total, group.totalCards))
+                Pill(stringResource(R.string.deck_count_due, group.dueCount))
+                Pill(stringResource(R.string.deck_count_new, group.newCount))
+            }
+
+            val progress = if (group.totalCards > 0) group.learnedCount.toFloat() / group.totalCards else 0f
+            LinearProgressIndicator(progress = { progress }, modifier = Modifier.fillMaxWidth())
+
+            Button(onClick = onStudyAll, modifier = Modifier.fillMaxWidth()) {
+                Icon(Icons.Filled.PlayArrow, contentDescription = null)
+                Text("  " + stringResource(R.string.deck_study_all))
+            }
+
+            if (expanded) {
+                group.children.forEach { lesson ->
+                    LessonRow(
+                        lesson = lesson,
+                        onStudy = { onStudyLesson(lesson.id) },
+                        onOpen = { onOpenLesson(lesson.id) },
+                        onEdit = { onEditLesson(lesson) },
+                        onDelete = { onDeleteLesson(lesson) }
+                    )
+                }
+            }
+        }
+    }
+}
+
+/** A single lesson under a book, shown when the book is expanded. */
+@Composable
+private fun LessonRow(
+    lesson: DeckStats,
+    onStudy: () -> Unit,
+    onOpen: () -> Unit,
+    onEdit: () -> Unit,
+    onDelete: () -> Unit
+) {
+    Surface(
+        color = MaterialTheme.colorScheme.surfaceVariant,
+        shape = MaterialTheme.shapes.medium,
+        modifier = Modifier.fillMaxWidth().clickable(onClick = onOpen)
+    ) {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = lesson.name,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.weight(1f)
+                )
+                DeckOverflowMenu(onEdit = onEdit, onDelete = onDelete)
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                Pill(stringResource(R.string.deck_count_due, lesson.dueCount))
+                Pill(stringResource(R.string.deck_count_new, lesson.newCount))
+            }
+            OutlinedButton(onClick = onStudy, modifier = Modifier.fillMaxWidth()) {
+                Icon(Icons.Filled.PlayArrow, contentDescription = null)
+                Text("  " + stringResource(R.string.deck_study))
+            }
+        }
+    }
+}
+
+@Composable
+private fun DeckOverflowMenu(
+    onEdit: () -> Unit,
+    onDelete: () -> Unit,
+    onAddLesson: (() -> Unit)? = null
+) {
     var expanded by remember { mutableStateOf(false) }
-    androidx.compose.material3.IconButton(onClick = { expanded = true }) {
+    IconButton(onClick = { expanded = true }) {
         Icon(Icons.Filled.MoreVert, contentDescription = stringResource(R.string.action_more))
     }
     DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
@@ -213,6 +401,13 @@ private fun DeckOverflowMenu(onEdit: () -> Unit, onDelete: () -> Unit) {
             leadingIcon = { Icon(Icons.Filled.Edit, contentDescription = null) },
             onClick = { expanded = false; onEdit() }
         )
+        if (onAddLesson != null) {
+            DropdownMenuItem(
+                text = { Text(stringResource(R.string.deck_add_lesson)) },
+                leadingIcon = { Icon(Icons.Filled.LibraryAdd, contentDescription = null) },
+                onClick = { expanded = false; onAddLesson() }
+            )
+        }
         DropdownMenuItem(
             text = { Text(stringResource(R.string.action_delete)) },
             leadingIcon = { Icon(Icons.Filled.Delete, contentDescription = null) },

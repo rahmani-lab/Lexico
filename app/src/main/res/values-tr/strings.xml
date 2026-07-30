@@ -45,6 +45,14 @@
     <string name="deck_count_new">%d yeni</string>
     <string name="deck_learned_progress">%2$d karttan %1$d tanesi öğrenildi</string>
     <string name="deck_study">Çalış</string>
+    <string name="deck_study_all">Tümünü çalış</string>
+    <string name="deck_add_lesson">Ders ekle</string>
+    <string name="deck_new_lesson">Yeni ders</string>
+    <string name="deck_lessons_count">%d ders</string>
+    <string name="deck_delete_book_title">Kitap silinsin mi?</string>
+    <string name="deck_delete_book_message">“%1$s” %2$d ders içeriyor. Kartlarıyla birlikte silinsin mi, yoksa dersler ayrı desteler olarak mı kalsın?</string>
+    <string name="deck_delete_all">Tümünü sil</string>
+    <string name="deck_delete_keep">Dersleri koru</string>
 
     <!-- Statistics -->
     <string name="stats_title">İstatistikler</string>

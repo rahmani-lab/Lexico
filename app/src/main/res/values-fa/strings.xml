@@ -45,6 +45,14 @@
     <string name="deck_count_new">%d جدید</string>
     <string name="deck_learned_progress">%1$d از %2$d آموخته‌شده</string>
     <string name="deck_study">مطالعه</string>
+    <string name="deck_study_all">مطالعهٔ همه</string>
+    <string name="deck_add_lesson">افزودن درس</string>
+    <string name="deck_new_lesson">درس جدید</string>
+    <string name="deck_lessons_count">%d درس</string>
+    <string name="deck_delete_book_title">کتاب حذف شود؟</string>
+    <string name="deck_delete_book_message">«%1$s» دارای %2$d درس است. آن‌ها و کارت‌هایشان هم حذف شوند، یا درس‌ها به‌صورت دسته‌های جداگانه نگه داشته شوند؟</string>
+    <string name="deck_delete_all">حذف همه</string>
+    <string name="deck_delete_keep">نگه داشتن درس‌ها</string>
 
     <!-- Statistics -->
     <string name="stats_title">آمار</string>

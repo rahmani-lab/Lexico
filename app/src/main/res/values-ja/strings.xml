@@ -45,6 +45,14 @@
     <string name="deck_count_new">新規 %d</string>
     <string name="deck_learned_progress">%1$d / %2$d 習得</string>
     <string name="deck_study">学習</string>
+    <string name="deck_study_all">すべて学習</string>
+    <string name="deck_add_lesson">レッスンを追加</string>
+    <string name="deck_new_lesson">新しいレッスン</string>
+    <string name="deck_lessons_count">%d レッスン</string>
+    <string name="deck_delete_book_title">ブックを削除しますか？</string>
+    <string name="deck_delete_book_message">「%1$s」には %2$d 個のレッスンがあります。カードごと削除しますか、それともレッスンを個別のデッキとして残しますか？</string>
+    <string name="deck_delete_all">すべて削除</string>
+    <string name="deck_delete_keep">レッスンを残す</string>
 
     <!-- Statistics -->
     <string name="stats_title">統計</string>

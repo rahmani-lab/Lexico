@@ -45,6 +45,14 @@
     <string name="deck_count_new">%d 新卡</string>
     <string name="deck_learned_progress">已学 %1$d / %2$d</string>
     <string name="deck_study">学习</string>
+    <string name="deck_study_all">全部学习</string>
+    <string name="deck_add_lesson">添加课程</string>
+    <string name="deck_new_lesson">新建课程</string>
+    <string name="deck_lessons_count">%d 个课程</string>
+    <string name="deck_delete_book_title">删除书籍？</string>
+    <string name="deck_delete_book_message">“%1$s”包含 %2$d 个课程。要连同其卡片一起删除，还是将这些课程保留为单独的卡组？</string>
+    <string name="deck_delete_all">全部删除</string>
+    <string name="deck_delete_keep">保留课程</string>
 
     <!-- Statistics -->
     <string name="stats_title">统计</string>

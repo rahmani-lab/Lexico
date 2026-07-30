@@ -45,6 +45,14 @@
     <string name="deck_count_new">%d nuevas</string>
     <string name="deck_learned_progress">%1$d de %2$d aprendidas</string>
     <string name="deck_study">Estudiar</string>
+    <string name="deck_study_all">Estudiar todo</string>
+    <string name="deck_add_lesson">Añadir lección</string>
+    <string name="deck_new_lesson">Nueva lección</string>
+    <string name="deck_lessons_count">%d lecciones</string>
+    <string name="deck_delete_book_title">¿Eliminar libro?</string>
+    <string name="deck_delete_book_message">«%1$s» tiene %2$d lección(es). ¿Eliminarlas junto con sus tarjetas o conservar las lecciones como mazos separados?</string>
+    <string name="deck_delete_all">Eliminar todo</string>
+    <string name="deck_delete_keep">Conservar lecciones</string>
 
     <!-- Statistics -->
     <string name="stats_title">Estadísticas</string>

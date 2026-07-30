@@ -45,6 +45,14 @@
     <string name="deck_count_new">신규 %d</string>
     <string name="deck_learned_progress">%2$d장 중 %1$d장 학습</string>
     <string name="deck_study">학습</string>
+    <string name="deck_study_all">모두 학습</string>
+    <string name="deck_add_lesson">레슨 추가</string>
+    <string name="deck_new_lesson">새 레슨</string>
+    <string name="deck_lessons_count">레슨 %d개</string>
+    <string name="deck_delete_book_title">책을 삭제할까요?</string>
+    <string name="deck_delete_book_message">“%1$s”에 %2$d개의 레슨이 있습니다. 카드와 함께 삭제할까요, 아니면 레슨을 개별 덱으로 남길까요?</string>
+    <string name="deck_delete_all">모두 삭제</string>
+    <string name="deck_delete_keep">레슨 유지</string>
 
     <!-- Statistics -->
     <string name="stats_title">통계</string>
