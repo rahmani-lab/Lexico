@@ -119,7 +119,7 @@ class SettingsViewModel(
     fun testVoice() {
         val current = settings.value
         val target = activeTargetLanguage.value
-        val locale = PronunciationManager.resolveTtsLocale(target.code, current.ttsAccent)
+        val locale = PronunciationManager.resolveTtsLocale(target.ttsTag, current.ttsAccent)
         pronunciationManager.speak(target.sampleWord, locale, current.selectedVoice, current.speechRate)
     }
 

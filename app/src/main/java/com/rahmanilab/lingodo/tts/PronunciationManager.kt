@@ -3,7 +3,6 @@ package com.rahmanilab.lingodo.tts
 import android.content.Context
 import android.speech.tts.TextToSpeech
 import com.rahmanilab.lingodo.data.preferences.model.TtsAccent
-import com.rahmanilab.lingodo.domain.model.Language
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -97,12 +96,13 @@ class PronunciationManager(context: Context) : TextToSpeech.OnInitListener {
 
     companion object {
         /**
-         * The [Locale] to speak a word tagged with [languageCode] in. English honours the user's
-         * US/UK [accent]; every other language uses its own default locale.
+         * The [Locale] to speak a word tagged with [languageCode] in. [languageCode] may be a bare
+         * code ("fr") or a full BCP-47 tag ("fr-FR", "en-US"). English honours the user's US/UK
+         * [accent]; every other language uses its own locale as given.
          */
         fun resolveTtsLocale(languageCode: String, accent: TtsAccent): Locale {
-            val language = Language.fromCode(languageCode)
-            return if (language == Language.ENGLISH) accent.toLocale() else language.toLocale()
+            val locale = Locale.forLanguageTag(languageCode.ifBlank { "en-US" })
+            return if (locale.language == Locale.ENGLISH.language) accent.toLocale() else locale
         }
     }
 }
