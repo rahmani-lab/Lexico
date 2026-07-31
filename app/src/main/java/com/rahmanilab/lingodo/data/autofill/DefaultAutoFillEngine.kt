@@ -1,5 +1,6 @@
 package com.rahmanilab.lingodo.data.autofill
 
+import com.rahmanilab.lingodo.data.net.AiErrors
 import com.rahmanilab.lingodo.data.repository.AiConfigRepository
 import com.rahmanilab.lingodo.domain.autofill.AutoFillData
 import com.rahmanilab.lingodo.domain.autofill.AutoFillEngine
@@ -42,8 +43,10 @@ class DefaultAutoFillEngine(
                     "No dictionary result. Add an AI provider key in Settings → AI Auto-fill for full auto-fill."
                 )
             } else {
+                val error = aiResult.exceptionOrNull()
                 AutoFillOutcome.Error(
-                    aiResult.exceptionOrNull()?.message ?: "Auto-fill couldn't find data for this word."
+                    if (error != null) AiErrors.friendlyMessage(error)
+                    else "Auto-fill couldn't find data for this word."
                 )
             }
         }
@@ -65,6 +68,7 @@ class DefaultAutoFillEngine(
             antonyms = (d.antonyms + a.antonyms).distinct().take(8),
             collocations = a.collocations.ifEmpty { d.collocations },
             wordForms = a.wordForms.ifEmpty { d.wordForms },
+            tags = (a.tags + d.tags).distinct().take(6),
             audioUrl = d.audioUrl ?: a.audioUrl
         )
     }

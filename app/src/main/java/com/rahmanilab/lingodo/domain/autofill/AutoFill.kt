@@ -18,6 +18,8 @@ data class AutoFillData(
     val antonyms: List<String> = emptyList(),
     val collocations: List<String> = emptyList(),
     val wordForms: List<WordForm> = emptyList(),
+    /** Suggested tags, e.g. part of speech and CEFR level/topic. */
+    val tags: List<String> = emptyList(),
     val audioUrl: String? = null
 )
 
