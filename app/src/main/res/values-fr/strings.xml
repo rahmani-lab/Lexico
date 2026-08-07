@@ -162,4 +162,12 @@
         <item quantity="one">Vous avez %d carte à réviser.</item>
         <item quantity="other">Vous avez %d cartes à réviser.</item>
     </plurals>
+
+    <!-- Deck participation in global review -->
+    <string name="settings_study_decks">Paquets d\'étude</string>
+    <string name="settings_study_decks_desc">Choisissez les paquets pris en compte dans la révision et la pratique globales. Un paquet désactivé est exclu des sessions tous paquets ; vous pouvez toujours l\'étudier depuis l\'écran Paquets.</string>
+    <string name="settings_study_decks_empty">Aucun paquet dans cet espace de travail.</string>
+    <string name="settings_restore_choice_message">Fusionner ajoute les cartes de la sauvegarde à vos données et ignore les doublons. Remplacer supprime d\'abord TOUS les paquets, cartes et l\'historique actuels.</string>
+    <string name="settings_restore_merge">Fusionner</string>
+    <string name="settings_restore_replace">Remplacer</string>
 </resources>

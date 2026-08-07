@@ -162,4 +162,12 @@
         <item quantity="one">Tekrara hazır %d kartınız var.</item>
         <item quantity="other">Tekrara hazır %d kartınız var.</item>
     </plurals>
+
+    <!-- Deck participation in global review -->
+    <string name="settings_study_decks">Çalışma desteleri</string>
+    <string name="settings_study_decks_desc">Hangi destelerin genel tekrar ve alıştırmaya dahil olacağını seçin. Kapattığınız deste tüm-desteler oturumlarına girmez; Desteler ekranından yine de çalışabilirsiniz.</string>
+    <string name="settings_study_decks_empty">Bu çalışma alanında henüz deste yok.</string>
+    <string name="settings_restore_choice_message">Birleştir, yedekteki kartları mevcut verilerinize ekler ve yinelenenleri atlar. Değiştir, önce mevcut TÜM desteleri, kartları ve geçmişi siler.</string>
+    <string name="settings_restore_merge">Birleştir</string>
+    <string name="settings_restore_replace">Değiştir</string>
 </resources>

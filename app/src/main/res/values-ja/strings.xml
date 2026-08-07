@@ -161,4 +161,12 @@
     <plurals name="reminder_message">
         <item quantity="other">復習できるカードが %d 枚あります。</item>
     </plurals>
+
+    <!-- Deck participation in global review -->
+    <string name="settings_study_decks">学習デッキ</string>
+    <string name="settings_study_decks_desc">どのデッキを全体の復習・練習に含めるかを選びます。オフにしたデッキは全デッキのセッションから除外されますが、デッキ画面から個別に学習できます。</string>
+    <string name="settings_study_decks_empty">このワークスペースにはまだデッキがありません。</string>
+    <string name="settings_restore_choice_message">マージはバックアップのカードを現在のデータに追加し、重複はスキップします。置き換えは現在のすべてのデッキ・カード・履歴を先に削除します。</string>
+    <string name="settings_restore_merge">マージ</string>
+    <string name="settings_restore_replace">置き換え</string>
 </resources>

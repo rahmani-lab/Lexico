@@ -162,4 +162,12 @@
         <item quantity="one">%d کارت آمادهٔ مرور دارید.</item>
         <item quantity="other">%d کارت آمادهٔ مرور دارید.</item>
     </plurals>
+
+    <!-- Deck participation in global review -->
+    <string name="settings_study_decks">دسته‌های مطالعه</string>
+    <string name="settings_study_decks_desc">انتخاب کنید کدام دسته‌ها در مرور و تمرین سراسری حساب شوند. خاموش‌کردن یک دسته آن را از جلسه‌های همه‌دسته‌ها کنار می‌گذارد؛ همچنان می‌توانید مستقیماً از صفحهٔ دسته‌ها مطالعه‌اش کنید.</string>
+    <string name="settings_study_decks_empty">هنوز دسته‌ای در این فضای کاری نیست.</string>
+    <string name="settings_restore_choice_message">ادغام، کارت‌های پشتیبان را به داده‌های فعلی اضافه می‌کند و موارد تکراری را رد می‌کند. جایگزینی، ابتدا همهٔ دسته‌ها، کارت‌ها و تاریخچهٔ فعلی را حذف می‌کند.</string>
+    <string name="settings_restore_merge">ادغام</string>
+    <string name="settings_restore_replace">جایگزینی</string>
 </resources>

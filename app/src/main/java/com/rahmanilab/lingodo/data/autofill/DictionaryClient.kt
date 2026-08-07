@@ -16,7 +16,12 @@ class DictionaryClient {
 
     private val json = Json { ignoreUnknownKeys = true }
 
-    suspend fun lookup(word: String): AutoFillData? {
+    /**
+     * @param partOfSpeech when non-blank, only senses with that exact part of speech are used, so
+     *   "firm" as a noun never returns the adjective's definition. Falls back to every sense when
+     *   the dictionary has no entry for the requested class.
+     */
+    suspend fun lookup(word: String, partOfSpeech: String = ""): AutoFillData? {
         val encoded = URLEncoder.encode(word.trim(), "UTF-8")
         val response = runCatching { HttpJson.get("$BASE$encoded") }.getOrNull() ?: return null
         val entries = runCatching { json.decodeFromString<List<DictEntry>>(response) }.getOrNull()
@@ -29,18 +34,29 @@ class DictionaryClient {
         }.orEmpty()
         val audio = entries.flatMap { it.phonetics }
             .firstOrNull { !it.audio.isNullOrBlank() }?.audio
-        val firstMeaning = entries.flatMap { it.meanings }.firstOrNull()
+
+        // Restrict to the requested part of speech when the user pinned one.
+        val allMeanings = entries.flatMap { it.meanings }
+        val wanted = partOfSpeech.trim()
+        val meanings = if (wanted.isNotBlank()) {
+            allMeanings.filter { it.partOfSpeech.equals(wanted, ignoreCase = true) }
+                .ifEmpty { allMeanings }
+        } else {
+            allMeanings
+        }
+
+        val firstMeaning = meanings.firstOrNull()
         val definition = firstMeaning?.definitions?.firstOrNull()?.definition.orEmpty()
-        val examples = entries.flatMap { it.meanings }
+        val examples = meanings
             .flatMap { it.definitions }
             .mapNotNull { it.example?.takeIf { ex -> ex.isNotBlank() } }
             .distinct()
             .take(2)
             .map { Example(text = it, translation = "") }
-        val synonyms = entries.flatMap { it.meanings }
+        val synonyms = meanings
             .flatMap { it.synonyms + it.definitions.flatMap { d -> d.synonyms } }
             .filter { it.isNotBlank() }.distinct().take(8)
-        val antonyms = entries.flatMap { it.meanings }
+        val antonyms = meanings
             .flatMap { it.antonyms + it.definitions.flatMap { d -> d.antonyms } }
             .filter { it.isNotBlank() }.distinct().take(8)
 

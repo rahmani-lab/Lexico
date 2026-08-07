@@ -165,4 +165,12 @@
         <item quantity="many">لديك %d بطاقة جاهزة للمراجعة.</item>
         <item quantity="other">لديك %d بطاقة جاهزة للمراجعة.</item>
     </plurals>
+
+    <!-- Deck participation in global review -->
+    <string name="settings_study_decks">مجموعات الدراسة</string>
+    <string name="settings_study_decks_desc">اختر المجموعات التي تُحتسب في المراجعة والتمرين الشاملين. إيقاف مجموعة يستبعدها من جلسات كل المجموعات؛ ويمكنك دراستها مباشرةً من شاشة المجموعات.</string>
+    <string name="settings_study_decks_empty">لا توجد مجموعات في مساحة العمل هذه بعد.</string>
+    <string name="settings_restore_choice_message">الدمج يضيف بطاقات النسخة الاحتياطية إلى بياناتك الحالية ويتخطى المكرر. الاستبدال يحذف أولًا كل المجموعات والبطاقات والسجل الحالية.</string>
+    <string name="settings_restore_merge">دمج</string>
+    <string name="settings_restore_replace">استبدال</string>
 </resources>

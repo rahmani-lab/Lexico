@@ -96,6 +96,7 @@ fun SettingsScreen(
     val practiceStyles by viewModel.practiceStyles.collectAsStateWithLifecycle()
     val activeStyleId by viewModel.activePracticeStyleId.collectAsStateWithLifecycle()
     val targetLanguage by viewModel.activeTargetLanguage.collectAsStateWithLifecycle()
+    val deckInclusions by viewModel.deckInclusions.collectAsStateWithLifecycle()
     var editingStyle by remember { mutableStateOf<PracticeStyle?>(null) }
     var creatingStyle by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -304,6 +305,29 @@ fun SettingsScreen(
                 }
             }
 
+            SettingsSection(stringResource(R.string.settings_study_decks)) {
+                Text(
+                    stringResource(R.string.settings_study_decks_desc),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                if (deckInclusions.isEmpty()) {
+                    Text(
+                        stringResource(R.string.settings_study_decks_empty),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                } else {
+                    deckInclusions.forEach { deck ->
+                        SettingsSwitchRow(
+                            label = deck.name,
+                            checked = deck.included,
+                            onChange = { viewModel.setDeckIncluded(deck.id, it) }
+                        )
+                    }
+                }
+            }
+
             SettingsSection(stringResource(R.string.settings_ai_autofill)) {
                 Text(
                     stringResource(R.string.settings_ai_desc),
@@ -424,15 +448,19 @@ fun SettingsScreen(
         AlertDialog(
             onDismissRequest = { pendingRestore = null },
             title = { Text(stringResource(R.string.settings_restore_title)) },
-            text = { Text(stringResource(R.string.settings_restore_message)) },
+            text = { Text(stringResource(R.string.settings_restore_choice_message)) },
+            // Merge is the safe, non-destructive default; replacing is the deliberate second option.
             confirmButton = {
+                TextButton(onClick = {
+                    viewModel.mergeBackup(resolver, uri)
+                    pendingRestore = null
+                }) { Text(stringResource(R.string.settings_restore_merge)) }
+            },
+            dismissButton = {
                 TextButton(onClick = {
                     viewModel.restoreBackup(resolver, uri)
                     pendingRestore = null
-                }) { Text(stringResource(R.string.settings_restore_confirm)) }
-            },
-            dismissButton = {
-                TextButton(onClick = { pendingRestore = null }) { Text(stringResource(R.string.action_cancel)) }
+                }) { Text(stringResource(R.string.settings_restore_replace)) }
             }
         )
     }

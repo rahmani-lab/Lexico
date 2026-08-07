@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.rahmanilab.lingodo.data.preferences.model.AppSettings
 import com.rahmanilab.lingodo.data.preferences.model.SchedulerType
@@ -82,6 +83,29 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun setActivePracticeStyleId(id: String) = edit { it[Keys.ACTIVE_PRACTICE_STYLE] = id }
 
+    // --- Add-card convenience: the deck the user last added a card to ---
+
+    suspend fun currentLastDeckId(): Long = context.dataStore.data.first()[Keys.LAST_DECK] ?: -1L
+
+    suspend fun setLastDeckId(id: Long) = edit { it[Keys.LAST_DECK] = id }
+
+    // --- Decks excluded from global (all-decks) review and practice ---
+
+    val excludedDeckIds: Flow<Set<Long>> =
+        context.dataStore.data.map { prefs -> prefs[Keys.EXCLUDED_DECKS].toDeckIds() }
+
+    suspend fun currentExcludedDeckIds(): Set<Long> =
+        context.dataStore.data.first()[Keys.EXCLUDED_DECKS].toDeckIds()
+
+    suspend fun setDeckIncludedInGlobal(deckId: Long, included: Boolean) = edit { prefs ->
+        val current = prefs[Keys.EXCLUDED_DECKS].toDeckIds().toMutableSet()
+        if (included) current.remove(deckId) else current.add(deckId)
+        prefs[Keys.EXCLUDED_DECKS] = current.map { it.toString() }.toSet()
+    }
+
+    private fun Set<String>?.toDeckIds(): Set<Long> =
+        this.orEmpty().mapNotNull { it.toLongOrNull() }.toSet()
+
     // --- one-time database seeding flag ---
 
     suspend fun isSeeded(): Boolean = context.dataStore.data.first()[Keys.SEEDED] ?: false
@@ -151,5 +175,7 @@ class SettingsRepository(private val context: Context) {
         val SEEDED = booleanPreferencesKey("seeded")
         val NEW_STUDIED_DAY = longPreferencesKey("new_studied_day")
         val NEW_STUDIED_COUNT = intPreferencesKey("new_studied_count")
+        val LAST_DECK = longPreferencesKey("last_deck_id")
+        val EXCLUDED_DECKS = stringSetPreferencesKey("excluded_deck_ids")
     }
 }

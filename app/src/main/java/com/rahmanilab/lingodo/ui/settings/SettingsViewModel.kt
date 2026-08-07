@@ -14,6 +14,7 @@ import com.rahmanilab.lingodo.data.preferences.model.SchedulerType
 import com.rahmanilab.lingodo.data.preferences.model.ThemeMode
 import com.rahmanilab.lingodo.data.preferences.model.TtsAccent
 import com.rahmanilab.lingodo.data.repository.AiConfigRepository
+import com.rahmanilab.lingodo.data.repository.DeckRepository
 import com.rahmanilab.lingodo.data.repository.LanguagePairRepository
 import com.rahmanilab.lingodo.domain.model.AiProvider
 import com.rahmanilab.lingodo.domain.model.Language
@@ -22,6 +23,7 @@ import com.rahmanilab.lingodo.tts.PronunciationManager
 import com.rahmanilab.lingodo.ui.appContainer
 import com.rahmanilab.lingodo.work.ReminderScheduler
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -29,10 +31,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+
+/** A deck row in Settings → Study decks, with its "counts toward global review" switch. */
+data class DeckInclusion(val id: Long, val name: String, val included: Boolean)
 
 class SettingsViewModel(
     private val settingsRepository: SettingsRepository,
@@ -41,13 +47,27 @@ class SettingsViewModel(
     private val importExportRepository: ImportExportRepository,
     private val aiConfigRepository: AiConfigRepository,
     private val practiceStyleRepository: PracticeStyleRepository,
-    private val languagePairRepository: LanguagePairRepository
+    private val languagePairRepository: LanguagePairRepository,
+    private val deckRepository: DeckRepository
 ) : ViewModel() {
 
     /** The active pair's target language — drives the TTS locale, voice list and voice test. */
     val activeTargetLanguage: StateFlow<Language> = languagePairRepository.activePairId
         .map { languagePairRepository.activePair().target }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), Language.ENGLISH)
+
+    /** Decks in the active pair paired with whether they take part in global review/practice. */
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val deckInclusions: StateFlow<List<DeckInclusion>> = settingsRepository.activePairId
+        .flatMapLatest { pairId -> deckRepository.observeDecksForPair(pairId) }
+        .combine(settingsRepository.excludedDeckIds) { decks, excluded ->
+            decks.map { DeckInclusion(it.id, it.name, it.id !in excluded) }
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+
+    fun setDeckIncluded(deckId: Long, included: Boolean) = launch {
+        settingsRepository.setDeckIncludedInGlobal(deckId, included)
+    }
 
     private val _messages = MutableSharedFlow<String>(extraBufferCapacity = 4)
     val messages: SharedFlow<String> = _messages.asSharedFlow()
@@ -165,6 +185,13 @@ class SettingsViewModel(
             .onFailure { _messages.tryEmit("Restore failed: ${it.message}") }
     }
 
+    /** Non-destructive alternative to [restoreBackup]: appends the file, skipping duplicates. */
+    fun mergeBackup(resolver: ContentResolver, uri: Uri) = viewModelScope.launch {
+        runCatching { importExportRepository.mergeBackupJson(readText(resolver, uri)) }
+            .onSuccess { _messages.tryEmit(it.message) }
+            .onFailure { _messages.tryEmit("Merge failed: ${it.message}") }
+    }
+
     private suspend fun writeText(resolver: ContentResolver, uri: Uri, text: String) =
         withContext(Dispatchers.IO) {
             resolver.openOutputStream(uri, "wt")?.use { it.write(text.toByteArray()) }
@@ -200,7 +227,8 @@ class SettingsViewModel(
                     appContainer.importExportRepository,
                     appContainer.aiConfigRepository,
                     appContainer.practiceStyleRepository,
-                    appContainer.languagePairRepository
+                    appContainer.languagePairRepository,
+                    appContainer.deckRepository
                 )
             }
         }

@@ -161,4 +161,12 @@
     <plurals name="reminder_message">
         <item quantity="other">복습할 카드가 %d장 있습니다.</item>
     </plurals>
+
+    <!-- Deck participation in global review -->
+    <string name="settings_study_decks">학습 덱</string>
+    <string name="settings_study_decks_desc">전체 복습과 연습에 포함할 덱을 선택하세요. 끄면 전체 덱 세션에서 제외되며, 덱 화면에서 개별 학습은 계속 가능합니다.</string>
+    <string name="settings_study_decks_empty">이 작업 공간에 아직 덱이 없습니다.</string>
+    <string name="settings_restore_choice_message">병합은 백업의 카드를 현재 데이터에 추가하고 중복은 건너뜁니다. 교체는 현재의 모든 덱·카드·기록을 먼저 삭제합니다.</string>
+    <string name="settings_restore_merge">병합</string>
+    <string name="settings_restore_replace">교체</string>
 </resources>

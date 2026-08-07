@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.rahmanilab.lingodo.data.local.entity.CardEntity
 import com.rahmanilab.lingodo.data.local.entity.DeckEntity
+import com.rahmanilab.lingodo.data.preferences.SettingsRepository
 import com.rahmanilab.lingodo.data.repository.CardRepository
 import com.rahmanilab.lingodo.data.repository.DeckRepository
 import com.rahmanilab.lingodo.data.repository.LanguagePairRepository
@@ -68,6 +69,7 @@ class EditCardViewModel(
     private val deckRepository: DeckRepository,
     private val languagePairRepository: LanguagePairRepository,
     private val autoFillEngine: AutoFillEngine,
+    private val settingsRepository: SettingsRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -136,9 +138,12 @@ class EditCardViewModel(
                 }
             }
 
-            // Creating a new card: choose a sensible default deck and default the TTS locale to
-            // the active pair's target language.
+            // Creating a new card: prefer the deck the screen was opened for, then the deck the user
+            // last added to (so adding a new deck elsewhere doesn't hijack the selection), then any
+            // deck. The TTS locale defaults to the active pair's target language.
+            val lastUsedDeckId = settingsRepository.currentLastDeckId()
             val defaultDeckId = decks.firstOrNull { it.id == initialDeckId }?.id
+                ?: decks.firstOrNull { it.id == lastUsedDeckId }?.id
                 ?: decks.firstOrNull()?.id
                 ?: Routes.NO_ID
             _uiState.update {
@@ -212,17 +217,23 @@ class EditCardViewModel(
      * into empty fields only — never overwriting anything the user typed.
      */
     fun autoFill() {
-        val word = _uiState.value.form.word.trim()
+        val form = _uiState.value.form
+        val word = form.word.trim()
         if (word.isBlank()) {
             _messages.tryEmit("Type a word first, then tap auto-fill.")
             return
         }
+        // A part of speech the user already chose pins the sense the engine must describe.
+        val pinnedPos = form.partOfSpeech.trim()
         viewModelScope.launch {
             _uiState.update { it.copy(autoFilling = true) }
-            when (val outcome = autoFillEngine.enrich(word, activeSourceCode, activeTargetCode)) {
+            when (val outcome = autoFillEngine.enrich(word, activeSourceCode, activeTargetCode, pinnedPos)) {
                 is AutoFillOutcome.Success -> {
                     mergeIntoEmptyFields(outcome.data)
-                    _messages.tryEmit("Auto-filled the empty fields.")
+                    _messages.tryEmit(
+                        if (pinnedPos.isBlank()) "Auto-filled the empty fields."
+                        else "Auto-filled the empty fields for \"$pinnedPos\"."
+                    )
                 }
                 is AutoFillOutcome.Unavailable -> _messages.tryEmit(outcome.reason)
                 is AutoFillOutcome.Error -> _messages.tryEmit(outcome.message)
@@ -295,6 +306,8 @@ class EditCardViewModel(
             } else {
                 cardRepository.addCard(entity, form.tags)
             }
+            // Remember the deck so the next "Add card" defaults to it.
+            settingsRepository.setLastDeckId(deckId)
             _uiState.update { it.copy(saved = true) }
         }
     }
@@ -313,6 +326,7 @@ class EditCardViewModel(
                     appContainer.deckRepository,
                     appContainer.languagePairRepository,
                     appContainer.autoFillEngine,
+                    appContainer.settingsRepository,
                     createSavedStateHandle()
                 )
             }

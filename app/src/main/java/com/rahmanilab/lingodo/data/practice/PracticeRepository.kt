@@ -50,7 +50,9 @@ class PracticeRepository(
             troublesome = troublesome,
             mastered = mastered,
             targetLanguage = clean(pair.target.displayName),
-            sourceLanguage = clean(pair.source.displayName)
+            sourceLanguage = clean(pair.source.displayName),
+            sourceLanguageTag = pair.source.ttsTag,
+            sourceIsRtl = pair.source.isRtl
         )
     }
 
@@ -91,7 +93,15 @@ class PracticeRepository(
             "Return a JSON array; each element: {\"sentence\": one ${ctx.targetLanguage} sentence in the style above " +
             "with the target word replaced by \"_____\", \"answer\": the missing word, " +
             "\"translation\": the full sentence translated into ${ctx.sourceLanguage}}. " +
-            "Exactly one element per word. JSON array only."
+            "Exactly one element per word. JSON array only.\n\n" +
+            // Strict language enforcement: models otherwise leak a third language (e.g. Devanagari)
+            // into the helper text, which also breaks RTL layout.
+            "STRICT LANGUAGE RULES:\n" +
+            "- \"sentence\" and \"answer\" MUST be written ONLY in ${ctx.targetLanguage}.\n" +
+            "- \"translation\" MUST be written STRICTLY and ENTIRELY in ${ctx.sourceLanguage} " +
+            "(language tag ${ctx.sourceLanguageTag}), using that language's native script only.\n" +
+            "- NEVER use any third language, transliteration, romanization or script other than " +
+            "those two. Do not add explanations, labels, parentheses or notes in any other language."
 
         val raw = runCatching { llm.chat(provider, provider.defaultModel, key, system, user) }
             .getOrElse { return Result.failure(it) }
@@ -107,8 +117,10 @@ class PracticeRepository(
             PracticeExercise(
                 prompt = sentence,
                 answer = answer,
-                translation = dto.translation.trim(),
-                cardId = db.cardDao().findCardIdByWordInPair(ctx.pairId, answer) ?: -1L
+                // Drop helper text that came back in the wrong script rather than showing garbage.
+                translation = sanitizeTranslation(dto.translation.trim(), ctx.sourceLanguageTag),
+                cardId = db.cardDao().findCardIdByWordInPair(ctx.pairId, answer) ?: -1L,
+                translationIsRtl = ctx.sourceIsRtl
             )
         }
         return if (exercises.isEmpty()) {
@@ -131,15 +143,46 @@ class PracticeRepository(
 
     private fun clean(displayName: String) = displayName.substringBefore(" —").trim()
 
+    /**
+     * Second line of defence against language contamination: models sometimes answer in a third
+     * script (Devanagari, CJK, Cyrillic…) regardless of the prompt, which also breaks RTL layout.
+     * If [text] contains a script that cannot belong to [sourceTag]'s language, drop it — a missing
+     * hint reads far better than an unreadable one.
+     */
+    private fun sanitizeTranslation(text: String, sourceTag: String): String {
+        if (text.isBlank()) return text
+        val expected = scriptOf(sourceTag.substringBefore('-'))
+        val foreign = SCRIPTS.filterKeys { it != expected }.values.any { range -> text.any { it in range } }
+        return if (foreign) "" else text
+    }
+
+    private fun scriptOf(languageCode: String): String = when (languageCode) {
+        "fa", "ar", "ur" -> "arabic"
+        "hi", "mr", "ne" -> "devanagari"
+        "zh", "ja" -> "cjk"
+        "ko" -> "hangul"
+        "ru", "uk", "bg" -> "cyrillic"
+        else -> "latin"
+    }
+
+    private companion object Scripts {
+        /** Character ranges that identify a script; "latin" is intentionally not policed. */
+        val SCRIPTS: Map<String, CharRange> = mapOf(
+            "arabic" to '؀'..'ۿ',
+            "devanagari" to 'ऀ'..'ॿ',
+            "cjk" to '一'..'鿿',
+            "hangul" to '가'..'힯',
+            "cyrillic" to 'Ѐ'..'ӿ'
+        )
+
+        const val WORD_LIMIT = 8
+        const val MATURE_DAYS = 21
+    }
+
     private fun extractJsonArray(raw: String): String? {
         val start = raw.indexOf('[')
         val end = raw.lastIndexOf(']')
         return if (start in 0 until end) raw.substring(start, end + 1) else null
-    }
-
-    private companion object {
-        const val WORD_LIMIT = 8
-        const val MATURE_DAYS = 21
     }
 
     @Serializable

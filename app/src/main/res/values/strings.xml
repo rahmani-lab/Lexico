@@ -164,4 +164,12 @@
         <item quantity="one">You have %d card ready to review.</item>
         <item quantity="other">You have %d cards ready to review.</item>
     </plurals>
+
+    <!-- Deck participation in global review -->
+    <string name="settings_study_decks">Study decks</string>
+    <string name="settings_study_decks_desc">Choose which decks count toward global review and practice. Turning one off keeps it out of all-deck sessions; you can still study it directly from the Decks screen.</string>
+    <string name="settings_study_decks_empty">No decks in this workspace yet.</string>
+    <string name="settings_restore_choice_message">Merge adds the backup\'s cards to your current data and skips duplicates. Replace deletes ALL current decks, cards and history first.</string>
+    <string name="settings_restore_merge">Merge</string>
+    <string name="settings_restore_replace">Replace</string>
 </resources>

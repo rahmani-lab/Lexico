@@ -162,4 +162,12 @@
         <item quantity="one">Tienes %d tarjeta lista para repasar.</item>
         <item quantity="other">Tienes %d tarjetas listas para repasar.</item>
     </plurals>
+
+    <!-- Deck participation in global review -->
+    <string name="settings_study_decks">Mazos de estudio</string>
+    <string name="settings_study_decks_desc">Elige qué mazos cuentan para el repaso y la práctica globales. Si desactivas uno, queda fuera de las sesiones de todos los mazos; aún puedes estudiarlo desde la pantalla Mazos.</string>
+    <string name="settings_study_decks_empty">Aún no hay mazos en este espacio de trabajo.</string>
+    <string name="settings_restore_choice_message">Combinar añade las tarjetas de la copia a tus datos y omite duplicados. Reemplazar elimina primero TODOS los mazos, tarjetas e historial actuales.</string>
+    <string name="settings_restore_merge">Combinar</string>
+    <string name="settings_restore_replace">Reemplazar</string>
 </resources>

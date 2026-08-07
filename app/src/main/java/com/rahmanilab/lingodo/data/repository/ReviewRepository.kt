@@ -66,8 +66,15 @@ class ReviewRepository(
         // to itself plus all of its lessons, so "Study all" reviews the whole book in one session.
         val pairId = settingsRepository.currentActivePairId()
         val deckIds = deckId?.let { listOf(it) + deckDao.childDeckIds(it) }
-        val due = if (deckIds == null) cardDao.getDueCards(now, null, pairId)
-        else cardDao.getDueCardsIn(now, deckIds, pairId)
+        // A global session honours the decks the user switched off in Settings; studying a specific
+        // deck always includes it, even when it sits out of global review.
+        val excluded = if (deckIds == null) settingsRepository.currentExcludedDeckIds() else emptySet()
+
+        val due = when {
+            deckIds != null -> cardDao.getDueCardsIn(now, deckIds, pairId)
+            excluded.isNotEmpty() -> cardDao.getDueCardsExcluding(now, excluded.toList(), pairId)
+            else -> cardDao.getDueCards(now, null, pairId)
+        }
 
         val newCards = if (includeNew) {
             val limit = if (respectDailyLimit) {
@@ -77,8 +84,11 @@ class ReviewRepository(
                 Int.MAX_VALUE
             }
             if (limit > 0) {
-                if (deckIds == null) cardDao.getNewCards(null, limit, pairId)
-                else cardDao.getNewCardsIn(deckIds, limit, pairId)
+                when {
+                    deckIds != null -> cardDao.getNewCardsIn(deckIds, limit, pairId)
+                    excluded.isNotEmpty() -> cardDao.getNewCardsExcluding(excluded.toList(), limit, pairId)
+                    else -> cardDao.getNewCards(null, limit, pairId)
+                }
             } else {
                 emptyList()
             }

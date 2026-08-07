@@ -21,20 +21,26 @@ class DefaultAutoFillEngine(
     private val aiEnricher: AiEnricher
 ) : AutoFillEngine {
 
-    override suspend fun enrich(word: String, sourceCode: String, targetCode: String): AutoFillOutcome {
+    override suspend fun enrich(
+        word: String,
+        sourceCode: String,
+        targetCode: String,
+        partOfSpeech: String
+    ): AutoFillOutcome {
         val trimmed = word.trim()
         if (trimmed.isBlank()) return AutoFillOutcome.Unavailable("Type a word first, then tap auto-fill.")
 
         val sourceName = cleanName(sourceCode)
         val targetName = cleanName(targetCode)
+        val pos = partOfSpeech.trim()
 
         val dictionary = if (targetCode == "en") {
-            runCatching { dictionaryClient.lookup(trimmed) }.getOrNull()
+            runCatching { dictionaryClient.lookup(trimmed, pos) }.getOrNull()
         } else {
             null
         }
 
-        val aiResult = runCatching { aiEnricher.enrich(trimmed, sourceName, targetName) }
+        val aiResult = runCatching { aiEnricher.enrich(trimmed, sourceName, targetName, pos) }
         val aiData = aiResult.getOrNull()
 
         if (dictionary == null && aiData == null) {
@@ -51,15 +57,16 @@ class DefaultAutoFillEngine(
             }
         }
 
-        return AutoFillOutcome.Success(merge(dictionary, aiData))
+        return AutoFillOutcome.Success(merge(dictionary, aiData, pos))
     }
 
-    private fun merge(dictionary: AutoFillData?, ai: AutoFillData?): AutoFillData {
+    private fun merge(dictionary: AutoFillData?, ai: AutoFillData?, pinnedPos: String): AutoFillData {
         val d = dictionary ?: AutoFillData()
         val a = ai ?: AutoFillData()
         return AutoFillData(
             phonetic = d.phonetic.ifBlank { a.phonetic },
-            partOfSpeech = d.partOfSpeech.ifBlank { a.partOfSpeech },
+            // A part of speech the user pinned always wins over whatever the sources report.
+            partOfSpeech = pinnedPos.ifBlank { d.partOfSpeech.ifBlank { a.partOfSpeech } },
             meaning = a.meaning.ifBlank { d.meaning },
             definition = d.definition.ifBlank { a.definition },
             // Prefer AI examples (they carry translations); fall back to dictionary examples.

@@ -21,13 +21,24 @@ class AiEnricher(
 
     private val json = Json { ignoreUnknownKeys = true }
 
-    suspend fun enrich(word: String, sourceName: String, targetName: String): AutoFillData? {
+    suspend fun enrich(
+        word: String,
+        sourceName: String,
+        targetName: String,
+        partOfSpeech: String = ""
+    ): AutoFillData? {
         val provider = aiConfig.currentProvider()
         val key = aiConfig.getKey(provider)?.takeIf { it.isNotBlank() } ?: return null
 
         val system = "You are an expert lexicographer for the language-learning app Lingodo. " +
             "Return ONLY a raw JSON object with NO markdown formatting, NO backticks, and NO extra text."
-        val raw = llm.chat(provider, provider.defaultModel, key, system, buildPrompt(word, sourceName, targetName))
+        val raw = llm.chat(
+            provider,
+            provider.defaultModel,
+            key,
+            system,
+            buildPrompt(word, sourceName, targetName, partOfSpeech.trim())
+        )
         val jsonText = extractJsonObject(raw) ?: return null
         val dto = runCatching { json.decodeFromString<AiFillDto>(jsonText) }.getOrNull() ?: return null
         return dto.toData()
@@ -37,11 +48,27 @@ class AiEnricher(
      * The standardized prompt. [sourceName] is the native language the meaning is written in;
      * [targetName] is the study language the word belongs to.
      */
-    private fun buildPrompt(word: String, sourceName: String, targetName: String): String = """
+    private fun buildPrompt(
+        word: String,
+        sourceName: String,
+        targetName: String,
+        partOfSpeech: String
+    ): String {
+        val posRule = if (partOfSpeech.isBlank()) "" else """
+
+        CRITICAL — PART OF SPEECH LOCK: treat "$word" STRICTLY as a $partOfSpeech.
+        Every field (definition_meaning, definition, examples, synonyms, antonyms, collocations and
+        word_forms) MUST describe ONLY the $partOfSpeech sense. Ignore all other senses completely —
+        e.g. if asked for the noun sense of a word, never return its adjective or verb meaning.
+        Set "partOfSpeech" to exactly "$partOfSpeech".
+        """.trimIndent()
+
+        return """
         Analyze the $targetName word or phrase: "$word" and return ONLY a raw JSON object with NO
         markdown formatting, NO backticks, and NO extra text.
 
         Translate/Define the word into: $sourceName.
+        $posRule
 
         Rules for "word_forms":
         1. If "$word" is a VERB:
@@ -64,7 +91,8 @@ class AiEnricher(
           "word_forms": [{"form": "noun", "word": "..."}, {"form": "adjective", "word": "..."}, {"form": "past tense", "word": "..."}],
           "tags": ["part_of_speech", "cefr_level_or_topic"]
         }
-    """.trimIndent()
+        """.trimIndent()
+    }
 
     /** Models sometimes wrap JSON in prose or ``` fences; take the outermost object. */
     private fun extractJsonObject(raw: String): String? {

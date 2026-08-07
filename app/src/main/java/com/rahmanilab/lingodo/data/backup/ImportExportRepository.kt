@@ -147,6 +147,58 @@ class ImportExportRepository(
 
     // ---------------------------------------------------------------- restore
 
+    /**
+     * Non-destructive counterpart to [restoreBackupJson]: appends a backup's contents to the current
+     * database instead of replacing it. Decks are matched by name within the active language pair
+     * (created when missing) and cards whose word already exists in the target deck are skipped, so
+     * merging the same file twice never duplicates anything. Each imported card keeps its own
+     * learning schedule, with ids remapped to the newly inserted rows.
+     */
+    suspend fun mergeBackupJson(text: String): ImportResult {
+        val backup = runCatching { json.decodeFromString<BackupData>(text) }.getOrNull()
+            ?: return ImportResult(0, 0, "Could not parse the backup file.", success = false)
+
+        val pairId = settingsRepository.currentActivePairId()
+        val decksById = backup.decks.associateBy { it.id }
+        val schedulesByCard = backup.schedules.associateBy { it.cardId }
+        val tagNamesById = backup.tags.associate { it.id to it.name }
+        val tagNamesByCard: Map<Long, List<String>> = backup.cardTags
+            .groupBy { it.cardId }
+            .mapValues { (_, refs) -> refs.mapNotNull { tagNamesById[it.tagId] } }
+
+        val existingDecks = db.deckDao().getAll()
+            .filter { it.languagePairId == pairId }
+            .associateBy { it.name.lowercase() }
+            .toMutableMap()
+
+        var imported = 0
+        var skipped = 0
+        for (card in backup.cards) {
+            if (card.word.isBlank()) {
+                skipped++
+                continue
+            }
+            val deckName = decksById[card.deckId]?.name?.takeIf { it.isNotBlank() } ?: "Imported"
+            val deckId = existingDecks[deckName.lowercase()]?.id ?: run {
+                val id = deckRepository.createDeck(deckName, "", pairId)
+                deckRepository.getDeck(id)?.let { existingDecks[deckName.lowercase()] = it }
+                id
+            }
+            if (cardRepository.countWithWordInDeck(deckId, card.word) > 0) {
+                skipped++ // already present — merge never overwrites
+                continue
+            }
+            val newId = cardRepository.addCard(
+                card.copy(id = 0, deckId = deckId),
+                tagNamesByCard[card.id].orEmpty()
+            )
+            // Carry the card's progress across, pointing the schedule at the new row.
+            schedulesByCard[card.id]?.let { db.cardScheduleDao().upsert(it.copy(cardId = newId)) }
+            imported++
+        }
+        return ImportResult(imported, skipped, "Merged $imported card(s); skipped $skipped duplicate(s).")
+    }
+
     /** Wipes the database and replaces it with the contents of a full backup file. */
     suspend fun restoreBackupJson(text: String): ImportResult {
         val backup = runCatching { json.decodeFromString<BackupData>(text) }.getOrNull()

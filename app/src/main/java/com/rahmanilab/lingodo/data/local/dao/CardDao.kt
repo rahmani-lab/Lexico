@@ -134,6 +134,46 @@ interface CardDao {
     )
     suspend fun getNewCardsIn(deckIds: List<Long>, limit: Int, pairId: Long?): List<CardWithDetails>
 
+    /** Due cards across every deck except those the user excluded from global review. */
+    @Transaction
+    @Query(
+        """
+        SELECT c.* FROM cards c
+        INNER JOIN card_schedule s ON s.cardId = c.id
+        INNER JOIN decks d ON d.id = c.deckId
+        WHERE c.deckId NOT IN (:excludedDeckIds)
+          AND (:pairId IS NULL OR d.languagePairId = :pairId)
+          AND s.state != 'NEW'
+          AND s.dueAt <= :now
+        ORDER BY s.dueAt ASC
+        """
+    )
+    suspend fun getDueCardsExcluding(
+        now: Long,
+        excludedDeckIds: List<Long>,
+        pairId: Long?
+    ): List<CardWithDetails>
+
+    /** New cards across every deck except those the user excluded from global review. */
+    @Transaction
+    @Query(
+        """
+        SELECT c.* FROM cards c
+        INNER JOIN card_schedule s ON s.cardId = c.id
+        INNER JOIN decks d ON d.id = c.deckId
+        WHERE c.deckId NOT IN (:excludedDeckIds)
+          AND (:pairId IS NULL OR d.languagePairId = :pairId)
+          AND s.state = 'NEW'
+        ORDER BY c.createdAt ASC
+        LIMIT :limit
+        """
+    )
+    suspend fun getNewCardsExcluding(
+        excludedDeckIds: List<Long>,
+        limit: Int,
+        pairId: Long?
+    ): List<CardWithDetails>
+
     // --- Adaptive practice (troublesome / mastered words in the active pair) ---
 
     @Transaction

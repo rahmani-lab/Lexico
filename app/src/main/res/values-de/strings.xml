@@ -162,4 +162,12 @@
         <item quantity="one">Du hast %d Karte zum Wiederholen bereit.</item>
         <item quantity="other">Du hast %d Karten zum Wiederholen bereit.</item>
     </plurals>
+
+    <!-- Deck participation in global review -->
+    <string name="settings_study_decks">Lernstapel</string>
+    <string name="settings_study_decks_desc">Wähle, welche Stapel in die globale Wiederholung und Übung einfließen. Ein ausgeschalteter Stapel bleibt aus Sitzungen über alle Stapel heraus; direkt über den Stapel-Bildschirm kannst du ihn weiterhin lernen.</string>
+    <string name="settings_study_decks_empty">Noch keine Stapel in diesem Arbeitsbereich.</string>
+    <string name="settings_restore_choice_message">Zusammenführen fügt die Karten der Sicherung zu deinen Daten hinzu und überspringt Duplikate. Ersetzen löscht zuvor ALLE aktuellen Stapel, Karten und den Verlauf.</string>
+    <string name="settings_restore_merge">Zusammenführen</string>
+    <string name="settings_restore_replace">Ersetzen</string>
 </resources>
