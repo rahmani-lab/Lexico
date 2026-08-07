@@ -31,14 +31,18 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -205,11 +209,20 @@ private fun ExerciseView(
         Column(Modifier.fillMaxWidth().padding(20.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Text(exercise.prompt, style = MaterialTheme.typography.titleMedium)
             if (exercise.translation.isNotBlank()) {
-                Text(
-                    exercise.translation,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                // Helper text follows its own language's direction, so Persian/Arabic hints stay
+                // right-aligned even while the drill sentence is left-to-right.
+                CompositionLocalProvider(
+                    LocalLayoutDirection provides
+                        if (exercise.translationIsRtl) LayoutDirection.Rtl else LayoutDirection.Ltr
+                ) {
+                    Text(
+                        exercise.translation,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = if (exercise.translationIsRtl) TextAlign.Right else TextAlign.Start,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
         }
     }

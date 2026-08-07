@@ -161,4 +161,20 @@
     <plurals name="reminder_message">
         <item quantity="other">你有 %d 张卡片可以复习。</item>
     </plurals>
+
+    <!-- Deck participation in global review -->
+    <string name="settings_study_decks">学习卡组</string>
+    <string name="settings_study_decks_desc">选择哪些卡组计入全局复习与练习。关闭后该卡组不会出现在全部卡组的学习中；你仍可在卡组页面单独学习它。</string>
+    <string name="settings_study_decks_empty">此工作区还没有卡组。</string>
+    <string name="settings_restore_choice_message">合并会把备份中的卡片添加到现有数据并跳过重复项。替换会先删除所有当前的卡组、卡片和学习记录。</string>
+    <string name="settings_restore_merge">合并</string>
+    <string name="settings_restore_replace">替换</string>
+
+    <!-- Dictionary source -->
+    <string name="settings_dictionary">词典</string>
+    <string name="settings_dictionary_desc">选择释义和发音的来源。朗文和牛津的数据受版权许可，无法内置到应用中，因此 LingoDo 允许你用自己的密钥启用出版方的 API。无需密钥的 Free Dictionary 始终作为后备可用。</string>
+    <string name="settings_dictionary_source">词典来源</string>
+    <string name="settings_dictionary_key">词典 API 密钥</string>
+    <string name="settings_dictionary_needs_key">添加密钥后才能使用此词典——在此之前将使用免费词典。</string>
+    <string name="settings_dictionary_unsupported">目前没有词典覆盖 %s——将由 AI 自动填充提供释义。</string>
 </resources>

@@ -162,4 +162,20 @@
         <item quantity="one">Du hast %d Karte zum Wiederholen bereit.</item>
         <item quantity="other">Du hast %d Karten zum Wiederholen bereit.</item>
     </plurals>
+
+    <!-- Deck participation in global review -->
+    <string name="settings_study_decks">Lernstapel</string>
+    <string name="settings_study_decks_desc">Wähle, welche Stapel in die globale Wiederholung und Übung einfließen. Ein ausgeschalteter Stapel bleibt aus Sitzungen über alle Stapel heraus; direkt über den Stapel-Bildschirm kannst du ihn weiterhin lernen.</string>
+    <string name="settings_study_decks_empty">Noch keine Stapel in diesem Arbeitsbereich.</string>
+    <string name="settings_restore_choice_message">Zusammenführen fügt die Karten der Sicherung zu deinen Daten hinzu und überspringt Duplikate. Ersetzen löscht zuvor ALLE aktuellen Stapel, Karten und den Verlauf.</string>
+    <string name="settings_restore_merge">Zusammenführen</string>
+    <string name="settings_restore_replace">Ersetzen</string>
+
+    <!-- Dictionary source -->
+    <string name="settings_dictionary">Wörterbuch</string>
+    <string name="settings_dictionary_desc">Lege fest, woher Definitionen und Aussprache kommen. Longman- und Oxford-Daten sind lizenziert und dürfen nicht in eine App eingebettet werden; stattdessen kannst du die API des Verlags mit deinem eigenen Schlüssel aktivieren. Das schlüssellose Free Dictionary bleibt immer als Rückfallebene verfügbar.</string>
+    <string name="settings_dictionary_source">Wörterbuchquelle</string>
+    <string name="settings_dictionary_key">Wörterbuch-API-Schlüssel</string>
+    <string name="settings_dictionary_needs_key">Füge einen Schlüssel hinzu, um dieses Wörterbuch zu nutzen — bis dahin wird das kostenlose verwendet.</string>
+    <string name="settings_dictionary_unsupported">Kein Wörterbuch deckt %s bisher ab — Definitionen liefert die KI-Autovervollständigung.</string>
 </resources>

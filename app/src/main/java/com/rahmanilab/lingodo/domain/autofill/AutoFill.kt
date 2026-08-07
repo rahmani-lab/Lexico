@@ -44,5 +44,15 @@ sealed interface AutoFillOutcome {
  * non-destructively into empty fields only.
  */
 interface AutoFillEngine {
-    suspend fun enrich(word: String, sourceCode: String, targetCode: String): AutoFillOutcome
+    /**
+     * @param partOfSpeech when the user has already chosen a part of speech, the engine is
+     *   constrained to that exact sense (e.g. "firm" as a noun vs. an adjective). Blank = let the
+     *   engine detect the most common sense itself.
+     */
+    suspend fun enrich(
+        word: String,
+        sourceCode: String,
+        targetCode: String,
+        partOfSpeech: String = ""
+    ): AutoFillOutcome
 }

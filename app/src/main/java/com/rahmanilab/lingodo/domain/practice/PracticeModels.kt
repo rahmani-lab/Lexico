@@ -9,7 +9,11 @@ data class PracticeContext(
     val troublesome: List<String>,
     val mastered: List<String>,
     val targetLanguage: String,
-    val sourceLanguage: String
+    val sourceLanguage: String,
+    /** BCP-47 tag of the source language, so helper text can be laid out in the right direction. */
+    val sourceLanguageTag: String = "en",
+    /** True when the source (helper-text) language is written right-to-left. */
+    val sourceIsRtl: Boolean = false
 ) {
     val hasWords: Boolean get() = troublesome.isNotEmpty() || mastered.isNotEmpty()
 }
@@ -22,5 +26,7 @@ data class PracticeExercise(
     val prompt: String,
     val answer: String,
     val translation: String = "",
-    val cardId: Long = -1L
+    val cardId: Long = -1L,
+    /** True when [translation] (the helper text) is written right-to-left. */
+    val translationIsRtl: Boolean = false
 )

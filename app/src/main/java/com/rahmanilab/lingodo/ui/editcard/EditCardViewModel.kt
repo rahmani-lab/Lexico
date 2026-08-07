@@ -7,12 +7,14 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.rahmanilab.lingodo.data.local.entity.CardEntity
 import com.rahmanilab.lingodo.data.local.entity.DeckEntity
+import com.rahmanilab.lingodo.data.preferences.SettingsRepository
 import com.rahmanilab.lingodo.data.repository.CardRepository
 import com.rahmanilab.lingodo.data.repository.DeckRepository
 import com.rahmanilab.lingodo.data.repository.LanguagePairRepository
 import com.rahmanilab.lingodo.domain.autofill.AutoFillData
 import com.rahmanilab.lingodo.domain.autofill.AutoFillEngine
 import com.rahmanilab.lingodo.domain.autofill.AutoFillOutcome
+import com.rahmanilab.lingodo.domain.model.CardType
 import com.rahmanilab.lingodo.domain.model.Example
 import com.rahmanilab.lingodo.domain.model.WordForm
 import com.rahmanilab.lingodo.ui.appContainer
@@ -31,6 +33,10 @@ import kotlinx.coroutines.launch
 /** Editable form model for a card. */
 data class EditCardForm(
     val deckId: Long = Routes.NO_ID,
+    /** VOCABULARY or FREEFORM; free-form cards use [word]/[meaning] as free front/back text. */
+    val cardType: CardType = CardType.VOCABULARY,
+    /** Ids of cards linked to this one (concept cluster of related/confusable words). */
+    val linkedCardIds: List<Long> = emptyList(),
     val word: String = "",
     val partOfSpeech: String = "",
     val phonetic: String = "",
@@ -53,6 +59,10 @@ data class EditCardUiState(
     val form: EditCardForm = EditCardForm(),
     val isEditing: Boolean = false,
     val decks: List<DeckEntity> = emptyList(),
+    /** Cards currently linked to this one, for the concept-cluster chips. */
+    val linkedCards: List<CardEntity> = emptyList(),
+    /** Candidates for the "+ Link card" picker (other cards in the active pair). */
+    val linkCandidates: List<CardEntity> = emptyList(),
     val tagSuggestions: List<String> = emptyList(),
     val duplicateWarning: Boolean = false,
     val loading: Boolean = true,
@@ -68,6 +78,7 @@ class EditCardViewModel(
     private val deckRepository: DeckRepository,
     private val languagePairRepository: LanguagePairRepository,
     private val autoFillEngine: AutoFillEngine,
+    private val settingsRepository: SettingsRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -97,6 +108,8 @@ class EditCardViewModel(
             activeTargetCode = activePair.target.code
             val decks = deckRepository.observeDecksForPair(activePairId).first()
             val tags = cardRepository.observeTags().first().map { it.name }
+            // Resolved here (suspending) because StateFlow.update takes a non-suspending block.
+            val candidates = loadLinkCandidates()
 
             if (cardId != Routes.NO_ID) {
                 val details = cardRepository.getCard(cardId)
@@ -105,10 +118,13 @@ class EditCardViewModel(
                     originalWord = c.word
                     originalDeckId = c.deckId
                     originalCreatedAt = c.createdAt
+                    val linked = cardRepository.linkedCards(cardId)
                     _uiState.update {
                         it.copy(
                             form = EditCardForm(
                                 deckId = c.deckId,
+                                cardType = CardType.fromName(c.cardType),
+                                linkedCardIds = linked.map { l -> l.id },
                                 word = c.word,
                                 partOfSpeech = c.partOfSpeech,
                                 phonetic = c.phonetic,
@@ -128,6 +144,8 @@ class EditCardViewModel(
                             ),
                             isEditing = true,
                             decks = decks,
+                            linkedCards = linked,
+                            linkCandidates = candidates,
                             tagSuggestions = tags,
                             loading = false
                         )
@@ -136,9 +154,12 @@ class EditCardViewModel(
                 }
             }
 
-            // Creating a new card: choose a sensible default deck and default the TTS locale to
-            // the active pair's target language.
+            // Creating a new card: prefer the deck the screen was opened for, then the deck the user
+            // last added to (so adding a new deck elsewhere doesn't hijack the selection), then any
+            // deck. The TTS locale defaults to the active pair's target language.
+            val lastUsedDeckId = settingsRepository.currentLastDeckId()
             val defaultDeckId = decks.firstOrNull { it.id == initialDeckId }?.id
+                ?: decks.firstOrNull { it.id == lastUsedDeckId }?.id
                 ?: decks.firstOrNull()?.id
                 ?: Routes.NO_ID
             _uiState.update {
@@ -146,6 +167,7 @@ class EditCardViewModel(
                     form = it.form.copy(deckId = defaultDeckId, languageCode = activePair.target.ttsTag),
                     isEditing = false,
                     decks = decks,
+                    linkCandidates = candidates,
                     tagSuggestions = tags,
                     loading = false
                 )
@@ -158,6 +180,34 @@ class EditCardViewModel(
     }
 
     fun setDeck(id: Long) { edit { it.copy(deckId = id) }; refreshDuplicate() }
+
+    fun setCardType(type: CardType) = edit { it.copy(cardType = type) }
+
+    /** Add a card to this one's concept cluster. */
+    fun linkCard(id: Long) {
+        if (id <= 0 || id == cardId) return
+        _uiState.update { state ->
+            if (id in state.form.linkedCardIds) return@update state
+            val added = state.linkCandidates.firstOrNull { it.id == id }
+            state.copy(
+                form = state.form.copy(linkedCardIds = state.form.linkedCardIds + id),
+                linkedCards = if (added != null) state.linkedCards + added else state.linkedCards
+            )
+        }
+    }
+
+    fun unlinkCard(id: Long) = _uiState.update { state ->
+        state.copy(
+            form = state.form.copy(linkedCardIds = state.form.linkedCardIds - id),
+            linkedCards = state.linkedCards.filterNot { it.id == id }
+        )
+    }
+
+    /** Other cards in the active pair that this card can be linked to. */
+    private suspend fun loadLinkCandidates(): List<CardEntity> =
+        cardRepository.getCardsForPair(activePairId)
+            .filter { it.id != cardId }
+            .sortedBy { it.word.lowercase() }
     fun setWord(v: String) { edit { it.copy(word = v) }; refreshDuplicate() }
     fun setPartOfSpeech(v: String) = edit { it.copy(partOfSpeech = v) }
     fun setPhonetic(v: String) = edit { it.copy(phonetic = v) }
@@ -212,17 +262,23 @@ class EditCardViewModel(
      * into empty fields only — never overwriting anything the user typed.
      */
     fun autoFill() {
-        val word = _uiState.value.form.word.trim()
+        val form = _uiState.value.form
+        val word = form.word.trim()
         if (word.isBlank()) {
             _messages.tryEmit("Type a word first, then tap auto-fill.")
             return
         }
+        // A part of speech the user already chose pins the sense the engine must describe.
+        val pinnedPos = form.partOfSpeech.trim()
         viewModelScope.launch {
             _uiState.update { it.copy(autoFilling = true) }
-            when (val outcome = autoFillEngine.enrich(word, activeSourceCode, activeTargetCode)) {
+            when (val outcome = autoFillEngine.enrich(word, activeSourceCode, activeTargetCode, pinnedPos)) {
                 is AutoFillOutcome.Success -> {
                     mergeIntoEmptyFields(outcome.data)
-                    _messages.tryEmit("Auto-filled the empty fields.")
+                    _messages.tryEmit(
+                        if (pinnedPos.isBlank()) "Auto-filled the empty fields."
+                        else "Auto-filled the empty fields for \"$pinnedPos\"."
+                    )
                 }
                 is AutoFillOutcome.Unavailable -> _messages.tryEmit(outcome.reason)
                 is AutoFillOutcome.Error -> _messages.tryEmit(outcome.message)
@@ -271,6 +327,7 @@ class EditCardViewModel(
             val entity = CardEntity(
                 id = if (state.isEditing) cardId else 0,
                 deckId = deckId,
+                cardType = form.cardType.name,
                 word = form.word.trim(),
                 partOfSpeech = form.partOfSpeech.trim(),
                 phonetic = form.phonetic.trim(),
@@ -290,11 +347,15 @@ class EditCardViewModel(
                 createdAt = if (state.isEditing) originalCreatedAt else 0L,
                 updatedAt = 0L
             )
-            if (state.isEditing) {
+            val savedId = if (state.isEditing) {
                 cardRepository.updateCard(entity, form.tags)
+                cardId
             } else {
                 cardRepository.addCard(entity, form.tags)
             }
+            cardRepository.setLinkedCards(savedId, form.linkedCardIds)
+            // Remember the deck so the next "Add card" defaults to it.
+            settingsRepository.setLastDeckId(deckId)
             _uiState.update { it.copy(saved = true) }
         }
     }
@@ -313,6 +374,7 @@ class EditCardViewModel(
                     appContainer.deckRepository,
                     appContainer.languagePairRepository,
                     appContainer.autoFillEngine,
+                    appContainer.settingsRepository,
                     createSavedStateHandle()
                 )
             }

@@ -67,6 +67,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.rahmanilab.lingodo.domain.model.AiProvider
+import com.rahmanilab.lingodo.domain.model.DictionarySource
 import com.rahmanilab.lingodo.domain.model.Language
 import com.rahmanilab.lingodo.domain.practice.PracticeStyle
 import androidx.core.content.ContextCompat
@@ -96,6 +97,10 @@ fun SettingsScreen(
     val practiceStyles by viewModel.practiceStyles.collectAsStateWithLifecycle()
     val activeStyleId by viewModel.activePracticeStyleId.collectAsStateWithLifecycle()
     val targetLanguage by viewModel.activeTargetLanguage.collectAsStateWithLifecycle()
+    val deckInclusions by viewModel.deckInclusions.collectAsStateWithLifecycle()
+    val dictionarySource by viewModel.dictionarySource.collectAsStateWithLifecycle()
+    val dictionaryReady by viewModel.dictionaryReady.collectAsStateWithLifecycle()
+    var dictKeyInput by remember { mutableStateOf("") }
     var editingStyle by remember { mutableStateOf<PracticeStyle?>(null) }
     var creatingStyle by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -304,6 +309,85 @@ fun SettingsScreen(
                 }
             }
 
+            SettingsSection(stringResource(R.string.settings_dictionary)) {
+                Text(
+                    stringResource(R.string.settings_dictionary_desc),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                DictionarySourceDropdown(
+                    selected = dictionarySource,
+                    onSelect = viewModel::setDictionarySource
+                )
+                Text(
+                    dictionarySource.description,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                // Nudge when the study language isn't covered by any dictionary source.
+                if (!dictionarySource.supports(targetLanguage.code)) {
+                    Text(
+                        stringResource(R.string.settings_dictionary_unsupported, targetLanguage.displayName),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+                if (!dictionarySource.keyless) {
+                    TextButton(onClick = { uriHandler.openUri(dictionarySource.keyPortalUrl) }) {
+                        Text(stringResource(R.string.settings_ai_get_key, dictionarySource.displayName))
+                    }
+                    OutlinedTextField(
+                        value = dictKeyInput,
+                        onValueChange = { dictKeyInput = it },
+                        label = { Text(stringResource(R.string.settings_dictionary_key)) },
+                        singleLine = true,
+                        visualTransformation = PasswordVisualTransformation(),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Button(
+                            onClick = { viewModel.saveDictionaryKey(dictKeyInput); dictKeyInput = "" },
+                            enabled = dictKeyInput.isNotBlank()
+                        ) { Text(stringResource(R.string.settings_ai_save_key)) }
+                        if (dictionaryReady) {
+                            OutlinedButton(onClick = { viewModel.clearDictionaryKey() }) {
+                                Text(stringResource(R.string.action_remove))
+                            }
+                        }
+                    }
+                    if (!dictionaryReady) {
+                        Text(
+                            stringResource(R.string.settings_dictionary_needs_key),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
+            }
+
+            SettingsSection(stringResource(R.string.settings_study_decks)) {
+                Text(
+                    stringResource(R.string.settings_study_decks_desc),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                if (deckInclusions.isEmpty()) {
+                    Text(
+                        stringResource(R.string.settings_study_decks_empty),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                } else {
+                    deckInclusions.forEach { deck ->
+                        SettingsSwitchRow(
+                            label = deck.name,
+                            checked = deck.included,
+                            onChange = { viewModel.setDeckIncluded(deck.id, it) }
+                        )
+                    }
+                }
+            }
+
             SettingsSection(stringResource(R.string.settings_ai_autofill)) {
                 Text(
                     stringResource(R.string.settings_ai_desc),
@@ -424,15 +508,19 @@ fun SettingsScreen(
         AlertDialog(
             onDismissRequest = { pendingRestore = null },
             title = { Text(stringResource(R.string.settings_restore_title)) },
-            text = { Text(stringResource(R.string.settings_restore_message)) },
+            text = { Text(stringResource(R.string.settings_restore_choice_message)) },
+            // Merge is the safe, non-destructive default; replacing is the deliberate second option.
             confirmButton = {
+                TextButton(onClick = {
+                    viewModel.mergeBackup(resolver, uri)
+                    pendingRestore = null
+                }) { Text(stringResource(R.string.settings_restore_merge)) }
+            },
+            dismissButton = {
                 TextButton(onClick = {
                     viewModel.restoreBackup(resolver, uri)
                     pendingRestore = null
-                }) { Text(stringResource(R.string.settings_restore_confirm)) }
-            },
-            dismissButton = {
-                TextButton(onClick = { pendingRestore = null }) { Text(stringResource(R.string.action_cancel)) }
+                }) { Text(stringResource(R.string.settings_restore_replace)) }
             }
         )
     }
@@ -659,6 +747,36 @@ private fun PracticeStyleDialog(
             TextButton(onClick = onDismiss) { Text(stringResource(R.string.action_cancel)) }
         }
     )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun DictionarySourceDropdown(
+    selected: DictionarySource,
+    onSelect: (DictionarySource) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = it }) {
+        OutlinedTextField(
+            value = selected.displayName,
+            onValueChange = {},
+            readOnly = true,
+            label = { Text(stringResource(R.string.settings_dictionary_source)) },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            modifier = Modifier.menuAnchor().fillMaxWidth()
+        )
+        ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            DictionarySource.entries.forEach { source ->
+                DropdownMenuItem(
+                    text = { Text(source.displayName) },
+                    onClick = {
+                        onSelect(source)
+                        expanded = false
+                    }
+                )
+            }
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

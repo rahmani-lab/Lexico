@@ -180,7 +180,14 @@ private fun ActiveReview(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 if (!state.isRevealed) {
-                    when (state.mode) {
+                    // Free-form cards have no example sentences, so cloze falls back to front→back.
+                    val effectiveMode =
+                        if (state.mode == ReviewMode.CLOZE && card.card.examples.isEmpty()) {
+                            ReviewMode.FRONT_TO_BACK
+                        } else {
+                            state.mode
+                        }
+                    when (effectiveMode) {
                         ReviewMode.FRONT_TO_BACK ->
                             WordSide(card, state.showPhonetic, onPlay, onPlaySlow)
                         ReviewMode.BACK_TO_FRONT, ReviewMode.TYPING ->

@@ -2,9 +2,11 @@ package com.rahmanilab.lingodo.data.autofill
 
 import com.rahmanilab.lingodo.data.net.AiErrors
 import com.rahmanilab.lingodo.data.repository.AiConfigRepository
+import com.rahmanilab.lingodo.data.repository.DictionaryConfigRepository
 import com.rahmanilab.lingodo.domain.autofill.AutoFillData
 import com.rahmanilab.lingodo.domain.autofill.AutoFillEngine
 import com.rahmanilab.lingodo.domain.autofill.AutoFillOutcome
+import com.rahmanilab.lingodo.domain.model.DictionarySource
 import com.rahmanilab.lingodo.domain.model.Language
 
 /**
@@ -18,23 +20,46 @@ import com.rahmanilab.lingodo.domain.model.Language
 class DefaultAutoFillEngine(
     private val aiConfig: AiConfigRepository,
     private val dictionaryClient: DictionaryClient,
+    private val merriamWebsterClient: MerriamWebsterClient,
+    private val dictionaryConfig: DictionaryConfigRepository,
     private val aiEnricher: AiEnricher
 ) : AutoFillEngine {
 
-    override suspend fun enrich(word: String, sourceCode: String, targetCode: String): AutoFillOutcome {
+    /**
+     * Tier 1 lookup through the dictionary the user selected in Settings. A configured publisher
+     * dictionary (Merriam-Webster / Oxford) is tried first and falls back to the keyless one, so a
+     * missing key or a miss never blocks auto-fill.
+     */
+    private suspend fun lookUpDictionary(word: String, targetCode: String, pos: String): AutoFillData? {
+        if (targetCode != "en") return null
+        val source = dictionaryConfig.currentSource()
+        val preferred = when (source) {
+            DictionarySource.MERRIAM_WEBSTER_LEARNERS ->
+                dictionaryConfig.getKey(source)?.takeIf { it.isNotBlank() }?.let { key ->
+                    runCatching { merriamWebsterClient.lookup(word, key, pos) }.getOrNull()
+                }
+            // Oxford requires paid credentials; until a key is present we simply use the free tier.
+            else -> null
+        }
+        return preferred ?: runCatching { dictionaryClient.lookup(word, pos) }.getOrNull()
+    }
+
+    override suspend fun enrich(
+        word: String,
+        sourceCode: String,
+        targetCode: String,
+        partOfSpeech: String
+    ): AutoFillOutcome {
         val trimmed = word.trim()
         if (trimmed.isBlank()) return AutoFillOutcome.Unavailable("Type a word first, then tap auto-fill.")
 
         val sourceName = cleanName(sourceCode)
         val targetName = cleanName(targetCode)
+        val pos = partOfSpeech.trim()
 
-        val dictionary = if (targetCode == "en") {
-            runCatching { dictionaryClient.lookup(trimmed) }.getOrNull()
-        } else {
-            null
-        }
+        val dictionary = lookUpDictionary(trimmed, targetCode, pos)
 
-        val aiResult = runCatching { aiEnricher.enrich(trimmed, sourceName, targetName) }
+        val aiResult = runCatching { aiEnricher.enrich(trimmed, sourceName, targetName, pos) }
         val aiData = aiResult.getOrNull()
 
         if (dictionary == null && aiData == null) {
@@ -51,15 +76,16 @@ class DefaultAutoFillEngine(
             }
         }
 
-        return AutoFillOutcome.Success(merge(dictionary, aiData))
+        return AutoFillOutcome.Success(merge(dictionary, aiData, pos))
     }
 
-    private fun merge(dictionary: AutoFillData?, ai: AutoFillData?): AutoFillData {
+    private fun merge(dictionary: AutoFillData?, ai: AutoFillData?, pinnedPos: String): AutoFillData {
         val d = dictionary ?: AutoFillData()
         val a = ai ?: AutoFillData()
         return AutoFillData(
             phonetic = d.phonetic.ifBlank { a.phonetic },
-            partOfSpeech = d.partOfSpeech.ifBlank { a.partOfSpeech },
+            // A part of speech the user pinned always wins over whatever the sources report.
+            partOfSpeech = pinnedPos.ifBlank { d.partOfSpeech.ifBlank { a.partOfSpeech } },
             meaning = a.meaning.ifBlank { d.meaning },
             definition = d.definition.ifBlank { a.definition },
             // Prefer AI examples (they carry translations); fall back to dictionary examples.

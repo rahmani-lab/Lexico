@@ -162,4 +162,20 @@
         <item quantity="one">Tekrara hazır %d kartınız var.</item>
         <item quantity="other">Tekrara hazır %d kartınız var.</item>
     </plurals>
+
+    <!-- Deck participation in global review -->
+    <string name="settings_study_decks">Çalışma desteleri</string>
+    <string name="settings_study_decks_desc">Hangi destelerin genel tekrar ve alıştırmaya dahil olacağını seçin. Kapattığınız deste tüm-desteler oturumlarına girmez; Desteler ekranından yine de çalışabilirsiniz.</string>
+    <string name="settings_study_decks_empty">Bu çalışma alanında henüz deste yok.</string>
+    <string name="settings_restore_choice_message">Birleştir, yedekteki kartları mevcut verilerinize ekler ve yinelenenleri atlar. Değiştir, önce mevcut TÜM desteleri, kartları ve geçmişi siler.</string>
+    <string name="settings_restore_merge">Birleştir</string>
+    <string name="settings_restore_replace">Değiştir</string>
+
+    <!-- Dictionary source -->
+    <string name="settings_dictionary">Sözlük</string>
+    <string name="settings_dictionary_desc">Tanımların ve telaffuzun nereden geleceğini seçin. Longman ve Oxford verileri lisanslıdır ve bir uygulamaya gömülemez; bunun yerine LingoDo, yayıncının kendi API\'sini kendi anahtarınızla etkinleştirmenize izin verir. Anahtarsız Free Dictionary her zaman yedek olarak kullanılabilir.</string>
+    <string name="settings_dictionary_source">Sözlük kaynağı</string>
+    <string name="settings_dictionary_key">Sözlük API anahtarı</string>
+    <string name="settings_dictionary_needs_key">Bu sözlüğü kullanmak için bir anahtar ekleyin — o zamana kadar ücretsiz olan kullanılır.</string>
+    <string name="settings_dictionary_unsupported">Henüz %s dilini kapsayan bir sözlük yok — tanımları yapay zekâ otomatik doldurma sağlayacak.</string>
 </resources>

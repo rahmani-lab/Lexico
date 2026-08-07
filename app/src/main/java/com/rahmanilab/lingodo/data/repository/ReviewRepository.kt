@@ -34,6 +34,7 @@ class ReviewRepository(
     private val scheduleDao get() = db.cardScheduleDao()
     private val reviewLogDao get() = db.reviewLogDao()
     private val deckDao get() = db.deckDao()
+    private val cardLinkDao get() = db.cardLinkDao()
 
     /** The scheduler chosen in Settings, resolved when a session's queue is built. */
     @Volatile
@@ -66,8 +67,15 @@ class ReviewRepository(
         // to itself plus all of its lessons, so "Study all" reviews the whole book in one session.
         val pairId = settingsRepository.currentActivePairId()
         val deckIds = deckId?.let { listOf(it) + deckDao.childDeckIds(it) }
-        val due = if (deckIds == null) cardDao.getDueCards(now, null, pairId)
-        else cardDao.getDueCardsIn(now, deckIds, pairId)
+        // A global session honours the decks the user switched off in Settings; studying a specific
+        // deck always includes it, even when it sits out of global review.
+        val excluded = if (deckIds == null) settingsRepository.currentExcludedDeckIds() else emptySet()
+
+        val due = when {
+            deckIds != null -> cardDao.getDueCardsIn(now, deckIds, pairId)
+            excluded.isNotEmpty() -> cardDao.getDueCardsExcluding(now, excluded.toList(), pairId)
+            else -> cardDao.getDueCards(now, null, pairId)
+        }
 
         val newCards = if (includeNew) {
             val limit = if (respectDailyLimit) {
@@ -77,8 +85,11 @@ class ReviewRepository(
                 Int.MAX_VALUE
             }
             if (limit > 0) {
-                if (deckIds == null) cardDao.getNewCards(null, limit, pairId)
-                else cardDao.getNewCardsIn(deckIds, limit, pairId)
+                when {
+                    deckIds != null -> cardDao.getNewCardsIn(deckIds, limit, pairId)
+                    excluded.isNotEmpty() -> cardDao.getNewCardsExcluding(excluded.toList(), limit, pairId)
+                    else -> cardDao.getNewCards(null, limit, pairId)
+                }
             } else {
                 emptyList()
             }
@@ -86,8 +97,33 @@ class ReviewRepository(
             emptyList()
         }
 
-        // Due cards first (already ordered by due time), then new cards.
-        return ReviewQueue(cards = due + newCards, dueCount = due.size, newCount = newCards.size)
+        // Due cards first (already ordered by due time), then new cards, with linked cards pulled
+        // together so a confusable cluster is reviewed back to back.
+        val ordered = clusterLinkedCards(due + newCards)
+        return ReviewQueue(cards = ordered, dueCount = due.size, newCount = newCards.size)
+    }
+
+    /**
+     * Reorders a queue so linked cards ("concept clusters" like fact / truth / trust) sit next to
+     * each other, while otherwise preserving the original order. Each card keeps its place the
+     * first time it appears; its still-queued cluster partners are pulled in immediately after it,
+     * so the learner contrasts the confusable words in one go instead of weeks apart.
+     */
+    private suspend fun clusterLinkedCards(cards: List<CardWithDetails>): List<CardWithDetails> {
+        if (cards.size < 2) return cards
+        val byId = cards.associateBy { it.card.id }
+        val placed = mutableSetOf<Long>()
+        val result = ArrayList<CardWithDetails>(cards.size)
+        for (card in cards) {
+            val id = card.card.id
+            if (!placed.add(id)) continue
+            result += card
+            for (linkedId in cardLinkDao.linkedIds(id)) {
+                val partner = byId[linkedId] ?: continue
+                if (placed.add(linkedId)) result += partner
+            }
+        }
+        return result
     }
 
     /** Preview the interval each rating would produce, for labelling the four answer buttons. */

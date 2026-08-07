@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import com.rahmanilab.lingodo.domain.model.CardType
 import com.rahmanilab.lingodo.domain.model.Example
 import com.rahmanilab.lingodo.domain.model.WordForm
 import kotlinx.serialization.Serializable
@@ -34,6 +35,12 @@ data class CardEntity(
     val id: Long = 0,
 
     val deckId: Long,
+
+    /**
+     * VOCABULARY (default) or FREEFORM. Free-form cards reuse [word] as the front text and
+     * [meaning] as the back text, so scheduling and review work unchanged.
+     */
+    val cardType: String = CardType.VOCABULARY.name,
 
     // --- Front of the card ---
     val word: String,
