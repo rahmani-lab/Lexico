@@ -56,6 +56,7 @@ class ImportExportRepository(
             schedules = db.cardScheduleDao().getAll(),
             tags = db.tagDao().getAllTags(),
             cardTags = db.tagDao().getAllCrossRefs(),
+            cardLinks = db.cardLinkDao().getAll(),
             reviewLogs = db.reviewLogDao().getAll()
         )
         return json.encodeToString(backup)
@@ -215,6 +216,7 @@ class ImportExportRepository(
             db.cardDao().insertAll(backup.cards)
             db.tagDao().insertAllTags(backup.tags)
             db.tagDao().insertAllCrossRefs(backup.cardTags)
+            db.cardLinkDao().insertAll(backup.cardLinks)
             db.cardScheduleDao().insertAll(backup.schedules)
             db.reviewLogDao().insertAll(backup.reviewLogs)
         }

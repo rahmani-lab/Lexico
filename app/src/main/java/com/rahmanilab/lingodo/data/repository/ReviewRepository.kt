@@ -34,6 +34,7 @@ class ReviewRepository(
     private val scheduleDao get() = db.cardScheduleDao()
     private val reviewLogDao get() = db.reviewLogDao()
     private val deckDao get() = db.deckDao()
+    private val cardLinkDao get() = db.cardLinkDao()
 
     /** The scheduler chosen in Settings, resolved when a session's queue is built. */
     @Volatile
@@ -96,8 +97,33 @@ class ReviewRepository(
             emptyList()
         }
 
-        // Due cards first (already ordered by due time), then new cards.
-        return ReviewQueue(cards = due + newCards, dueCount = due.size, newCount = newCards.size)
+        // Due cards first (already ordered by due time), then new cards, with linked cards pulled
+        // together so a confusable cluster is reviewed back to back.
+        val ordered = clusterLinkedCards(due + newCards)
+        return ReviewQueue(cards = ordered, dueCount = due.size, newCount = newCards.size)
+    }
+
+    /**
+     * Reorders a queue so linked cards ("concept clusters" like fact / truth / trust) sit next to
+     * each other, while otherwise preserving the original order. Each card keeps its place the
+     * first time it appears; its still-queued cluster partners are pulled in immediately after it,
+     * so the learner contrasts the confusable words in one go instead of weeks apart.
+     */
+    private suspend fun clusterLinkedCards(cards: List<CardWithDetails>): List<CardWithDetails> {
+        if (cards.size < 2) return cards
+        val byId = cards.associateBy { it.card.id }
+        val placed = mutableSetOf<Long>()
+        val result = ArrayList<CardWithDetails>(cards.size)
+        for (card in cards) {
+            val id = card.card.id
+            if (!placed.add(id)) continue
+            result += card
+            for (linkedId in cardLinkDao.linkedIds(id)) {
+                val partner = byId[linkedId] ?: continue
+                if (placed.add(linkedId)) result += partner
+            }
+        }
+        return result
     }
 
     /** Preview the interval each rating would produce, for labelling the four answer buttons. */

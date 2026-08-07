@@ -8,6 +8,7 @@ import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.rahmanilab.lingodo.data.local.dao.CardDao
+import com.rahmanilab.lingodo.data.local.dao.CardLinkDao
 import com.rahmanilab.lingodo.data.local.dao.CardScheduleDao
 import com.rahmanilab.lingodo.data.local.dao.DeckDao
 import com.rahmanilab.lingodo.data.local.dao.LanguagePairDao
@@ -15,6 +16,7 @@ import com.rahmanilab.lingodo.data.local.dao.ReviewLogDao
 import com.rahmanilab.lingodo.data.local.dao.TagDao
 import com.rahmanilab.lingodo.data.local.entity.CardEntity
 import com.rahmanilab.lingodo.data.local.entity.CardScheduleEntity
+import com.rahmanilab.lingodo.data.local.entity.CardLinkCrossRef
 import com.rahmanilab.lingodo.data.local.entity.CardTagCrossRef
 import com.rahmanilab.lingodo.data.local.entity.DeckEntity
 import com.rahmanilab.lingodo.data.local.entity.LanguagePairEntity
@@ -29,9 +31,10 @@ import com.rahmanilab.lingodo.data.local.entity.TagEntity
         ReviewLogEntity::class,
         TagEntity::class,
         CardTagCrossRef::class,
+        CardLinkCrossRef::class,
         LanguagePairEntity::class
     ],
-    version = 3,
+    version = 4,
     exportSchema = true
 )
 @TypeConverters(Converters::class)
@@ -42,6 +45,7 @@ abstract class LingoDoDatabase : RoomDatabase() {
     abstract fun cardScheduleDao(): CardScheduleDao
     abstract fun reviewLogDao(): ReviewLogDao
     abstract fun tagDao(): TagDao
+    abstract fun cardLinkDao(): CardLinkDao
     abstract fun languagePairDao(): LanguagePairDao
 
     companion object {
@@ -89,13 +93,34 @@ abstract class LingoDoDatabase : RoomDatabase() {
             }
         }
 
+        /**
+         * v3 → v4: free-form cards and concept clusters. Adds a `cardType` discriminator on cards
+         * (existing rows stay VOCABULARY) and the `card_links` join table used to group related or
+         * easily confused cards. Non-destructive.
+         */
+        private val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE `cards` ADD COLUMN `cardType` TEXT NOT NULL DEFAULT 'VOCABULARY'")
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `card_links` (" +
+                        "`cardId` INTEGER NOT NULL, " +
+                        "`linkedCardId` INTEGER NOT NULL, " +
+                        "PRIMARY KEY(`cardId`, `linkedCardId`), " +
+                        "FOREIGN KEY(`cardId`) REFERENCES `cards`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE , " +
+                        "FOREIGN KEY(`linkedCardId`) REFERENCES `cards`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )"
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_card_links_cardId` ON `card_links` (`cardId`)")
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_card_links_linkedCardId` ON `card_links` (`linkedCardId`)")
+            }
+        }
+
         fun build(context: Context): LingoDoDatabase =
             Room.databaseBuilder(
                 context.applicationContext,
                 LingoDoDatabase::class.java,
                 DATABASE_NAME
             )
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
                 .build()
     }
 }

@@ -134,6 +134,17 @@ interface CardDao {
     )
     suspend fun getNewCardsIn(deckIds: List<Long>, limit: Int, pairId: Long?): List<CardWithDetails>
 
+    /** Every card in a language pair, for pickers such as the card-link chooser. */
+    @Query(
+        """
+        SELECT c.* FROM cards c
+        INNER JOIN decks d ON d.id = c.deckId
+        WHERE d.languagePairId = :pairId
+        ORDER BY c.word COLLATE NOCASE ASC
+        """
+    )
+    suspend fun getCardsForPair(pairId: Long): List<CardEntity>
+
     /** Due cards across every deck except those the user excluded from global review. */
     @Transaction
     @Query(

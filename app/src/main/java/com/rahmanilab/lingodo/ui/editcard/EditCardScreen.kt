@@ -29,8 +29,13 @@ import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.InputChip
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -59,8 +64,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.LaunchedEffect
 import coil.compose.AsyncImage
+import com.rahmanilab.lingodo.data.local.entity.CardEntity
 import com.rahmanilab.lingodo.data.preferences.model.AppSettings
 import com.rahmanilab.lingodo.data.preferences.model.TtsAccent
+import com.rahmanilab.lingodo.domain.model.CardType
 import com.rahmanilab.lingodo.tts.PronunciationManager
 import com.rahmanilab.lingodo.ui.components.PronunciationButton
 import com.rahmanilab.lingodo.ui.components.SectionHeader
@@ -144,122 +151,159 @@ fun EditCardScreen(
                 onSelect = viewModel::setDeck
             )
 
+            // Vocabulary vs. free-form (grammar rules, sentences…). Free-form hides the
+            // vocabulary-only fields and turns word/meaning into plain Front/Back text.
+            val freeForm = form.cardType == CardType.FREEFORM
+            SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
+                CardType.entries.forEachIndexed { index, type ->
+                    SegmentedButton(
+                        selected = form.cardType == type,
+                        onClick = { viewModel.setCardType(type) },
+                        shape = SegmentedButtonDefaults.itemShape(index, CardType.entries.size)
+                    ) { Text(type.label) }
+                }
+            }
+
             OutlinedTextField(
                 value = form.word,
                 onValueChange = viewModel::setWord,
-                label = { Text("Word or phrase *") },
-                singleLine = true,
-                trailingIcon = {
-                    Row {
-                        IconButton(
-                            onClick = { viewModel.autoFill() },
-                            enabled = form.word.isNotBlank() && !state.autoFilling
-                        ) {
-                            Icon(Icons.Filled.AutoAwesome, contentDescription = "Auto-fill from the word")
+                label = { Text(if (freeForm) "Front *" else "Word or phrase *") },
+                singleLine = !freeForm,
+                minLines = if (freeForm) 3 else 1,
+                trailingIcon = if (freeForm) null else {
+                    {
+                        Row {
+                            IconButton(
+                                onClick = { viewModel.autoFill() },
+                                enabled = form.word.isNotBlank() && !state.autoFilling
+                            ) {
+                                Icon(Icons.Filled.AutoAwesome, contentDescription = "Auto-fill from the word")
+                            }
+                            PronunciationButton(onClick = { playWord() }, enabled = form.word.isNotBlank())
                         }
-                        PronunciationButton(onClick = { playWord() }, enabled = form.word.isNotBlank())
                     }
                 },
                 modifier = Modifier.fillMaxWidth()
             )
 
-            if (state.duplicateWarning) {
+            if (state.duplicateWarning && !freeForm) {
                 DuplicateWarning()
             }
 
-            OutlinedTextField(
-                value = form.partOfSpeech,
-                onValueChange = viewModel::setPartOfSpeech,
-                label = { Text("Part of speech") },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth()
-            )
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                partsOfSpeech.forEach { pos ->
-                    AssistChip(onClick = { viewModel.setPartOfSpeech(pos) }, label = { Text(pos) })
+            if (!freeForm) {
+                OutlinedTextField(
+                    value = form.partOfSpeech,
+                    onValueChange = viewModel::setPartOfSpeech,
+                    label = { Text("Part of speech") },
+                    singleLine = true,
+                    supportingText = { Text("Pick one before ✨ to auto-fill that sense only") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    partsOfSpeech.forEach { pos ->
+                        AssistChip(onClick = { viewModel.setPartOfSpeech(pos) }, label = { Text(pos) })
+                    }
                 }
-            }
 
-            OutlinedTextField(
-                value = form.phonetic,
-                onValueChange = viewModel::setPhonetic,
-                label = { Text("Phonetic, e.g. /rɪˈzɪliənt/") },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth()
-            )
-            OutlinedTextField(
-                value = form.pronunciationHint,
-                onValueChange = viewModel::setPronunciationHint,
-                label = { Text("Pronunciation hint, e.g. ri-ZIL-ee-uhnt") },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth()
-            )
+                OutlinedTextField(
+                    value = form.phonetic,
+                    onValueChange = viewModel::setPhonetic,
+                    label = { Text("Phonetic, e.g. /rɪˈzɪliənt/") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                OutlinedTextField(
+                    value = form.pronunciationHint,
+                    onValueChange = viewModel::setPronunciationHint,
+                    label = { Text("Pronunciation hint, e.g. ri-ZIL-ee-uhnt") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
 
             AccentSelector(selected = form.languageCode, onSelect = viewModel::setLanguageCode)
 
-            SectionHeader("Meaning")
+            SectionHeader(if (freeForm) "Back" else "Meaning")
             OutlinedTextField(
                 value = form.meaning,
                 onValueChange = viewModel::setMeaning,
-                label = { Text("Meaning *") },
+                label = { Text(if (freeForm) "Back *" else "Meaning *") },
+                minLines = if (freeForm) 3 else 1,
                 modifier = Modifier.fillMaxWidth()
             )
-            OutlinedTextField(
-                value = form.englishDefinition,
-                onValueChange = viewModel::setEnglishDefinition,
-                label = { Text("English definition") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
-            SectionHeader("Examples")
-            form.examples.forEachIndexed { index, example ->
-                ExampleEditor(
-                    sentence = example.text,
-                    translation = example.translation,
-                    onSentenceChange = { viewModel.setExampleText(index, it) },
-                    onTranslationChange = { viewModel.setExampleTranslation(index, it) },
-                    onRemove = { viewModel.removeExample(index) }
+            if (!freeForm) {
+                OutlinedTextField(
+                    value = form.englishDefinition,
+                    onValueChange = viewModel::setEnglishDefinition,
+                    label = { Text("English definition") },
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
-            OutlinedButton(onClick = viewModel::addExample, modifier = Modifier.fillMaxWidth()) {
-                Icon(Icons.Filled.Add, contentDescription = null)
-                Text("  Add example")
-            }
 
-            SectionHeader("Related words")
-            TokenEditor(
-                label = "Synonyms",
-                tokens = form.synonyms,
-                onAdd = viewModel::addSynonym,
-                onRemove = viewModel::removeSynonym
-            )
-            TokenEditor(
-                label = "Antonyms",
-                tokens = form.antonyms,
-                onAdd = viewModel::addAntonym,
-                onRemove = viewModel::removeAntonym
-            )
-            TokenEditor(
-                label = "Collocations",
-                tokens = form.collocations,
-                onAdd = viewModel::addCollocation,
-                onRemove = viewModel::removeCollocation
-            )
+            if (!freeForm) {
+                SectionHeader("Examples")
+                form.examples.forEachIndexed { index, example ->
+                    ExampleEditor(
+                        sentence = example.text,
+                        translation = example.translation,
+                        onSentenceChange = { viewModel.setExampleText(index, it) },
+                        onTranslationChange = { viewModel.setExampleTranslation(index, it) },
+                        onRemove = { viewModel.removeExample(index) }
+                    )
+                }
+                OutlinedButton(onClick = viewModel::addExample, modifier = Modifier.fillMaxWidth()) {
+                    Icon(Icons.Filled.Add, contentDescription = null)
+                    Text("  Add example")
+                }
 
-            SectionHeader("Word forms & inflections")
-            form.wordForms.forEachIndexed { index, wf ->
-                WordFormEditor(
-                    label = wf.label,
-                    value = wf.form,
-                    onLabelChange = { viewModel.setWordFormLabel(index, it) },
-                    onValueChange = { viewModel.setWordFormValue(index, it) },
-                    onRemove = { viewModel.removeWordForm(index) }
+                SectionHeader("Related words")
+                TokenEditor(
+                    label = "Synonyms",
+                    tokens = form.synonyms,
+                    onAdd = viewModel::addSynonym,
+                    onRemove = viewModel::removeSynonym
                 )
+                TokenEditor(
+                    label = "Antonyms",
+                    tokens = form.antonyms,
+                    onAdd = viewModel::addAntonym,
+                    onRemove = viewModel::removeAntonym
+                )
+                TokenEditor(
+                    label = "Collocations",
+                    tokens = form.collocations,
+                    onAdd = viewModel::addCollocation,
+                    onRemove = viewModel::removeCollocation
+                )
+
+                SectionHeader("Word forms & inflections")
+                form.wordForms.forEachIndexed { index, wf ->
+                    WordFormEditor(
+                        label = wf.label,
+                        value = wf.form,
+                        onLabelChange = { viewModel.setWordFormLabel(index, it) },
+                        onValueChange = { viewModel.setWordFormValue(index, it) },
+                        onRemove = { viewModel.removeWordForm(index) }
+                    )
+                }
+                OutlinedButton(onClick = viewModel::addWordForm, modifier = Modifier.fillMaxWidth()) {
+                    Icon(Icons.Filled.Add, contentDescription = null)
+                    Text("  Add word form")
+                }
             }
-            OutlinedButton(onClick = viewModel::addWordForm, modifier = Modifier.fillMaxWidth()) {
-                Icon(Icons.Filled.Add, contentDescription = null)
-                Text("  Add word form")
-            }
+
+            SectionHeader("Linked cards")
+            Text(
+                "Link words you mix up (fact / truth / trust) so they come up together in review.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            LinkedCardsEditor(
+                linked = state.linkedCards,
+                candidates = state.linkCandidates,
+                onLink = viewModel::linkCard,
+                onUnlink = viewModel::unlinkCard
+            )
 
             SectionHeader("Tags")
             TokenEditor(
@@ -463,6 +507,82 @@ private fun ImagePickerField(
         OutlinedButton(onClick = onPick, modifier = Modifier.fillMaxWidth()) {
             Icon(Icons.Filled.Image, contentDescription = null)
             Text("  Add image from gallery")
+        }
+    }
+}
+
+/**
+ * The concept-cluster editor: chips for the cards already linked (tap ✕ to unlink) plus a
+ * searchable picker to add another. Linked cards surface together during review so easily confused
+ * words can be contrasted side by side.
+ */
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@Composable
+private fun LinkedCardsEditor(
+    linked: List<CardEntity>,
+    candidates: List<CardEntity>,
+    onLink: (Long) -> Unit,
+    onUnlink: (Long) -> Unit
+) {
+    var expanded by remember { mutableStateOf(false) }
+    var query by remember { mutableStateOf("") }
+    val linkedIds = linked.map { it.id }.toSet()
+    val matches = remember(query, candidates, linkedIds) {
+        candidates.asSequence()
+            .filter { it.id !in linkedIds }
+            .filter { query.isBlank() || it.word.contains(query, ignoreCase = true) }
+            .take(20)
+            .toList()
+    }
+
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        if (linked.isNotEmpty()) {
+            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                linked.forEach { card ->
+                    InputChip(
+                        selected = false,
+                        onClick = { onUnlink(card.id) },
+                        label = { Text(card.word) },
+                        trailingIcon = {
+                            Icon(
+                                Icons.Filled.Close,
+                                contentDescription = "Unlink ${card.word}",
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
+                    )
+                }
+            }
+        }
+
+        ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = it }) {
+            OutlinedTextField(
+                value = query,
+                onValueChange = { query = it; expanded = true },
+                label = { Text("+ Link card") },
+                singleLine = true,
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                modifier = Modifier.menuAnchor().fillMaxWidth()
+            )
+            ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                if (matches.isEmpty()) {
+                    DropdownMenuItem(
+                        text = { Text("No other cards to link") },
+                        onClick = { expanded = false }
+                    )
+                } else {
+                    matches.forEach { card ->
+                        DropdownMenuItem(
+                            text = { Text(card.word) },
+                            onClick = {
+                                onLink(card.id)
+                                query = ""
+                                expanded = false
+                            }
+                        )
+                    }
+                }
+            }
         }
     }
 }

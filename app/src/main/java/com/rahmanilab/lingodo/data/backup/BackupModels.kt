@@ -1,6 +1,7 @@
 package com.rahmanilab.lingodo.data.backup
 
 import com.rahmanilab.lingodo.data.local.entity.CardEntity
+import com.rahmanilab.lingodo.data.local.entity.CardLinkCrossRef
 import com.rahmanilab.lingodo.data.local.entity.CardScheduleEntity
 import com.rahmanilab.lingodo.data.local.entity.CardTagCrossRef
 import com.rahmanilab.lingodo.data.local.entity.DeckEntity
@@ -58,6 +59,8 @@ data class BackupData(
     val schedules: List<CardScheduleEntity> = emptyList(),
     val tags: List<TagEntity> = emptyList(),
     val cardTags: List<CardTagCrossRef> = emptyList(),
+    /** Concept-cluster links between cards (added in schema v4). */
+    val cardLinks: List<CardLinkCrossRef> = emptyList(),
     val reviewLogs: List<ReviewLogEntity> = emptyList()
 )
 
