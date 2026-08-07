@@ -169,4 +169,12 @@
     <string name="settings_restore_choice_message">マージはバックアップのカードを現在のデータに追加し、重複はスキップします。置き換えは現在のすべてのデッキ・カード・履歴を先に削除します。</string>
     <string name="settings_restore_merge">マージ</string>
     <string name="settings_restore_replace">置き換え</string>
+
+    <!-- Dictionary source -->
+    <string name="settings_dictionary">辞書</string>
+    <string name="settings_dictionary_desc">定義と発音の取得元を選びます。ロングマンやオックスフォードのデータはライセンスされておりアプリに同梱できないため、LingoDo では出版社の API をご自身のキーで有効にできます。キー不要の Free Dictionary は常にフォールバックとして利用できます。</string>
+    <string name="settings_dictionary_source">辞書のソース</string>
+    <string name="settings_dictionary_key">辞書 API キー</string>
+    <string name="settings_dictionary_needs_key">この辞書を使うにはキーを追加してください。それまでは無料の辞書が使われます。</string>
+    <string name="settings_dictionary_unsupported">%s に対応する辞書はまだありません。定義は AI 自動入力が補います。</string>
 </resources>

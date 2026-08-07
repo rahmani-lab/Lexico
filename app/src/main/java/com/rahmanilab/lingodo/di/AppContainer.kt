@@ -5,6 +5,7 @@ import com.rahmanilab.lingodo.data.DatabaseSeeder
 import com.rahmanilab.lingodo.data.autofill.AiEnricher
 import com.rahmanilab.lingodo.data.autofill.DefaultAutoFillEngine
 import com.rahmanilab.lingodo.data.autofill.DictionaryClient
+import com.rahmanilab.lingodo.data.autofill.MerriamWebsterClient
 import com.rahmanilab.lingodo.data.autofill.LlmClient
 import com.rahmanilab.lingodo.data.backup.ImportExportRepository
 import com.rahmanilab.lingodo.data.local.LingoDoDatabase
@@ -12,6 +13,7 @@ import com.rahmanilab.lingodo.data.practice.PracticeRepository
 import com.rahmanilab.lingodo.data.practice.PracticeStyleRepository
 import com.rahmanilab.lingodo.data.preferences.SettingsRepository
 import com.rahmanilab.lingodo.data.repository.AiConfigRepository
+import com.rahmanilab.lingodo.data.repository.DictionaryConfigRepository
 import com.rahmanilab.lingodo.data.repository.CardRepository
 import com.rahmanilab.lingodo.data.repository.DeckRepository
 import com.rahmanilab.lingodo.data.repository.LanguagePairRepository
@@ -77,12 +79,24 @@ class AppContainer(context: Context) {
 
     val dictionaryClient: DictionaryClient by lazy { DictionaryClient() }
 
+    val merriamWebsterClient: MerriamWebsterClient by lazy { MerriamWebsterClient() }
+
+    val dictionaryConfigRepository: DictionaryConfigRepository by lazy {
+        DictionaryConfigRepository(settingsRepository, secureKeyStore)
+    }
+
     val llmClient: LlmClient by lazy { LlmClient() }
 
     val aiEnricher: AiEnricher by lazy { AiEnricher(aiConfigRepository, llmClient) }
 
     val autoFillEngine: AutoFillEngine by lazy {
-        DefaultAutoFillEngine(aiConfigRepository, dictionaryClient, aiEnricher)
+        DefaultAutoFillEngine(
+            aiConfigRepository,
+            dictionaryClient,
+            merriamWebsterClient,
+            dictionaryConfigRepository,
+            aiEnricher
+        )
     }
 
     val practiceRepository: PracticeRepository by lazy {

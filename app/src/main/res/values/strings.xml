@@ -172,4 +172,12 @@
     <string name="settings_restore_choice_message">Merge adds the backup\'s cards to your current data and skips duplicates. Replace deletes ALL current decks, cards and history first.</string>
     <string name="settings_restore_merge">Merge</string>
     <string name="settings_restore_replace">Replace</string>
+
+    <!-- Dictionary source -->
+    <string name="settings_dictionary">Dictionary</string>
+    <string name="settings_dictionary_desc">Choose where definitions and pronunciation come from. Longman and Oxford data is licensed and cannot be bundled into an app, so LingoDo lets you enable a publisher's own API with your key instead. The keyless Free Dictionary is always available as a fallback.</string>
+    <string name="settings_dictionary_source">Dictionary source</string>
+    <string name="settings_dictionary_key">Dictionary API key</string>
+    <string name="settings_dictionary_needs_key">Add a key to use this dictionary — the free one is used until then.</string>
+    <string name="settings_dictionary_unsupported">No dictionary covers %s yet — AI auto-fill will supply definitions for it.</string>
 </resources>

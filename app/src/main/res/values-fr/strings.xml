@@ -170,4 +170,12 @@
     <string name="settings_restore_choice_message">Fusionner ajoute les cartes de la sauvegarde à vos données et ignore les doublons. Remplacer supprime d\'abord TOUS les paquets, cartes et l\'historique actuels.</string>
     <string name="settings_restore_merge">Fusionner</string>
     <string name="settings_restore_replace">Remplacer</string>
+
+    <!-- Dictionary source -->
+    <string name="settings_dictionary">Dictionnaire</string>
+    <string name="settings_dictionary_desc">Choisissez d\'où viennent les définitions et la prononciation. Les données Longman et Oxford sont sous licence et ne peuvent pas être intégrées à une application ; LingoDo vous permet donc d\'activer l\'API de l\'éditeur avec votre propre clé. Le Free Dictionary sans clé reste toujours disponible en secours.</string>
+    <string name="settings_dictionary_source">Source du dictionnaire</string>
+    <string name="settings_dictionary_key">Clé API du dictionnaire</string>
+    <string name="settings_dictionary_needs_key">Ajoutez une clé pour utiliser ce dictionnaire — le gratuit est utilisé en attendant.</string>
+    <string name="settings_dictionary_unsupported">Aucun dictionnaire ne couvre encore %s — les définitions viendront du remplissage auto par IA.</string>
 </resources>

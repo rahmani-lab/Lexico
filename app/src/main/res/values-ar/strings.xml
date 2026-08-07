@@ -173,4 +173,12 @@
     <string name="settings_restore_choice_message">الدمج يضيف بطاقات النسخة الاحتياطية إلى بياناتك الحالية ويتخطى المكرر. الاستبدال يحذف أولًا كل المجموعات والبطاقات والسجل الحالية.</string>
     <string name="settings_restore_merge">دمج</string>
     <string name="settings_restore_replace">استبدال</string>
+
+    <!-- Dictionary source -->
+    <string name="settings_dictionary">القاموس</string>
+    <string name="settings_dictionary_desc">اختر مصدر التعريفات والنطق. بيانات لونغمان وأكسفورد مرخّصة ولا يمكن تضمينها داخل التطبيق، لذا يتيح لك LingoDo تفعيل واجهة الناشر بمفتاحك الخاص. ويظل القاموس المجاني بدون مفتاح متاحًا دائمًا كبديل.</string>
+    <string name="settings_dictionary_source">مصدر القاموس</string>
+    <string name="settings_dictionary_key">مفتاح واجهة القاموس</string>
+    <string name="settings_dictionary_needs_key">أضف مفتاحًا لاستخدام هذا القاموس — وحتى ذلك الحين يُستخدم القاموس المجاني.</string>
+    <string name="settings_dictionary_unsupported">لا يوجد قاموس يغطي %s بعد — ستوفّر التعبئة التلقائية بالذكاء الاصطناعي التعريفات.</string>
 </resources>

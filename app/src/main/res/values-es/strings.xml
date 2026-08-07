@@ -170,4 +170,12 @@
     <string name="settings_restore_choice_message">Combinar añade las tarjetas de la copia a tus datos y omite duplicados. Reemplazar elimina primero TODOS los mazos, tarjetas e historial actuales.</string>
     <string name="settings_restore_merge">Combinar</string>
     <string name="settings_restore_replace">Reemplazar</string>
+
+    <!-- Dictionary source -->
+    <string name="settings_dictionary">Diccionario</string>
+    <string name="settings_dictionary_desc">Elige de dónde vienen las definiciones y la pronunciación. Los datos de Longman y Oxford tienen licencia y no pueden incluirse en una app, así que LingoDo te permite activar la API del editor con tu propia clave. El Free Dictionary sin clave siempre queda como alternativa.</string>
+    <string name="settings_dictionary_source">Fuente del diccionario</string>
+    <string name="settings_dictionary_key">Clave API del diccionario</string>
+    <string name="settings_dictionary_needs_key">Añade una clave para usar este diccionario; mientras tanto se usa el gratuito.</string>
+    <string name="settings_dictionary_unsupported">Ningún diccionario cubre aún %s; las definiciones vendrán del autocompletado con IA.</string>
 </resources>

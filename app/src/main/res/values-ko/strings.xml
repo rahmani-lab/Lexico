@@ -169,4 +169,12 @@
     <string name="settings_restore_choice_message">병합은 백업의 카드를 현재 데이터에 추가하고 중복은 건너뜁니다. 교체는 현재의 모든 덱·카드·기록을 먼저 삭제합니다.</string>
     <string name="settings_restore_merge">병합</string>
     <string name="settings_restore_replace">교체</string>
+
+    <!-- Dictionary source -->
+    <string name="settings_dictionary">사전</string>
+    <string name="settings_dictionary_desc">정의와 발음의 출처를 선택하세요. Longman과 Oxford 데이터는 라이선스가 있어 앱에 포함할 수 없으므로, LingoDo는 사용자의 키로 출판사 API를 활성화하도록 합니다. 키가 필요 없는 Free Dictionary는 항상 대체 수단으로 제공됩니다.</string>
+    <string name="settings_dictionary_source">사전 소스</string>
+    <string name="settings_dictionary_key">사전 API 키</string>
+    <string name="settings_dictionary_needs_key">이 사전을 사용하려면 키를 추가하세요. 그전까지는 무료 사전이 사용됩니다.</string>
+    <string name="settings_dictionary_unsupported">아직 %s을(를) 지원하는 사전이 없습니다 — 정의는 AI 자동 채우기가 제공합니다.</string>
 </resources>

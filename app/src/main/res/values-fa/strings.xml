@@ -170,4 +170,12 @@
     <string name="settings_restore_choice_message">ادغام، کارت‌های پشتیبان را به داده‌های فعلی اضافه می‌کند و موارد تکراری را رد می‌کند. جایگزینی، ابتدا همهٔ دسته‌ها، کارت‌ها و تاریخچهٔ فعلی را حذف می‌کند.</string>
     <string name="settings_restore_merge">ادغام</string>
     <string name="settings_restore_replace">جایگزینی</string>
+
+    <!-- Dictionary source -->
+    <string name="settings_dictionary">واژه‌نامه</string>
+    <string name="settings_dictionary_desc">انتخاب کنید تعریف‌ها و تلفظ از کجا بیایند. داده‌های لانگمن و آکسفورد دارای مجوز هستند و نمی‌توان آن‌ها را درون برنامه قرار داد؛ به‌جای آن LingoDo به شما امکان می‌دهد API خودِ ناشر را با کلید خودتان فعال کنید. واژه‌نامهٔ بدون‌کلید همیشه به‌عنوان جایگزین در دسترس است.</string>
+    <string name="settings_dictionary_source">منبع واژه‌نامه</string>
+    <string name="settings_dictionary_key">کلید API واژه‌نامه</string>
+    <string name="settings_dictionary_needs_key">برای استفاده از این واژه‌نامه یک کلید اضافه کنید — تا آن زمان از واژه‌نامهٔ رایگان استفاده می‌شود.</string>
+    <string name="settings_dictionary_unsupported">هنوز هیچ واژه‌نامه‌ای %s را پوشش نمی‌دهد — تعریف‌ها با تکمیل خودکار هوش مصنوعی تأمین می‌شوند.</string>
 </resources>

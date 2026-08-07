@@ -15,8 +15,10 @@ import com.rahmanilab.lingodo.data.preferences.model.ThemeMode
 import com.rahmanilab.lingodo.data.preferences.model.TtsAccent
 import com.rahmanilab.lingodo.data.repository.AiConfigRepository
 import com.rahmanilab.lingodo.data.repository.DeckRepository
+import com.rahmanilab.lingodo.data.repository.DictionaryConfigRepository
 import com.rahmanilab.lingodo.data.repository.LanguagePairRepository
 import com.rahmanilab.lingodo.domain.model.AiProvider
+import com.rahmanilab.lingodo.domain.model.DictionarySource
 import com.rahmanilab.lingodo.domain.model.Language
 import com.rahmanilab.lingodo.domain.practice.PracticeStyle
 import com.rahmanilab.lingodo.tts.PronunciationManager
@@ -48,7 +50,8 @@ class SettingsViewModel(
     private val aiConfigRepository: AiConfigRepository,
     private val practiceStyleRepository: PracticeStyleRepository,
     private val languagePairRepository: LanguagePairRepository,
-    private val deckRepository: DeckRepository
+    private val deckRepository: DeckRepository,
+    private val dictionaryConfigRepository: DictionaryConfigRepository
 ) : ViewModel() {
 
     /** The active pair's target language — drives the TTS locale, voice list and voice test. */
@@ -109,6 +112,31 @@ class SettingsViewModel(
     fun setDailyNewLimit(limit: Int) = launch { settingsRepository.setDailyNewLimit(limit) }
     fun setSessionLength(minutes: Int) = launch { settingsRepository.setSessionLength(minutes) }
     fun setScheduler(type: SchedulerType) = launch { settingsRepository.setSchedulerType(type) }
+
+    // --- Dictionary source (definitions + pronunciation) ---
+
+    val dictionarySource: StateFlow<DictionarySource> = dictionaryConfigRepository.source
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), DictionarySource.FREE_DICTIONARY)
+
+    /** Whether the selected source has a saved key (keyless sources report true). */
+    val dictionaryReady: StateFlow<Boolean> = dictionaryConfigRepository.source
+        .map { dictionaryConfigRepository.isUsable(it) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), true)
+
+    fun setDictionarySource(source: DictionarySource) = launch {
+        dictionaryConfigRepository.setSource(source)
+    }
+
+    fun saveDictionaryKey(key: String) = launch {
+        if (key.isBlank()) return@launch
+        dictionaryConfigRepository.setKey(dictionaryConfigRepository.currentSource(), key)
+        _messages.tryEmit("Dictionary key saved securely on this device.")
+    }
+
+    fun clearDictionaryKey() = launch {
+        dictionaryConfigRepository.clearKey(dictionaryConfigRepository.currentSource())
+        _messages.tryEmit("Dictionary key removed.")
+    }
 
     // --- AI auto-fill (BYOK) ---
 
@@ -228,7 +256,8 @@ class SettingsViewModel(
                     appContainer.aiConfigRepository,
                     appContainer.practiceStyleRepository,
                     appContainer.languagePairRepository,
-                    appContainer.deckRepository
+                    appContainer.deckRepository,
+                    appContainer.dictionaryConfigRepository
                 )
             }
         }

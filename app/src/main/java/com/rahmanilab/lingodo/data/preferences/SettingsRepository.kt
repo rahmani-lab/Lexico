@@ -65,6 +65,16 @@ class SettingsRepository(private val context: Context) {
 
     suspend fun setAiProviderName(name: String) = edit { it[Keys.AI_PROVIDER] = name }
 
+    // --- Dictionary source for auto-fill definitions/pronunciation ---
+
+    val dictionarySourceName: Flow<String> =
+        context.dataStore.data.map { it[Keys.DICTIONARY_SOURCE] ?: "FREE_DICTIONARY" }
+
+    suspend fun currentDictionarySourceName(): String =
+        context.dataStore.data.first()[Keys.DICTIONARY_SOURCE] ?: "FREE_DICTIONARY"
+
+    suspend fun setDictionarySourceName(name: String) = edit { it[Keys.DICTIONARY_SOURCE] = name }
+
     // --- Smart Practice styles (custom prompt templates + active selection) ---
 
     val customPracticeStylesJson: Flow<String> =
@@ -177,5 +187,6 @@ class SettingsRepository(private val context: Context) {
         val NEW_STUDIED_COUNT = intPreferencesKey("new_studied_count")
         val LAST_DECK = longPreferencesKey("last_deck_id")
         val EXCLUDED_DECKS = stringSetPreferencesKey("excluded_deck_ids")
+        val DICTIONARY_SOURCE = stringPreferencesKey("dictionary_source")
     }
 }
