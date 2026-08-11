@@ -178,4 +178,26 @@
     <string name="settings_dictionary_key">Sözlük API anahtarı</string>
     <string name="settings_dictionary_needs_key">Bu sözlüğü kullanmak için bir anahtar ekleyin — o zamana kadar ücretsiz olan kullanılır.</string>
     <string name="settings_dictionary_unsupported">Henüz %s dilini kapsayan bir sözlük yok — tanımları yapay zekâ otomatik doldurma sağlayacak.</string>
+
+    <!-- Writing &amp; Grammar Practice / Browse card viewer -->
+    <string name="practice_style_writing">Yazma Koçu</string>
+    <string name="practice_writing_title">Yazma ve Dil Bilgisi Alıştırması</string>
+    <string name="practice_writing_prompt_hint">Yanıtınızı buraya yazın…</string>
+    <string name="practice_writing_check">Yazımı kontrol et</string>
+    <string name="practice_tip_count">İpucu %1$d / %2$d</string>
+    <string name="practice_suggestion">Öneri</string>
+    <string name="practice_reason">Gerekçe</string>
+    <string name="practice_improved_version">Düzeltilmiş sürüm</string>
+    <string name="practice_start_over">Baştan başla</string>
+    <string name="practice_writing_topic">Günün konusu</string>
+    <string name="practice_writing_your_text">Metniniz</string>
+    <string name="practice_writing_rewarded">Harika — bu kelimeler tekrar ilerlemenize sayıldı: %s</string>
+    <string name="practice_writing_no_issues">Sorun bulunamadı. Çok iyi yazmışsınız!</string>
+    <string name="practice_writing_open">Yazma alıştırmasını aç</string>
+    <string name="practice_previous">Önceki</string>
+    <string name="browse_view_card">Kartı önizle</string>
+    <string name="browse_card_pager_count">%1$d / %2$d</string>
+    <string name="action_open_editor">Kartı düzenle</string>
+    <string name="action_close">Kapat</string>
+    <string name="browse_tap_to_flip">Çevirmek için dokunun</string>
 </resources>

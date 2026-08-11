@@ -1,6 +1,8 @@
 package com.rahmanilab.lingodo.ui.browse
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,13 +11,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
@@ -35,17 +39,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.rahmanilab.lingodo.R
 import com.rahmanilab.lingodo.data.local.relation.CardWithDetails
 import com.rahmanilab.lingodo.ui.components.EmptyState
 import com.rahmanilab.lingodo.ui.components.Pill
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,6 +63,27 @@ fun BrowseScreen(
     viewModel: BrowseViewModel = viewModel(factory = BrowseViewModel.Factory)
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val listState = rememberLazyListState()
+    // Index of the card being previewed, or null when the list is showing.
+    var viewerIndex by remember { mutableStateOf<Int?>(null) }
+    val scope = rememberCoroutineScope()
+
+    viewerIndex?.let { index ->
+        CardViewerSheet(
+            cards = state.cards,
+            startIndex = index,
+            onEditCard = { cardId ->
+                viewerIndex = null
+                onEditCard(cardId)
+            },
+            onClose = { lastPage ->
+                viewerIndex = null
+                // Keep the user's place: scroll the list to the card they finished on.
+                scope.launch { listState.scrollToItem(lastPage.coerceIn(0, state.cards.lastIndex.coerceAtLeast(0))) }
+            }
+        )
+        return
+    }
 
     Scaffold(
         topBar = { TopAppBar(title = { Text("Browse") }) },
@@ -136,15 +165,19 @@ fun BrowseScreen(
                 )
             } else {
                 LazyColumn(
+                    state = listState,
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    items(state.cards, key = { it.card.id }) { card ->
+                    itemsIndexed(state.cards, key = { _, it -> it.card.id }) { index, card ->
                         BrowseCardRow(
                             card = card,
                             deckName = state.decks.firstOrNull { it.id == card.card.deckId }?.name.orEmpty(),
-                            onClick = { onEditCard(card.card.id) },
+                            // Tap previews; long-press (and the ⋮ menu) goes to the editor.
+                            onClick = { viewerIndex = index },
+                            onLongClick = { onEditCard(card.card.id) },
+                            onEdit = { onEditCard(card.card.id) },
                             onDelete = { viewModel.deleteCard(card) }
                         )
                     }
@@ -185,14 +218,21 @@ private fun DeckFilterChip(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun BrowseCardRow(
     card: CardWithDetails,
     deckName: String,
     onClick: () -> Unit,
+    onLongClick: () -> Unit,
+    onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
-    Card(modifier = Modifier.fillMaxWidth().clickable(onClick = onClick)) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .combinedClickable(onClick = onClick, onLongClick = onLongClick)
+    ) {
         Row(
             modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.Top
@@ -227,20 +267,25 @@ private fun BrowseCardRow(
                     )
                 }
             }
-            CardOverflowMenu(onDelete = onDelete)
+            CardOverflowMenu(onEdit = onEdit, onDelete = onDelete)
         }
     }
 }
 
 @Composable
-private fun CardOverflowMenu(onDelete: () -> Unit) {
+private fun CardOverflowMenu(onEdit: () -> Unit, onDelete: () -> Unit) {
     var expanded by remember { mutableStateOf(false) }
     IconButton(onClick = { expanded = true }) {
-        Icon(Icons.Filled.MoreVert, contentDescription = "More options")
+        Icon(Icons.Filled.MoreVert, contentDescription = stringResource(R.string.action_more))
     }
     DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
         DropdownMenuItem(
-            text = { Text("Delete") },
+            text = { Text(stringResource(R.string.action_open_editor)) },
+            leadingIcon = { Icon(Icons.Filled.Edit, contentDescription = null) },
+            onClick = { expanded = false; onEdit() }
+        )
+        DropdownMenuItem(
+            text = { Text(stringResource(R.string.action_delete)) },
             leadingIcon = { Icon(Icons.Filled.Delete, contentDescription = null) },
             onClick = { expanded = false; onDelete() }
         )

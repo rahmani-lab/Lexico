@@ -177,4 +177,26 @@
     <string name="settings_dictionary_key">词典 API 密钥</string>
     <string name="settings_dictionary_needs_key">添加密钥后才能使用此词典——在此之前将使用免费词典。</string>
     <string name="settings_dictionary_unsupported">目前没有词典覆盖 %s——将由 AI 自动填充提供释义。</string>
+
+    <!-- Writing &amp; Grammar Practice / Browse card viewer -->
+    <string name="practice_style_writing">写作教练</string>
+    <string name="practice_writing_title">写作与语法练习</string>
+    <string name="practice_writing_prompt_hint">在此写下你的回答…</string>
+    <string name="practice_writing_check">检查我的写作</string>
+    <string name="practice_tip_count">第 %1$d 条，共 %2$d 条</string>
+    <string name="practice_suggestion">建议</string>
+    <string name="practice_reason">原因</string>
+    <string name="practice_improved_version">润色版本</string>
+    <string name="practice_start_over">重新开始</string>
+    <string name="practice_writing_topic">今日题目</string>
+    <string name="practice_writing_your_text">你的文本</string>
+    <string name="practice_writing_rewarded">很棒——这些词已计入你的复习进度：%s</string>
+    <string name="practice_writing_no_issues">没有发现问题，写得很好！</string>
+    <string name="practice_writing_open">打开写作练习</string>
+    <string name="practice_previous">上一条</string>
+    <string name="browse_view_card">预览卡片</string>
+    <string name="browse_card_pager_count">第 %1$d / %2$d 张</string>
+    <string name="action_open_editor">编辑卡片</string>
+    <string name="action_close">关闭</string>
+    <string name="browse_tap_to_flip">点击翻面</string>
 </resources>

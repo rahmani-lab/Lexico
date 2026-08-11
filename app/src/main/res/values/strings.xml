@@ -180,4 +180,26 @@
     <string name="settings_dictionary_key">Dictionary API key</string>
     <string name="settings_dictionary_needs_key">Add a key to use this dictionary — the free one is used until then.</string>
     <string name="settings_dictionary_unsupported">No dictionary covers %s yet — AI auto-fill will supply definitions for it.</string>
+
+    <!-- Writing &amp; Grammar Practice / Browse card viewer -->
+    <string name="practice_style_writing">Writing Coach</string>
+    <string name="practice_writing_title">Writing &amp; Grammar Practice</string>
+    <string name="practice_writing_prompt_hint">Write your response here…</string>
+    <string name="practice_writing_check">Check My Writing</string>
+    <string name="practice_tip_count">Tip %1$d of %2$d</string>
+    <string name="practice_suggestion">Suggestion</string>
+    <string name="practice_reason">Reason</string>
+    <string name="practice_improved_version">Polished Version</string>
+    <string name="practice_start_over">Start Over</string>
+    <string name="practice_writing_topic">Today\'s Topic</string>
+    <string name="practice_writing_your_text">Your text</string>
+    <string name="practice_writing_rewarded">Nice — these words counted toward your review progress: %s</string>
+    <string name="practice_writing_no_issues">No issues found. Great writing!</string>
+    <string name="practice_writing_open">Open Writing Practice</string>
+    <string name="practice_previous">Previous</string>
+    <string name="browse_view_card">Preview Card</string>
+    <string name="browse_card_pager_count">%1$d of %2$d</string>
+    <string name="action_open_editor">Edit Card</string>
+    <string name="action_close">Close</string>
+    <string name="browse_tap_to_flip">Tap to flip</string>
 </resources>

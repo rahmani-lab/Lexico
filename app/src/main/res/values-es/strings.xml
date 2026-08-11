@@ -178,4 +178,26 @@
     <string name="settings_dictionary_key">Clave API del diccionario</string>
     <string name="settings_dictionary_needs_key">Añade una clave para usar este diccionario; mientras tanto se usa el gratuito.</string>
     <string name="settings_dictionary_unsupported">Ningún diccionario cubre aún %s; las definiciones vendrán del autocompletado con IA.</string>
+
+    <!-- Writing &amp; Grammar Practice / Browse card viewer -->
+    <string name="practice_style_writing">Entrenador de escritura</string>
+    <string name="practice_writing_title">Práctica de escritura y gramática</string>
+    <string name="practice_writing_prompt_hint">Escribe tu respuesta aquí…</string>
+    <string name="practice_writing_check">Revisar mi texto</string>
+    <string name="practice_tip_count">Consejo %1$d de %2$d</string>
+    <string name="practice_suggestion">Sugerencia</string>
+    <string name="practice_reason">Motivo</string>
+    <string name="practice_improved_version">Versión pulida</string>
+    <string name="practice_start_over">Empezar de nuevo</string>
+    <string name="practice_writing_topic">Tema de hoy</string>
+    <string name="practice_writing_your_text">Tu texto</string>
+    <string name="practice_writing_rewarded">¡Bien! Estas palabras cuentan para tu progreso: %s</string>
+    <string name="practice_writing_no_issues">No se encontraron errores. ¡Buen trabajo!</string>
+    <string name="practice_writing_open">Abrir práctica de escritura</string>
+    <string name="practice_previous">Anterior</string>
+    <string name="browse_view_card">Vista previa de la tarjeta</string>
+    <string name="browse_card_pager_count">%1$d de %2$d</string>
+    <string name="action_open_editor">Editar tarjeta</string>
+    <string name="action_close">Cerrar</string>
+    <string name="browse_tap_to_flip">Toca para girar</string>
 </resources>

@@ -178,4 +178,26 @@
     <string name="settings_dictionary_key">Clé API du dictionnaire</string>
     <string name="settings_dictionary_needs_key">Ajoutez une clé pour utiliser ce dictionnaire — le gratuit est utilisé en attendant.</string>
     <string name="settings_dictionary_unsupported">Aucun dictionnaire ne couvre encore %s — les définitions viendront du remplissage auto par IA.</string>
+
+    <!-- Writing &amp; Grammar Practice / Browse card viewer -->
+    <string name="practice_style_writing">Coach d\'écriture</string>
+    <string name="practice_writing_title">Pratique d\'écriture &amp; grammaire</string>
+    <string name="practice_writing_prompt_hint">Écrivez votre réponse ici…</string>
+    <string name="practice_writing_check">Vérifier mon texte</string>
+    <string name="practice_tip_count">Astuce %1$d sur %2$d</string>
+    <string name="practice_suggestion">Suggestion</string>
+    <string name="practice_reason">Raison</string>
+    <string name="practice_improved_version">Version corrigée</string>
+    <string name="practice_start_over">Recommencer</string>
+    <string name="practice_writing_topic">Sujet du jour</string>
+    <string name="practice_writing_your_text">Votre texte</string>
+    <string name="practice_writing_rewarded">Bravo — ces mots comptent pour votre progression : %s</string>
+    <string name="practice_writing_no_issues">Aucun problème détecté. Beau travail !</string>
+    <string name="practice_writing_open">Ouvrir la pratique d\'écriture</string>
+    <string name="practice_previous">Précédent</string>
+    <string name="browse_view_card">Aperçu de la carte</string>
+    <string name="browse_card_pager_count">%1$d sur %2$d</string>
+    <string name="action_open_editor">Modifier la carte</string>
+    <string name="action_close">Fermer</string>
+    <string name="browse_tap_to_flip">Touchez pour retourner</string>
 </resources>

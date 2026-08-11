@@ -177,4 +177,26 @@
     <string name="settings_dictionary_key">사전 API 키</string>
     <string name="settings_dictionary_needs_key">이 사전을 사용하려면 키를 추가하세요. 그전까지는 무료 사전이 사용됩니다.</string>
     <string name="settings_dictionary_unsupported">아직 %s을(를) 지원하는 사전이 없습니다 — 정의는 AI 자동 채우기가 제공합니다.</string>
+
+    <!-- Writing &amp; Grammar Practice / Browse card viewer -->
+    <string name="practice_style_writing">작문 코치</string>
+    <string name="practice_writing_title">작문 &amp; 문법 연습</string>
+    <string name="practice_writing_prompt_hint">여기에 답변을 작성하세요…</string>
+    <string name="practice_writing_check">내 글 검사</string>
+    <string name="practice_tip_count">팁 %1$d / %2$d</string>
+    <string name="practice_suggestion">제안</string>
+    <string name="practice_reason">이유</string>
+    <string name="practice_improved_version">다듬은 버전</string>
+    <string name="practice_start_over">다시 시작</string>
+    <string name="practice_writing_topic">오늘의 주제</string>
+    <string name="practice_writing_your_text">작성한 글</string>
+    <string name="practice_writing_rewarded">좋아요 — 이 단어들이 복습 진도에 반영되었습니다: %s</string>
+    <string name="practice_writing_no_issues">문제가 없습니다. 훌륭한 글이에요!</string>
+    <string name="practice_writing_open">작문 연습 열기</string>
+    <string name="practice_previous">이전</string>
+    <string name="browse_view_card">카드 미리보기</string>
+    <string name="browse_card_pager_count">%1$d / %2$d</string>
+    <string name="action_open_editor">카드 편집</string>
+    <string name="action_close">닫기</string>
+    <string name="browse_tap_to_flip">탭하여 뒤집기</string>
 </resources>

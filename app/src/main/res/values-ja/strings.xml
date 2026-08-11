@@ -177,4 +177,26 @@
     <string name="settings_dictionary_key">辞書 API キー</string>
     <string name="settings_dictionary_needs_key">この辞書を使うにはキーを追加してください。それまでは無料の辞書が使われます。</string>
     <string name="settings_dictionary_unsupported">%s に対応する辞書はまだありません。定義は AI 自動入力が補います。</string>
+
+    <!-- Writing &amp; Grammar Practice / Browse card viewer -->
+    <string name="practice_style_writing">ライティングコーチ</string>
+    <string name="practice_writing_title">ライティング＆文法練習</string>
+    <string name="practice_writing_prompt_hint">ここに回答を書いてください…</string>
+    <string name="practice_writing_check">文章をチェック</string>
+    <string name="practice_tip_count">ヒント %1$d / %2$d</string>
+    <string name="practice_suggestion">提案</string>
+    <string name="practice_reason">理由</string>
+    <string name="practice_improved_version">推敲版</string>
+    <string name="practice_start_over">最初からやり直す</string>
+    <string name="practice_writing_topic">今日のトピック</string>
+    <string name="practice_writing_your_text">あなたの文章</string>
+    <string name="practice_writing_rewarded">いいですね — これらの単語は復習の進捗に反映されました：%s</string>
+    <string name="practice_writing_no_issues">問題は見つかりません。素晴らしい文章です！</string>
+    <string name="practice_writing_open">ライティング練習を開く</string>
+    <string name="practice_previous">前へ</string>
+    <string name="browse_view_card">カードをプレビュー</string>
+    <string name="browse_card_pager_count">%1$d / %2$d</string>
+    <string name="action_open_editor">カードを編集</string>
+    <string name="action_close">閉じる</string>
+    <string name="browse_tap_to_flip">タップして裏返す</string>
 </resources>

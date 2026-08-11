@@ -10,6 +10,7 @@ import com.rahmanilab.lingodo.data.autofill.LlmClient
 import com.rahmanilab.lingodo.data.backup.ImportExportRepository
 import com.rahmanilab.lingodo.data.local.LingoDoDatabase
 import com.rahmanilab.lingodo.data.practice.PracticeRepository
+import com.rahmanilab.lingodo.data.practice.WritingRepository
 import com.rahmanilab.lingodo.data.practice.PracticeStyleRepository
 import com.rahmanilab.lingodo.data.preferences.SettingsRepository
 import com.rahmanilab.lingodo.data.repository.AiConfigRepository
@@ -103,6 +104,10 @@ class AppContainer(context: Context) {
         PracticeRepository(
             database, statsRepository, languagePairRepository, aiConfigRepository, llmClient, reviewRepository
         )
+    }
+
+    val writingRepository: WritingRepository by lazy {
+        WritingRepository(database, practiceRepository, aiConfigRepository, llmClient, reviewRepository)
     }
 
     val practiceStyleRepository: PracticeStyleRepository by lazy {
