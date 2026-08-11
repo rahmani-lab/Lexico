@@ -53,9 +53,11 @@ import com.rahmanilab.lingodo.domain.practice.PracticeStyle
 @Composable
 fun SmartPracticeScreen(
     onBack: () -> Unit,
+    onOpenWriting: () -> Unit = {},
     viewModel: SmartPracticeViewModel = viewModel(factory = SmartPracticeViewModel.Factory)
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val writingSelected = state.selectedStyleId == PracticeStyle.WRITING_ID
 
     Scaffold(
         topBar = {
@@ -104,7 +106,13 @@ fun SmartPracticeScreen(
                         onSelectStyle = viewModel::setStyle,
                         busy = state.busy,
                         onReport = viewModel::generateReport,
-                        onStart = viewModel::startExercises
+                        // The Writing coach opens its own module rather than generating drills.
+                        onStart = if (writingSelected) onOpenWriting else viewModel::startExercises,
+                        startLabel = if (writingSelected) {
+                            stringResource(R.string.practice_writing_open)
+                        } else {
+                            stringResource(R.string.practice_start)
+                        }
                     )
                 }
             }
@@ -121,7 +129,8 @@ private fun IntroView(
     onSelectStyle: (String) -> Unit,
     busy: Boolean,
     onReport: () -> Unit,
-    onStart: () -> Unit
+    onStart: () -> Unit,
+    startLabel: String
 ) {
     Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)) {
         Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
@@ -144,7 +153,7 @@ private fun IntroView(
         Text(stringResource(R.string.practice_generate_note))
     }
     Button(onClick = onStart, enabled = !busy, modifier = Modifier.fillMaxWidth()) {
-        Text(stringResource(R.string.practice_start))
+        Text(startLabel)
     }
     Text(
         stringResource(R.string.practice_intro_hint),

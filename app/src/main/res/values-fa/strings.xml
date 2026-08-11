@@ -178,4 +178,26 @@
     <string name="settings_dictionary_key">کلید API واژه‌نامه</string>
     <string name="settings_dictionary_needs_key">برای استفاده از این واژه‌نامه یک کلید اضافه کنید — تا آن زمان از واژه‌نامهٔ رایگان استفاده می‌شود.</string>
     <string name="settings_dictionary_unsupported">هنوز هیچ واژه‌نامه‌ای %s را پوشش نمی‌دهد — تعریف‌ها با تکمیل خودکار هوش مصنوعی تأمین می‌شوند.</string>
+
+    <!-- Writing &amp; Grammar Practice / Browse card viewer -->
+    <string name="practice_style_writing">مربی نگارش</string>
+    <string name="practice_writing_title">تمرین نگارش و گرامر</string>
+    <string name="practice_writing_prompt_hint">پاسخ خود را اینجا بنویسید…</string>
+    <string name="practice_writing_check">بررسی نوشتهٔ من</string>
+    <string name="practice_tip_count">نکتهٔ %1$d از %2$d</string>
+    <string name="practice_suggestion">پیشنهاد</string>
+    <string name="practice_reason">دلیل</string>
+    <string name="practice_improved_version">نسخهٔ ویرایش‌شده</string>
+    <string name="practice_start_over">شروع دوباره</string>
+    <string name="practice_writing_topic">موضوع امروز</string>
+    <string name="practice_writing_your_text">متن شما</string>
+    <string name="practice_writing_rewarded">آفرین — این واژه‌ها در پیشرفت مرور شما به حساب آمدند: %s</string>
+    <string name="practice_writing_no_issues">مشکلی پیدا نشد. عالی نوشتید!</string>
+    <string name="practice_writing_open">باز کردن تمرین نگارش</string>
+    <string name="practice_previous">قبلی</string>
+    <string name="browse_view_card">پیش‌نمایش کارت</string>
+    <string name="browse_card_pager_count">%1$d از %2$d</string>
+    <string name="action_open_editor">ویرایش کارت</string>
+    <string name="action_close">بستن</string>
+    <string name="browse_tap_to_flip">برای برگرداندن بزنید</string>
 </resources>

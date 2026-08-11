@@ -26,6 +26,7 @@ import com.rahmanilab.lingodo.ui.navigation.Routes
 import com.rahmanilab.lingodo.ui.navigation.topLevelDestinations
 import com.rahmanilab.lingodo.ui.navigation.topLevelFor
 import com.rahmanilab.lingodo.ui.practice.SmartPracticeScreen
+import com.rahmanilab.lingodo.ui.practice.WritingPracticeScreen
 import com.rahmanilab.lingodo.ui.review.ReviewScreen
 import com.rahmanilab.lingodo.ui.settings.SettingsScreen
 import com.rahmanilab.lingodo.ui.statistics.StatisticsScreen
@@ -118,7 +119,14 @@ fun LingoDoApp() {
             }
 
             composable(Routes.SMART_PRACTICE) {
-                SmartPracticeScreen(onBack = { navController.popBackStack() })
+                SmartPracticeScreen(
+                    onBack = { navController.popBackStack() },
+                    onOpenWriting = { navController.navigate(Routes.WRITING_PRACTICE) }
+                )
+            }
+
+            composable(Routes.WRITING_PRACTICE) {
+                WritingPracticeScreen(onBack = { navController.popBackStack() })
             }
 
             composable(

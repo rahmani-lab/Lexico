@@ -178,4 +178,26 @@
     <string name="settings_dictionary_key">Wörterbuch-API-Schlüssel</string>
     <string name="settings_dictionary_needs_key">Füge einen Schlüssel hinzu, um dieses Wörterbuch zu nutzen — bis dahin wird das kostenlose verwendet.</string>
     <string name="settings_dictionary_unsupported">Kein Wörterbuch deckt %s bisher ab — Definitionen liefert die KI-Autovervollständigung.</string>
+
+    <!-- Writing &amp; Grammar Practice / Browse card viewer -->
+    <string name="practice_style_writing">Schreibcoach</string>
+    <string name="practice_writing_title">Schreib- &amp; Grammatikübung</string>
+    <string name="practice_writing_prompt_hint">Schreibe hier deine Antwort…</string>
+    <string name="practice_writing_check">Meinen Text prüfen</string>
+    <string name="practice_tip_count">Tipp %1$d von %2$d</string>
+    <string name="practice_suggestion">Vorschlag</string>
+    <string name="practice_reason">Begründung</string>
+    <string name="practice_improved_version">Überarbeitete Fassung</string>
+    <string name="practice_start_over">Neu beginnen</string>
+    <string name="practice_writing_topic">Thema des Tages</string>
+    <string name="practice_writing_your_text">Dein Text</string>
+    <string name="practice_writing_rewarded">Gut gemacht — diese Wörter zählen für deinen Lernfortschritt: %s</string>
+    <string name="practice_writing_no_issues">Keine Fehler gefunden. Toll geschrieben!</string>
+    <string name="practice_writing_open">Schreibübung öffnen</string>
+    <string name="practice_previous">Zurück</string>
+    <string name="browse_view_card">Karte ansehen</string>
+    <string name="browse_card_pager_count">%1$d von %2$d</string>
+    <string name="action_open_editor">Karte bearbeiten</string>
+    <string name="action_close">Schließen</string>
+    <string name="browse_tap_to_flip">Zum Umdrehen tippen</string>
 </resources>
